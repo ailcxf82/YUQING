@@ -1,0 +1,15 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "yuqing-app",
+  "description": "舆情分析助手",
+  "appid": "wxcb7b61f950434761",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "enhance": false,
+    "compileHotReLoad": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
+}

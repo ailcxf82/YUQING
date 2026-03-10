@@ -1,0 +1,102 @@
+@import '../../styles/variables.scss';
+
+.page-result {
+  min-height: 100vh;
+  padding-top: $nav-header-offset;
+  background: #f5f6f9;
+
+  &__tabs {
+    height: calc(100vh - #{$nav-header-offset});
+  }
+}
+
+.pane-scroll {
+  height: calc(100vh - #{$nav-header-offset} - 100px);
+  padding: 0 24px 32px;
+}
+
+.pane-section {
+  margin-bottom: 32px;
+}
+
+.pane-title {
+  font-size: 30px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.pane-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.pane-text {
+  font-size: 28px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.pane-subtabs {
+  display: flex;
+  padding: 16px 24px;
+  gap: 16px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.pane-subtab {
+  padding: 12px 24px;
+  font-size: 26px;
+  color: #666;
+  border-radius: 8px;
+  background: #f5f5f5;
+
+  &--active {
+    color: #1890ff;
+    background: #e6f7ff;
+  }
+}
+
+.pane-stream {
+  padding-top: 24px;
+}
+
+.stream-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.stream-text {
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.pane-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.chart-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.chart-label {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.chart-note {
+  font-size: 24px;
+  color: #999;
+  margin-top: 8px;
+}

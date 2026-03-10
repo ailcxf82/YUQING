@@ -1,0 +1,23 @@
+@import '~taro-ui/dist/style/index.scss';
+
+page {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB',
+    'Microsoft Yahei', sans-serif;
+  background-color: #f5f6f9;
+  color: #333;
+  font-size: 28px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* 小程序页面空白：Taro 容器需有高度，子元素 100% 才生效 */
+.taro_router,
+.taro_page {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.taro_page {
+  overflow: auto;
+}

@@ -1,0 +1,50 @@
+.nav-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  min-height: 88px; /* 保证 H5/部分机型有足够高度，避免与内容重叠 */
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
+
+  &__left, &__right {
+    width: 80px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__right {
+    justify-content: flex-end;
+  }
+
+  &__back, &__settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+
+    .at-icon {
+      color: #fff !important;
+    }
+  }
+
+  &__title {
+    flex: 1;
+    text-align: center;
+    font-size: 34px;
+    font-weight: 600;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

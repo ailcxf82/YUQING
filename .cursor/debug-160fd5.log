@@ -1,0 +1,26 @@
+{"sessionId":"160fd5","location":"app.ts:render","message":"App render","data":{"childrenType":"object"},"timestamp":1773027716602,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"app.ts:componentDidMount","message":"App mounted","data":{"hasChildren":true},"timestamp":1773027716606,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"pages/index/index.tsx:render","message":"Index render","data":{"searchValue":"","historyLen":0},"timestamp":1773027718970,"hypothesisId":"H2"}
+{"sessionId":"160fd5","location":"NavHeader:render","message":"NavHeader render","data":{"title":"舆情分析助手","env":"WEB","statusBarHeight":44,"navHeight":44},"timestamp":1773027723330,"hypothesisId":"H3"}
+{"sessionId":"160fd5","location":"pages/index/index.tsx:render","message":"Index render","data":{"searchValue":"","historyLen":0},"timestamp":1773027737920,"hypothesisId":"H2"}
+{"sessionId":"160fd5","location":"NavHeader:render","message":"NavHeader render","data":{"title":"舆情分析助手","env":"WEB","statusBarHeight":44,"navHeight":44},"timestamp":1773027737921,"hypothesisId":"H3"}
+{"sessionId":"160fd5","location":"pages/index:useEffect","message":"viewport","data":{"innerHeight":906,"clientHeight":906},"timestamp":1773027737925,"hypothesisId":"H4"}
+{"sessionId":"160fd5","location":"app.ts:render","message":"App render","data":{"childrenType":"object"},"timestamp":1773027817198,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"app.ts:componentDidMount","message":"App mounted","data":{"hasChildren":true},"timestamp":1773027817198,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"app.ts:render","message":"App render","data":{"childrenType":"object"},"timestamp":1773027817208,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"pages/index/index.tsx:render","message":"Index render","data":{"searchValue":"","historyLen":0},"timestamp":1773027817208,"hypothesisId":"H2"}
+{"sessionId":"160fd5","location":"NavHeader:render","message":"NavHeader render","data":{"title":"舆情分析助手","env":"WEB","statusBarHeight":44,"navHeight":44},"timestamp":1773027817209,"hypothesisId":"H3"}
+{"sessionId":"160fd5","location":"pages/index:useEffect","message":"viewport","data":{"innerHeight":906,"clientHeight":906},"timestamp":1773027817236,"hypothesisId":"H4"}
+{"sessionId":"160fd5","location":"app.ts:render","message":"App render","data":{"childrenType":"object"},"timestamp":1773027951611,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"app.ts:componentDidMount","message":"App mounted","data":{"hasChildren":true},"timestamp":1773027951611,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"app.ts:render","message":"App render","data":{"childrenType":"object"},"timestamp":1773027951619,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"pages/index/index.tsx:render","message":"Index render","data":{"searchValue":"","historyLen":0},"timestamp":1773027951619,"hypothesisId":"H2"}
+{"sessionId":"160fd5","location":"NavHeader:render","message":"NavHeader render","data":{"title":"舆情分析助手","env":"WEB","statusBarHeight":44,"navHeight":44},"timestamp":1773027951620,"hypothesisId":"H3"}
+{"sessionId":"160fd5","location":"pages/index:useEffect","message":"viewport","data":{"innerHeight":906,"clientHeight":906},"timestamp":1773027951626,"hypothesisId":"H4"}
+{"sessionId":"160fd5","location":"app.ts:render","message":"App render","data":{"childrenType":"object"},"timestamp":1773028760352,"hypothesisId":"H1"}
+{"sessionId":"160fd5","location":"NavHeader:render","message":"NavHeader render","data":{"title":"我的","env":"WEB","statusBarHeight":44,"navHeight":44},"timestamp":1773028760352,"hypothesisId":"H3"}
+{"sessionId":"160fd5","location":"pages/index/index.tsx:render","message":"Index render","data":{"searchValue":"","historyLen":0},"timestamp":1773033539274,"hypothesisId":"H2"}
+{"sessionId":"160fd5","location":"NavHeader:render","message":"NavHeader render","data":{"title":"舆情分析助手","env":"WEB","statusBarHeight":44,"navHeight":44},"timestamp":1773033539276,"hypothesisId":"H3"}
+{"sessionId":"160fd5","location":"NavHeader:render","message":"NavHeader render","data":{"title":"我的","env":"WEB","statusBarHeight":44,"navHeight":44},"timestamp":1773033539291,"hypothesisId":"H3"}
+{"sessionId":"160fd5","location":"pages/index:useEffect","message":"viewport","data":{"innerHeight":906,"clientHeight":906},"timestamp":1773033539311,"hypothesisId":"H4"}
+{"sessionId":"160fd5","location":"NavHeader:render","message":"NavHeader render","data":{"title":"舆情分析助手","env":"WEB","statusBarHeight":44,"navHeight":44},"timestamp":1773033543269,"hypothesisId":"H3"}

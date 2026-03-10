@@ -1,0 +1,41 @@
+@import '../../styles/variables.scss';
+
+.page-mine {
+  min-height: 100vh;
+  padding-top: $nav-header-offset;
+  background: #f5f6f9;
+
+  &__body {
+    height: calc(100vh - #{$nav-header-offset});
+    padding-bottom: 32px;
+    box-sizing: border-box;
+  }
+
+  &__user {
+    background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+    padding: 48px 24px 40px;
+    text-align: center;
+  }
+
+  &__name {
+    display: block;
+    margin-top: 20px;
+    font-size: 36px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  &__desc {
+    display: block;
+    margin-top: 8px;
+    font-size: 26px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &__menu {
+    margin: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "news_data": {
+    "symbol": "600000.SH",
+    "name": "浦发银行",
+    "time_range": {
+      "start": "2026-03-01",
+      "end": "2026-03-10"
+    },
+    "news_items": [],
+    "total_count": 0,
+    "vector_index": "",
+    "stats": {
+      "raw_collected": 0,
+      "after_clean": 0,
+      "vectorized": 0,
+      "source_breakdown": {}
+    }
+  },
+  "agent_outputs": [
+    {
+      "agent_name": "news_retrieval",
+      "status": "partial",
+      "data": {
+        "symbol": "600000.SH",
+        "name": "浦发银行",
+        "time_range": {
+          "start": "2026-03-01",
+          "end": "2026-03-10"
+        },
+        "news_items": [],
+        "total_count": 0,
+        "vector_index": "",
+        "stats": {
+          "raw_collected": 0,
+          "after_clean": 0,
+          "vectorized": 0,
+          "source_breakdown": {}
+        }
+      },
+      "error": null,
+      "retries": 0,
+      "duration_ms": 300138,
+      "timestamp": "2026-03-12T03:41:10+00:00"
+    }
+  ],
+  "current_step": "news_retrieval_done"
+}

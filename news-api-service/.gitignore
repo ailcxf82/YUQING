@@ -1,0 +1,8 @@
+venv/
+.venv/
+.env
+*.db
+__pycache__/
+*.pyc
+service_switch.json
+scheduler_config.json

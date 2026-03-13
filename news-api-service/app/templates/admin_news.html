@@ -1,0 +1,80 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="grid">
+    <div class="card col-12">
+      <h2>抓取记录（排重基准）</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>来源</th>
+            <th>上次结束时间</th>
+            <th>更新时间</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in fetch_log %}
+          <tr>
+            <td class="mono">{{ r[0] }}</td>
+            <td class="mono">{{ r[1] }}</td>
+            <td class="mono">{{ r[2] }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="3" class="muted">暂无抓取记录。</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card col-12">
+      <h2>新闻数据明细（news 表）</h2>
+      <form class="form" method="get">
+        <label>src
+          <input name="src" value="{{ filters.src }}" placeholder="如 sina/cls" class="mono" />
+        </label>
+        <label>start_datetime
+          <input name="start_datetime" value="{{ filters.start_datetime }}" placeholder="YYYY-MM-DD HH:MM:SS" class="mono" />
+        </label>
+        <label>end_datetime
+          <input name="end_datetime" value="{{ filters.end_datetime }}" placeholder="YYYY-MM-DD HH:MM:SS" class="mono" />
+        </label>
+        <label>limit
+          <input name="limit" value="{{ filters.limit }}" class="mono" />
+        </label>
+        <label>offset
+          <input name="offset" value="{{ filters.offset }}" class="mono" />
+        </label>
+        <button class="btn primary" type="submit">查询</button>
+      </form>
+    </div>
+
+    <div class="card col-12">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>时间</th>
+            <th>来源</th>
+            <th>标题</th>
+            <th>内容</th>
+            <th>分类</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for n in items %}
+          <tr>
+            <td class="mono">{{ n.id }}</td>
+            <td class="mono">{{ n.datetime }}</td>
+            <td class="mono">{{ n.src }}</td>
+            <td>{{ n.title }}</td>
+            <td>{{ n.content }}</td>
+            <td class="mono">{{ n.channels }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="muted">暂无新闻数据。</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+

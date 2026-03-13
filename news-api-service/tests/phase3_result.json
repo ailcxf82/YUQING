@@ -1,0 +1,940 @@
+{
+  "sentiment_result": {
+    "symbol": "600000.SH",
+    "name": "浦发银行",
+    "events": [
+      {
+        "event_id": "N4",
+        "title": "浦发银行某分行因违规放贷被罚",
+        "core_summary": "银保监会网站公布，浦发银行某地分行因违规向不符合条件的企业发放贷款，被处以200万元罚款。",
+        "published_at": "2026-03-08T14:00:00+08:00",
+        "source_name": "银保监会",
+        "source_level": "S",
+        "source_weight": 1.0,
+        "url": "",
+        "primary_company": "浦发银行",
+        "primary_stock_code": "",
+        "related_companies": [],
+        "entities": [
+          {
+            "name": "浦发银行",
+            "type": "company",
+            "role": "主体"
+          },
+          {
+            "name": "银保监会",
+            "type": "regulator",
+            "role": "监管方"
+          }
+        ],
+        "event_category": "负向事件",
+        "sub_label": "监管处罚",
+        "classification_confidence": 0.93,
+        "impact_level": "公司级",
+        "classification_reason": "银保监会因违规放贷对银行分支机构进行行政处罚",
+        "polarity": "强负向",
+        "score": 20.0,
+        "sentiment_driver": "监管处罚",
+        "sentiment_reasoning": "因违规放贷被处以罚款，属明确的负面监管事件，直接影响银行声誉和合规性。",
+        "complexity": "simple",
+        "key_phrases": [
+          "违规放贷",
+          "被处以200万元罚款"
+        ],
+        "spread_count": 800,
+        "keywords": [
+          "处罚",
+          "违规"
+        ],
+        "content_hash": "d4",
+        "influence_score": 78.3,
+        "risk_level": "高风险",
+        "propagation_type": "源头舆情",
+        "propagation_order": 1,
+        "is_noise": false
+      },
+      {
+        "event_id": "N1",
+        "title": "浦发银行2025年年报发布",
+        "core_summary": "浦发银行2025年年报发布，全年营收同比增长12%，净利润同比增长18%，超市场一致预期。不良贷款率持续下降。",
+        "published_at": "2026-03-05T08:00:00+08:00",
+        "source_name": "上海证券交易所",
+        "source_level": "S",
+        "source_weight": 1.0,
+        "url": "",
+        "primary_company": "浦发银行",
+        "primary_stock_code": "",
+        "related_companies": [],
+        "entities": [
+          {
+            "name": "浦发银行",
+            "type": "company",
+            "role": "主体"
+          }
+        ],
+        "event_category": "正向事件",
+        "sub_label": "业绩超预期",
+        "classification_confidence": 0.95,
+        "impact_level": "公司级",
+        "classification_reason": "营收和净利润增速超出市场一致预期，且资产质量改善",
+        "polarity": "强正向",
+        "score": 85.0,
+        "sentiment_driver": "营收与净利润双增长且超预期，不良率下降",
+        "sentiment_reasoning": "关键财务指标（营收、净利润）均实现两位数增长并超越市场预期，同时资产质量（不良率）持续改善，构成明确利好。",
+        "complexity": "simple",
+        "key_phrases": [
+          "营收同比增长12%",
+          "净利润同比增长18%",
+          "超市场一致预期",
+          "不良贷款率持续下降"
+        ],
+        "spread_count": 500,
+        "keywords": [
+          "年报",
+          "净利润"
+        ],
+        "content_hash": "a1",
+        "influence_score": 77.9,
+        "risk_level": "低风险",
+        "propagation_type": "独立来源",
+        "propagation_order": 2,
+        "is_noise": false
+      },
+      {
+        "event_id": "N2",
+        "title": "监管层对银行理财业务出台新规",
+        "core_summary": "银保监会发布银行理财业务管理办法修订征求意见稿，拟加强理财产品信息披露要求，部分业务或受限。",
+        "published_at": "2026-03-06T10:00:00+08:00",
+        "source_name": "财新网",
+        "source_level": "A",
+        "source_weight": 0.85,
+        "url": "",
+        "primary_company": null,
+        "primary_stock_code": "",
+        "related_companies": [],
+        "entities": [
+          {
+            "name": "银保监会",
+            "type": "regulator",
+            "role": "监管方"
+          }
+        ],
+        "event_category": "不确定性事件",
+        "sub_label": "政策草案",
+        "classification_confidence": 0.89,
+        "impact_level": "行业级",
+        "classification_reason": "监管机构发布征求意见稿，政策处于草案阶段，具体影响存在不确定性。",
+        "polarity": "弱负向",
+        "score": 40.0,
+        "sentiment_driver": "监管趋严，业务可能受限",
+        "sentiment_reasoning": "新规旨在加强监管（如信息披露），并可能限制部分业务，对行业构成轻微负面压力，但尚在征求意见阶段且未明确具体限制程度。",
+        "complexity": "moderate",
+        "key_phrases": [
+          "加强理财产品信息披露要求",
+          "部分业务或受限",
+          "征求意见稿"
+        ],
+        "spread_count": 300,
+        "keywords": [
+          "监管",
+          "理财"
+        ],
+        "content_hash": "b2",
+        "influence_score": 67.1,
+        "risk_level": "中风险",
+        "propagation_type": "独立来源",
+        "propagation_order": 3,
+        "is_noise": false
+      },
+      {
+        "event_id": "N3",
+        "title": "浦发银行拟收购某金融科技公司",
+        "core_summary": "据市场传闻，浦发银行正在洽谈收购一家头部金融科技公司，交易金额或超50亿元。目前双方尚未正式公告。",
+        "published_at": "2026-03-07T09:00:00+08:00",
+        "source_name": "第一财经",
+        "source_level": "A",
+        "source_weight": 0.85,
+        "url": "",
+        "primary_company": "浦发银行",
+        "primary_stock_code": "",
+        "related_companies": [
+          "某金融科技公司"
+        ],
+        "entities": [
+          {
+            "name": "浦发银行",
+            "type": "company",
+            "role": "主体"
+          },
+          {
+            "name": "某金融科技公司",
+            "type": "company",
+            "role": "关联方"
+          }
+        ],
+        "event_category": "不确定性事件",
+        "sub_label": "行业传闻",
+        "classification_confidence": 0.85,
+        "impact_level": "公司级",
+        "classification_reason": "市场传闻收购事项，双方尚未正式公告，信息存在不确定性",
+        "polarity": "不确定性",
+        "score": 58.0,
+        "sentiment_driver": "收购传闻",
+        "sentiment_reasoning": "传闻阶段未经证实，但若属实为重大战略利好，偏正向不确定",
+        "complexity": "simple",
+        "key_phrases": [
+          "市场传闻",
+          "洽谈收购",
+          "头部金融科技公司",
+          "尚未正式公告"
+        ],
+        "spread_count": 200,
+        "keywords": [
+          "收购",
+          "金融科技"
+        ],
+        "content_hash": "c3",
+        "influence_score": 58.1,
+        "risk_level": "低风险",
+        "propagation_type": "独立来源",
+        "propagation_order": 4,
+        "is_noise": false
+      },
+      {
+        "event_id": "N5",
+        "title": "北向资金持续增持银行板块",
+        "core_summary": "北向资金连续5个交易日净买入银行板块，其中浦发银行获净买入3.2亿元，机构看好银行板块估值修复。",
+        "published_at": "2026-03-09T15:30:00+08:00",
+        "source_name": "东方财富",
+        "source_level": "B",
+        "source_weight": 0.7,
+        "url": "",
+        "primary_company": "浦发银行",
+        "primary_stock_code": "",
+        "related_companies": [
+          "浦发银行"
+        ],
+        "entities": [
+          {
+            "name": "北向资金",
+            "type": "person",
+            "role": "主体"
+          },
+          {
+            "name": "银行板块",
+            "type": "industry",
+            "role": "主体"
+          },
+          {
+            "name": "浦发银行",
+            "type": "company",
+            "role": "关联方"
+          },
+          {
+            "name": "机构",
+            "type": "person",
+            "role": "关联方"
+          }
+        ],
+        "event_category": "正向事件",
+        "sub_label": "市场份额提升",
+        "classification_confidence": 0.85,
+        "impact_level": "行业级",
+        "classification_reason": "北向资金持续净买入表明市场看好并增持银行板块，有助于提升板块整体关注度和资金份额。",
+        "polarity": "弱正向",
+        "score": 62.0,
+        "sentiment_driver": "北向资金持续净买入+机构看好估值修复",
+        "sentiment_reasoning": "北向资金连续净买入显示外资对银行板块的积极态度，机构观点强化了估值修复预期，但属于常规市场行为，利好程度有限。",
+        "complexity": "simple",
+        "key_phrases": [
+          "北向资金连续5个交易日净买入",
+          "机构看好银行板块估值修复"
+        ],
+        "spread_count": 150,
+        "keywords": [
+          "北向资金",
+          "增持"
+        ],
+        "content_hash": "e5",
+        "influence_score": 51.1,
+        "risk_level": "低风险",
+        "propagation_type": "独立来源",
+        "propagation_order": 5,
+        "is_noise": false
+      }
+    ],
+    "effective_event_count": 5,
+    "noise_filtered_count": 0,
+    "emotion_index": {
+      "index": 52.7,
+      "trend": "震荡",
+      "std_dev": 24.4,
+      "count": 5,
+      "polarity_distribution": {
+        "强负向": 1,
+        "强正向": 1,
+        "弱负向": 1,
+        "不确定性": 1,
+        "弱正向": 1
+      },
+      "max_score": 85.0,
+      "min_score": 20.0
+    },
+    "consistency": {
+      "type": "明显分歧",
+      "agreement_ratio": 0.4,
+      "std_dev": 24.4,
+      "positive_count": 2,
+      "negative_count": 2,
+      "neutral_count": 1,
+      "noise_count": 0,
+      "noise_indices": []
+    },
+    "spread_analysis": {
+      "velocity_per_hour": 0.05,
+      "peak_hour": "08:00-08:59",
+      "is_fast_spreading": false,
+      "total_count": 5,
+      "span_hours": 103.5
+    },
+    "alerts": {
+      "alerts": [
+        {
+          "type": "重大负面事件",
+          "risk_level": "高风险",
+          "event_id": "N4",
+          "description": "重大负面事件：监管处罚（影响力 78.3分）",
+          "detail": "银保监会网站公布，浦发银行某地分行因违规向不符合条件的企业发放贷款，被处以200万元罚款。",
+          "influence_score": 78.3,
+          "action": "密切关注事态进展，考虑风险对冲",
+          "priority": 2
+        },
+        {
+          "type": "负面舆情影响力突破阈值",
+          "risk_level": "中风险",
+          "event_id": "N4",
+          "description": "负面舆情影响力 78.3分 超过阈值 60.0分",
+          "detail": "银保监会网站公布，浦发银行某地分行因违规向不符合条件的企业发放贷款，被处以200万元罚款。",
+          "influence_score": 78.3,
+          "action": "关注舆情发酵情况",
+          "priority": 3
+        },
+        {
+          "type": "负面舆情影响力突破阈值",
+          "risk_level": "中风险",
+          "event_id": "N2",
+          "description": "负面舆情影响力 67.1分 超过阈值 60.0分",
+          "detail": "银保监会发布银行理财业务管理办法修订征求意见稿，拟加强理财产品信息披露要求，部分业务或受限。",
+          "influence_score": 67.1,
+          "action": "关注舆情发酵情况",
+          "priority": 3
+        }
+      ],
+      "alert_count": 3,
+      "risk_level": "高风险",
+      "opportunities": [
+        {
+          "type": "利好未充分定价",
+          "description": "存在 2 条高影响力正面舆情，但情绪指数仅 52.7，市场可能尚未充分反应",
+          "events": [
+            "N1",
+            "N5"
+          ],
+          "confidence": 0.6
+        },
+        {
+          "type": "事件驱动机会-业绩超预期",
+          "description": "浦发银行2025年年报发布，全年营收同比增长12%，净利润同比增长18%，超市场一致预期。不良贷款率持续下降。",
+          "event_id": "N1",
+          "confidence": 0.5
+        }
+      ],
+      "opportunity_count": 2,
+      "mitigation_suggestions": [
+        "设置严格止损位，控制最大回撤",
+        "持续跟踪事件进展，关注官方正式公告",
+        "对比同行业标的，评估风险传导范围",
+        "重点关注指标：标的财务数据（现金流、负债率、商誉）、大股东质押比例与减持计划、同行业政策与竞争格局变化"
+      ],
+      "evaluation_time": "2026-03-12T11:58:27"
+    },
+    "overall_sentiment": "中性",
+    "overall_score": 52.7,
+    "news_count": 5
+  },
+  "research_result": {
+    "symbol": "600000.SH",
+    "name": "浦发银行",
+    "industry": "银行",
+    "financials": {},
+    "key_event_count": 5,
+    "impact_chains": [
+      {
+        "event_summary": "浦发银行某地分行因违规发放贷款被银保监会处以200万元罚款。",
+        "impact_dimensions": [
+          {
+            "dimension": "利润",
+            "direction": "负向",
+            "magnitude": "轻微",
+            "logic": "直接产生200万元罚款支出，对集团整体利润影响微乎其微。"
+          },
+          {
+            "dimension": "政策环境",
+            "direction": "负向",
+            "magnitude": "中等",
+            "logic": "事件暴露内控缺陷，可能招致监管更严格的现场检查与业务窗口指导，增加合规成本。"
+          },
+          {
+            "dimension": "行业壁垒",
+            "direction": "不确定",
+            "magnitude": "轻微",
+            "logic": "单一处罚事件本身不改变行业准入壁垒，但若形成系统性风险印象，可能影响监管对其新业务牌照的审批态度。"
+          },
+          {
+            "dimension": "估值中枢",
+            "direction": "负向",
+            "magnitude": "轻微",
+            "logic": "事件可能轻微削弱市场对其风险管理和内控有效性的信心，影响估值溢价。"
+          }
+        ],
+        "impact_timeline": {
+          "short_term": {
+            "description": "罚款支出确认，可能引发少量负面舆情报道。",
+            "probability": 1.0
+          },
+          "mid_term": {
+            "description": "监管可能对该分行乃至全行进行专项检查，业务拓展或暂时放缓，合规整改成本增加。",
+            "probability": 0.7
+          },
+          "long_term": {
+            "description": "若整改彻底并被监管认可，影响消除；若屡次发生类似事件，将严重损害声誉并可能导致更严厉的监管制裁（如限制业务范围）。",
+            "probability": 0.3
+          }
+        },
+        "earnings_impact": {
+          "revenue_impact_pct": "-0.01%~0%",
+          "profit_impact_pct": "-0.02%~-0.05%",
+          "assumptions": "假设浦发银行年度净利润约500亿元，200万元罚款为一次性支出；暂不考虑因监管加强导致的潜在业务损失或合规成本上升。"
+        },
+        "valuation_impact": "对估值影响有限。主要逻辑在于：1) 罚款金额绝对量小；2) 为单一分支机构事件，非全系统性风险；3) 银行股估值（PB）核心驱动因素为资产质量、息差和资本充足率，此类合规事件短期情绪影响大于基本面。但若市场解读为内控薄弱的信号，可能小幅压制估值修复空间。",
+        "transmission_chain": [
+          "违规发放贷款被查实 → 监管处以行政罚款 → 直接财务损失（轻微） → 暴露内控问题 → 监管关注度提升、潜在检查增加 → 合规成本上升、部分业务开展可能受限 → 投资者风险评价微调 → 估值小幅承压"
+        ],
+        "key_risks": [
+          "监管处罚的‘涟漪效应’，引发对浦发其他分支机构或业务条线的更广泛审查。",
+          "声誉风险，可能影响部分对合规要求极高的对公或同业业务合作。",
+          "若为普遍性问题，可能预示资产质量潜在风险高于报表显示。"
+        ],
+        "key_opportunities": [
+          "倒逼银行加强全行内控与合规体系建设，长期利于稳健经营。",
+          "利用整改契机优化信贷审批流程，提升资产投放质量。"
+        ],
+        "event_id": "N4"
+      },
+      {
+        "event_summary": "浦发银行2025年年报业绩超预期，营收与净利润实现双位数增长，资产质量持续改善。",
+        "impact_dimensions": [
+          {
+            "dimension": "营收",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "营收同比增长12%，增速超预期，反映核心业务增长动能强劲。"
+          },
+          {
+            "dimension": "利润",
+            "direction": "正向",
+            "magnitude": "重大",
+            "logic": "净利润同比增长18%，增速显著高于营收，体现成本控制与减值压力缓解带来的盈利弹性。"
+          },
+          {
+            "dimension": "毛利率（净息差/资产收益率）",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "净利润增速高于营收，暗示净息差可能企稳或改善，或非息收入贡献提升。"
+          },
+          {
+            "dimension": "市场份额",
+            "direction": "正向",
+            "magnitude": "轻微",
+            "logic": "业绩超预期增长可能增强客户与投资者信心，有助于在竞争激烈的银行业中巩固或小幅提升市场份额。"
+          },
+          {
+            "dimension": "行业壁垒（资产质量）",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "不良贷款率持续下降，资产质量夯实，信用成本压力减轻，增强了经营的稳健性和风险抵御能力。"
+          },
+          {
+            "dimension": "政策环境",
+            "direction": "不确定",
+            "magnitude": "轻微",
+            "logic": "业绩表现优异可能使其在监管眼中更具韧性，但宏观货币政策与房地产政策仍是主要外部变量。"
+          },
+          {
+            "dimension": "估值中枢",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "盈利超预期且资产质量改善，有望修复市场对银行股的悲观情绪，推动PB估值从历史低位向上修复。"
+          }
+        ],
+        "impact_timeline": {
+          "short_term": {
+            "description": "财报发布后1-7天内，市场情绪积极，股价大概率正面反应，可能吸引短期资金流入。",
+            "probability": 0.85
+          },
+          "mid_term": {
+            "description": "1-3个月内，市场将消化业绩细节并关注后续季度指引，若增长可持续且资产质量趋势不变，估值修复有望延续。",
+            "probability": 0.7
+          },
+          "long_term": {
+            "description": "3个月以上，影响取决于宏观经济、利率环境及公司能否将此次业绩拐点转化为持续的盈利增长与ROE提升。",
+            "probability": 0.6
+          }
+        },
+        "earnings_impact": {
+          "revenue_impact_pct": "已实现+12%（历史数据），未来1年预计增速可能维持在8%-12%区间",
+          "profit_impact_pct": "已实现+18%（历史数据），未来1年预计增速可能维持在10%-15%区间",
+          "assumptions": "1) 宏观经济环境保持稳定，无重大系统性风险；2) 净息差企稳，资产规模稳健增长；3) 不良贷款率保持下行或稳定，信用成本维持低位；4) 非息收入增长态势得以延续。"
+        },
+        "valuation_impact": "核心逻辑在于‘盈利超预期+资产质量改善’双击。当前银行板块估值普遍处于历史低位（PB<0.6x），浦发银行业绩拐点信号明确，有望率先获得估值重估。市场可能上调其未来盈利预测，并给予更高的PB倍数，驱动估值中枢上移。关键看盈利增长的可持续性能否支撑ROE回升。",
+        "transmission_chain": [
+          "年报业绩超预期发布 → 市场信心提振，卖方上调盈利预测 → 短期股价正面反应 → 资产质量改善证实风险出清，降低未来信用成本预期 → 中长期盈利预测稳定性与增长能见度提升 → 吸引长线价值投资者关注，估值（PB）从深度折价向合理水平修复"
+        ],
+        "key_risks": [
+          "宏观经济超预期下行导致资产质量再度承压",
+          "利率环境变化（如LPR下调）对净息差造成挤压",
+          "行业竞争加剧侵蚀营收增长",
+          "房地产相关风险仍未完全出清"
+        ],
+        "key_opportunities": [
+          "业绩拐点确立，可能开启估值修复周期",
+          "资产质量持续改善释放利润空间",
+          "在零售转型或特定对公领域建立差异化优势"
+        ],
+        "event_id": "N1"
+      },
+      {
+        "event_summary": "银保监会发布银行理财业务管理办法修订征求意见稿，拟加强理财产品信息披露要求并可能限制部分业务。",
+        "impact_dimensions": [
+          {
+            "dimension": "营收",
+            "direction": "负向",
+            "magnitude": "轻微",
+            "logic": "加强信披及业务限制可能增加合规成本并减缓部分理财业务扩张速度，对中收增长构成轻微压力。"
+          },
+          {
+            "dimension": "利润",
+            "direction": "负向",
+            "magnitude": "轻微",
+            "logic": "合规成本上升及可能的业务调整费用将对净利润产生轻微负面影响。"
+          },
+          {
+            "dimension": "市场份额",
+            "direction": "不确定",
+            "logic": "新规对全行业构成普遍约束，浦发银行理财业务市占率变化取决于其相对同业的合规适应能力与产品调整速度。"
+          },
+          {
+            "dimension": "行业壁垒",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "更严格的信披与业务规范提高了行业合规门槛，有利于风控体系完善、品牌声誉良好的头部银行。"
+          },
+          {
+            "dimension": "政策环境",
+            "direction": "负向",
+            "magnitude": "中等",
+            "logic": "监管持续收紧理财业务规范，行业运营自由度下降，长期看政策导向趋于审慎透明。"
+          }
+        ],
+        "impact_timeline": {
+          "short_term": {
+            "description": "市场情绪可能受监管收紧预期影响，银行板块估值承压；浦发银行需评估新规草案对其现有产品与流程的潜在冲击。",
+            "probability": 0.8
+          },
+          "mid_term": {
+            "description": "正式办法落地后，银行需调整理财产品设计、销售流程及信披系统，产生一次性合规成本，部分业务可能暂时收缩。",
+            "probability": 0.9
+          },
+          "long_term": {
+            "description": "行业规范性提升，产品透明度增加，有助于降低隐性风险、增强投资者信任，但可能压缩部分高收益（高风险）业务空间。",
+            "probability": 0.7
+          }
+        },
+        "earnings_impact": {
+          "revenue_impact_pct": "-1%~-3%",
+          "profit_impact_pct": "-1%~-4%",
+          "assumptions": "假设新规在6个月内正式实施，浦发银行理财业务收入占其中收比重约15%-20%；合规成本增加及部分业务调整导致收入增速放缓，但对整体营收冲击有限。"
+        },
+        "valuation_impact": "短期估值可能受政策不确定性及中收增长预期下调压制；长期看，若公司能更快适应新规、提升产品透明度，或受益于行业壁垒提升，估值分化加剧。当前银行板块估值主要受资产质量与息差主导，理财新规影响偏结构性。",
+        "transmission_chain": [
+          "监管发布理财新规征求意见稿→银行理财业务合规成本上升、部分业务受限→理财产品收入增速可能放缓、中收承压→短期利润受轻微侵蚀→长期行业集中度可能提升，风控能力强的银行相对受益"
+        ],
+        "key_risks": [
+          "新规最终条款比预期更严格，导致业务调整成本超预期",
+          "理财客户因产品结构调整或收益变化而流失",
+          "同业适应速度更快，导致浦发银行市场份额下滑"
+        ],
+        "key_opportunities": [
+          "利用更强的合规与信披能力打造品牌差异化，吸引稳健型投资者",
+          "加速理财产品向净值化、标准化转型，符合监管长期导向"
+        ],
+        "event_id": "N2"
+      },
+      {
+        "event_summary": "北向资金连续5日净买入银行板块，浦发银行获净买入3.2亿元，市场关注银行板块估值修复。",
+        "impact_dimensions": [
+          {
+            "dimension": "估值中枢",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "北向资金作为市场重要边际力量，其持续净买入直接提振市场情绪和资金面，有助于推动估值修复。"
+          },
+          {
+            "dimension": "政策环境",
+            "direction": "正向",
+            "magnitude": "轻微",
+            "logic": "资金流入行为本身不改变政策，但可能反映了市场对当前稳增长、稳地产政策环境下银行资产质量预期的边际改善。"
+          },
+          {
+            "dimension": "市场份额",
+            "direction": "不确定",
+            "magnitude": "轻微",
+            "logic": "短期资金流动不直接影响市场份额，但若估值修复和情绪改善持续，或有利于公司在资本补充和业务拓展上的市场形象。"
+          },
+          {
+            "dimension": "行业壁垒",
+            "direction": "不确定",
+            "magnitude": "轻微",
+            "logic": "事件本身不改变银行业高特许经营价值的本质，但市场关注度提升可能强化对头部银行稳健性的认知。"
+          }
+        ],
+        "impact_timeline": {
+          "short_term": {
+            "description": "市场情绪提振，股价可能获得短期流动性支撑，交易活跃度上升。",
+            "probability": 0.7
+          },
+          "mid_term": {
+            "description": "若资金流入趋势与基本面（如息差企稳、资产质量改善）形成共振，估值修复行情可能延续。",
+            "probability": 0.5
+          },
+          "long_term": {
+            "description": "长期估值中枢取决于宏观经济、资产质量与盈利能力的根本性改善，单次资金流入事件影响有限。",
+            "probability": 0.2
+          }
+        },
+        "earnings_impact": {
+          "revenue_impact_pct": "0%~+1%",
+          "profit_impact_pct": "0%~+1%",
+          "assumptions": "核心假设：本次资金流入为纯交易行为，未直接带来新增信贷或中间业务；对营收和利润的潜在影响主要通过降低股权融资成本（若未来有再融资需求）和改善业务拓展环境间接实现，影响极其有限。"
+        },
+        "valuation_impact": "对估值中枢的影响逻辑：北向资金持续净买入是重要的市场信号，可能引导部分内资跟风，短期改善银行板块尤其是被买入个股的流动性折价和风险偏好。若后续经济数据或政策利好配合，可能推动PB估值从历史低位向合理中枢小幅修复。但长期估值提升仍需基本面（ROE、资产质量）的实质性改善支撑。",
+        "transmission_chain": [
+          "北向资金连续净买入 → 市场关注度与情绪提升 → 银行板块（含浦发）交易活跃度与流动性改善 → 短期估值压力缓解/估值修复预期升温 → 若形成趋势，或间接改善再融资环境与市场形象"
+        ],
+        "key_risks": [
+          "宏观经济复苏不及预期，导致银行基本面（息差、资产质量）承压，抵消资金面利好。",
+          "北向资金流向具有高波动性，净买入趋势可能随时逆转。",
+          "行业层面出现超预期监管政策或信用风险事件。"
+        ],
+        "key_opportunities": [
+          "本次资金流入可能成为银行板块估值修复行情的催化剂之一，若后续经济数据向好，板块或有阶段性表现机会。"
+        ],
+        "event_id": "N5"
+      },
+      {
+        "event_summary": "市场传闻浦发银行拟以超50亿元收购一家头部金融科技公司，目前双方尚未正式公告。",
+        "impact_dimensions": [
+          {
+            "dimension": "营收",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "收购有望整合金融科技能力，提升零售、小微等业务效率，驱动中间业务收入增长。"
+          },
+          {
+            "dimension": "利润",
+            "direction": "不确定",
+            "magnitude": "中等",
+            "logic": "短期因收购成本、商誉摊销及整合费用承压，中长期取决于协同效应释放与收入增长能否覆盖成本。"
+          },
+          {
+            "dimension": "毛利率",
+            "direction": "不确定",
+            "magnitude": "轻微",
+            "logic": "科技投入可能提升运营效率，但初期整合成本及可能的业务结构变化对净息差影响复杂。"
+          },
+          {
+            "dimension": "市场份额",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "通过获取金融科技公司的用户、场景与技术，有望在数字化零售银行、普惠金融等领域提升竞争力。"
+          },
+          {
+            "dimension": "行业壁垒",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "强化科技能力可构建数字化护城河，提升客户粘性与运营效率，应对行业同质化竞争。"
+          },
+          {
+            "dimension": "政策环境",
+            "direction": "正向",
+            "magnitude": "轻微",
+            "logic": "符合金融科技赋能实体经济的政策导向，但需关注金融控股、数据安全等监管审批风险。"
+          },
+          {
+            "dimension": "估值中枢",
+            "direction": "正向",
+            "magnitude": "中等",
+            "logic": "若交易成功且协同效应明确，市场可能给予其更高的科技溢价，改善长期增长预期。"
+          }
+        ],
+        "impact_timeline": {
+          "short_term": {
+            "description": "传闻引发市场关注，股价可能因事件不确定性和对资本消耗的担忧而波动。",
+            "probability": 0.8
+          },
+          "mid_term": {
+            "description": "若交易落地，进入整合期，面临业务融合、成本控制与协同效应验证，业绩与估值承压。",
+            "probability": 0.7
+          },
+          "long_term": {
+            "description": "成功整合后，数字化能力提升驱动收入增长、效率改善，可能重塑其成长逻辑与估值体系。",
+            "probability": 0.6
+          }
+        },
+        "earnings_impact": {
+          "revenue_impact_pct": "0%~+3% (中长期)",
+          "profit_impact_pct": "-2%~+5% (取决于整合阶段与协同效果)",
+          "assumptions": "假设交易金额50-70亿元，分3年摊销；目标公司为头部金融科技平台，具备用户、场景或技术优势；协同效应在2-3年内逐步释放。"
+        },
+        "valuation_impact": "短期可能因资本开支与不确定性压制估值（PB或小幅下行），中长期若数字化转型成功，市场可能从纯银行股估值逻辑向‘银行+科技’溢价切换，提升估值中枢。",
+        "transmission_chain": [
+          "传闻引发市场关注→若交易落地，支付对价消耗资本→整合金融科技能力→提升数字化获客、风控与运营效率→驱动零售、小微等业务增长与中间收入提升→改善长期营收结构与盈利能力→估值逻辑重塑"
+        ],
+        "key_risks": [
+          "交易真实性及最终条款不确定",
+          "整合失败风险，文化、技术融合困难",
+          "收购溢价过高导致商誉减值压力",
+          "监管审批存在不确定性",
+          "短期资本充足率可能承压"
+        ],
+        "key_opportunities": [
+          "快速获取关键金融科技能力，加速数字化转型",
+          "突破传统银行业务增长瓶颈，打造第二增长曲线",
+          "在银行业科技竞赛中占据先发优势"
+        ],
+        "event_id": "N3"
+      }
+    ],
+    "industry_analysis": {
+      "event": "银保监会公布浦发银行某地分行因违规向不符合条件的企业发放贷款，被处以200万元罚款。",
+      "primary_target": "浦发银行（600000.SH）",
+      "upstream_impact": [
+        {
+          "company_or_sector": "银行监管机构",
+          "impact": "正向",
+          "logic": "事件表明监管机构加强了对银行贷款业务的合规性审查与处罚力度，强化了监管权威，有助于规范行业秩序。",
+          "magnitude": "中等"
+        },
+        {
+          "company_or_sector": "金融科技/风控服务商",
+          "impact": "正向",
+          "logic": "银行可能因此加强内部风控体系建设，增加对第三方风控技术、合规科技服务的需求。",
+          "magnitude": "轻微"
+        }
+      ],
+      "downstream_impact": [
+        {
+          "company_or_sector": "原不符合条件的企业（被违规放贷对象）",
+          "impact": "负向",
+          "logic": "贷款可能被追回或面临更严格的审查，资金链可能受到影响。",
+          "magnitude": "中等"
+        },
+        {
+          "company_or_sector": "其他符合条件的企业（正常贷款客户）",
+          "impact": "负向",
+          "logic": "银行可能因加强风控而收紧信贷标准，提高贷款门槛，导致部分企业融资难度增加。",
+          "magnitude": "轻微"
+        }
+      ],
+      "cross_sector_risk": [
+        {
+          "sector": "房地产、地方融资平台等敏感行业",
+          "risk_type": "信贷紧缩风险",
+          "description": "若违规贷款涉及特定敏感行业，监管可能进一步排查类似领域，引发全行业信贷条件收紧。"
+        },
+        {
+          "sector": "银行业整体",
+          "risk_type": "声誉与合规风险",
+          "description": "事件可能引发市场对银行业内控合规状况的担忧，影响行业估值，并可能招致更广泛的监管检查。"
+        }
+      ],
+      "beneficiaries": [
+        "无明确直接受益标的"
+      ],
+      "losers": [
+        "600000.SH 浦发银行"
+      ]
+    },
+    "backtest_results": [
+      {
+        "current_event": "浦发银行某地分行因违规向不符合条件的企业发放贷款，被银保监会处以200万元罚款。",
+        "similar_events": [
+          {
+            "date": "2018年1月",
+            "description": "浦发银行成都分行因违规发放贷款被原银监会罚款4.62亿元，多名责任人被处罚。",
+            "price_impact": "公告后首个交易日下跌约2%，随后5个交易日累计跌幅约4%",
+            "duration": "约1-2周",
+            "fund_flow": "短期资金流出，机构投资者减持"
+          },
+          {
+            "date": "2020年7月",
+            "description": "浦发银行因未按专营部门制规定开展同业业务等多项违规，被银保监会罚款2100万元。",
+            "price_impact": "公告后股价反应平淡，5日涨跌幅基本持平",
+            "duration": "约3-5个交易日",
+            "fund_flow": "无明显异常资金流向"
+          },
+          {
+            "date": "2021年5月",
+            "description": "招商银行因理财业务违规等被银保监会罚款7170万元。",
+            "price_impact": "公告后首个交易日微跌0.5%，随后快速修复",
+            "duration": "约2-3个交易日",
+            "fund_flow": "短暂小幅资金流出后恢复"
+          },
+          {
+            "date": "2022年3月",
+            "description": "民生银行因贷款管理不到位等违规被罚1142.5万元。",
+            "price_impact": "公告后股价无明显波动，5日涨幅约1%",
+            "duration": "基本无持续影响",
+            "fund_flow": "无显著变化"
+          }
+        ],
+        "pattern_summary": "历史规律显示：1) 单次罚款金额较小（相对银行规模）的监管处罚对股价影响有限，通常在公告后1-3个交易日内消化；2) 重大恶性违规（如浦发成都分行案）会造成显著负面冲击，但影响也多在2周内见底；3) 银行股对常规监管处罚已形成一定免疫力，除非涉及系统性风险或重大管理问题；4) 处罚时若市场整体情绪较好，负面影响更易被对冲。",
+        "reference_range": {
+          "price_impact_min": "-0.5%",
+          "price_impact_max": "-4%",
+          "typical_duration": "1-5个交易日"
+        },
+        "current_differences": [
+          "本次罚款金额仅200万元，远低于历史重大案例，属相对轻微处罚",
+          "当前银行业监管常态化，市场对常规处罚敏感度降低",
+          "未涉及高管责任追究或业务资格暂停等附加严厉措施"
+        ],
+        "confidence": 0.85,
+        "market_context": {},
+        "event_id": "N4"
+      },
+      {
+        "current_event": "浦发银行2025年年报发布，全年营收同比增长12%，净利润同比增长18%，超市场一致预期，不良贷款率持续下降。",
+        "similar_events": [
+          {
+            "date": "2021年3月",
+            "description": "招商银行2020年年报发布，净利润同比增长4.82%，超出市场预期，资产质量保持稳定。",
+            "price_impact": "年报发布后5个交易日累计涨幅约+5%",
+            "duration": "约1-2周",
+            "fund_flow": "北向资金及机构资金小幅净流入"
+          },
+          {
+            "date": "2019年1月",
+            "description": "平安银行2018年年报发布，净利润同比增长7.0%，营收增长10.3%，不良率下降，业绩超预期。",
+            "price_impact": "年报发布后10个交易日涨幅约+12%",
+            "duration": "约2-3周",
+            "fund_flow": "主力资金持续净流入，市场关注度提升"
+          },
+          {
+            "date": "2017年3月",
+            "description": "兴业银行2016年年报发布，净利润同比增长7.26%，营收增长显著，资产质量改善。",
+            "price_impact": "年报发布后5个交易日涨幅约+6%",
+            "duration": "约1-2周",
+            "fund_flow": "机构资金小幅增持"
+          }
+        ],
+        "pattern_summary": "历史上银行股年报业绩超预期通常会在短期内（1-2周）推动股价上涨，涨幅多在5%-12%之间。影响持续时间较短，资金流向以机构或北向资金小幅净流入为主。若同时伴随资产质量改善（如不良率下降），则市场反应可能更为积极。但银行股整体弹性受制于板块属性和市场环境，长期走势仍取决于宏观经济及行业政策。",
+        "reference_range": {
+          "price_impact_min": "+5%",
+          "price_impact_max": "+12%",
+          "typical_duration": "1-3周"
+        },
+        "current_differences": [
+          "当前市场环境与历史时期可能存在差异，如利率环境、监管政策、经济周期阶段不同。",
+          "浦发银行自身历史估值水平、机构持仓比例及市场关注度可能与历史案例中的银行有所不同。",
+          "2025年银行业整体业绩增速及资产质量趋势可能与历史年份不一致。"
+        ],
+        "confidence": 0.75,
+        "market_context": {},
+        "event_id": "N1"
+      },
+      {
+        "current_event": "北向资金连续5个交易日净买入银行板块，其中浦发银行获净买入3.2亿元，机构看好银行板块估值修复。",
+        "similar_events": [
+          {
+            "date": "2020年6月",
+            "description": "北向资金连续大幅净流入银行板块，工商银行、招商银行等获集中买入，市场预期经济复苏带动银行资产质量改善。",
+            "price_impact": "银行指数5日涨幅+5.2%，招商银行单月涨幅+12%",
+            "duration": "约2-3周",
+            "fund_flow": "北向资金持续净流入，内资机构跟随加仓"
+          },
+          {
+            "date": "2019年1月",
+            "description": "央行降准后，北向资金连续净买入银行股，兴业银行、平安银行等获青睐，市场关注低估值修复机会。",
+            "price_impact": "银行板块10日涨幅+7.5%，平安银行当月涨幅+15%",
+            "duration": "约1个月",
+            "fund_flow": "北向资金主导流入，融资盘小幅跟进"
+          },
+          {
+            "date": "2022年11月",
+            "description": "防疫政策优化后，北向资金大幅回流A股，银行板块作为低估值板块获集中配置，宁波银行、招商银行领涨。",
+            "price_impact": "银行指数5日涨幅+6.8%，宁波银行单周涨幅+9%",
+            "duration": "约2周",
+            "fund_flow": "北向资金快速流入，内资偏防御性配置"
+          }
+        ],
+        "pattern_summary": "历史上北向资金连续净买入银行板块通常发生在市场情绪回暖、经济预期改善或政策利好背景下，银行股作为低估值板块容易获得外资青睐。股价影响呈现短期快速上涨特征，涨幅通常在5%-10%之间，持续时间多为2-4周。资金流向以北向资金主导，内资机构往往反应滞后但会跟随加仓。",
+        "reference_range": {
+          "price_impact_min": "5日涨幅+5%",
+          "price_impact_max": "单月涨幅+15%",
+          "typical_duration": "2-4周"
+        },
+        "current_differences": [
+          "当前银行板块估值处于历史极低水平，修复空间可能更大",
+          "当前经济复苏力度弱于2020年，基本面支撑相对不足",
+          "当前内资机构对银行板块配置比例已较低，跟随意愿可能增强"
+        ],
+        "confidence": 0.85,
+        "market_context": {},
+        "event_id": "N5"
+      }
+    ],
+    "value_assessment": {
+      "score": 64.8,
+      "conclusion": "偏正面——整体偏积极但需关注部分风险因素",
+      "positive_events": 2,
+      "negative_events": 1,
+      "positive_impacts": 14,
+      "negative_impacts": 6,
+      "emotion_index": 52.7,
+      "risk_level": "高风险",
+      "valuation_signal": "合理",
+      "pe": 0,
+      "pb": 0
+    },
+    "emotion_context": {
+      "overall_score": 52.7,
+      "emotion_index": {
+        "index": 52.7,
+        "trend": "震荡",
+        "std_dev": 24.4,
+        "count": 5,
+        "polarity_distribution": {
+          "强负向": 1,
+          "强正向": 1,
+          "弱负向": 1,
+          "不确定性": 1,
+          "弱正向": 1
+        },
+        "max_score": 85.0,
+        "min_score": 20.0
+      },
+      "risk_level": "高风险"
+    }
+  }
+}

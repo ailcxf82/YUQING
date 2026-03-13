@@ -1,0 +1,64 @@
+{
+  "symbol": "600519.SH",
+  "name": "贵州茅台",
+  "start_date": "2026-03-01",
+  "end_date": "2026-03-11",
+  "events": [
+    {
+      "event_id": "N1",
+      "event_category": "基本面事件",
+      "event_subtype": "财报发布",
+      "core_summary": "贵州茅台2025年度业绩快报：营收1738亿同比增15.34%，净利润862亿同比增15.38%，直销渠道占比提升至42%",
+      "entity": "贵州茅台",
+      "sentiment": "利好",
+      "sentiment_score": 9,
+      "impact_scope": "公司级",
+      "impact_horizon": "中期（1-3个月）",
+      "source_level": "S",
+      "occur_time": "2026-03-03",
+      "published_at": "2026-03-03T08:00:00+08:00"
+    },
+    {
+      "event_id": "N2",
+      "event_category": "基本面事件",
+      "event_subtype": "核心产品变动",
+      "core_summary": "茅台计划推出2000-3000元新一代高端系列酒产品，面向年轻高净值消费群体",
+      "entity": "贵州茅台",
+      "sentiment": "利好",
+      "sentiment_score": 8,
+      "impact_scope": "公司级",
+      "impact_horizon": "中期（1-3个月）",
+      "source_level": "A",
+      "occur_time": "2026-03-05",
+      "published_at": "2026-03-05T10:15:00+08:00"
+    },
+    {
+      "event_id": "N3",
+      "event_category": "政策事件",
+      "event_subtype": "产业扶持政策",
+      "core_summary": "国务院印发促消费意见，支持高品质消费品供给，鼓励传统名优品牌创新发展",
+      "entity": "高端白酒行业",
+      "sentiment": "利好",
+      "sentiment_score": 7,
+      "impact_scope": "行业级",
+      "impact_horizon": "长期（3个月以上）",
+      "source_level": "A",
+      "occur_time": "2026-03-06",
+      "published_at": "2026-03-06T14:30:00+08:00"
+    },
+    {
+      "event_id": "N4",
+      "event_category": "市场事件",
+      "event_subtype": "北向资金异动",
+      "core_summary": "北向资金连续5日净买入茅台累计45.6亿元，高盛上调目标价至2350元",
+      "entity": "贵州茅台",
+      "sentiment": "利好",
+      "sentiment_score": 7,
+      "impact_scope": "公司级",
+      "impact_horizon": "短期（1-5个交易日）",
+      "source_level": "A",
+      "occur_time": "2026-03-07",
+      "published_at": "2026-03-07T09:00:00+08:00"
+    }
+  ]
+}

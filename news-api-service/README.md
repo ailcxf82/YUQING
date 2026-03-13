@@ -24,7 +24,14 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 - API 文档（Swagger）：<http://localhost:8000/docs>
 - ReDoc：<http://localhost:8000/redoc>
+- 后端管理页（定时运行情况/数据库明细）：<http://localhost:8000/admin>
 - 详细 API 说明（含目录跳转与示例）：见 [docs/API.md](docs/API.md)
+
+## 定时服务
+
+- **业务接口**：`POST /api/news/schedule` 一键开启新闻自动抓取，默认每 5 分钟执行一次（可传 body `{"interval_minutes": 10}` 修改间隔）。
+- 定时配置为**内部接口**，不在 Swagger/ReDoc 展示，路径为 `/internal/scheduler/`（状态、开关、间隔、注册/更新/移除任务），详见 [docs/API.md](docs/API.md) 第 8 节。
+- 配置持久化在 `scheduler_config.json`。
 
 ## 排重说明
 
@@ -35,4 +42,4 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 ## 数据库
 
 - 默认使用 SQLite，库文件：项目根目录下 `newsdata.db`。
-- 表：`news`（新闻）、`fetch_log`（各来源上次抓取结束时间）。
+- 表：`news`（新闻）、`fetch_log`（各来源上次抓取结束时间）、`scheduler_runs`（定时任务运行记录）。

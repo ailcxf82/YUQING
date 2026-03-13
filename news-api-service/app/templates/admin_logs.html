@@ -1,0 +1,78 @@
+{% extends "_base.html" %}
+{% block content %}
+  {% if filters.refresh and filters.refresh|int > 0 %}
+    <meta http-equiv="refresh" content="{{ filters.refresh|int }}">
+  {% endif %}
+
+  <div class="card">
+    <h2>定时任务日志（抓取/清理/URL任务）</h2>
+    <div class="muted">数据来源：`scheduler_runs` 表。可用于统一查看定时抓取与定时清理的执行情况与错误明细。</div>
+    <form class="form" method="get" style="margin-top:10px">
+      <label>类型
+        <select name="run_type">
+          <option value="" {% if not filters.run_type %}selected{% endif %}>全部</option>
+          <option value="fetch_news" {% if filters.run_type == 'fetch_news' %}selected{% endif %}>fetch_news</option>
+          <option value="cleanup_news" {% if filters.run_type == 'cleanup_news' %}selected{% endif %}>cleanup_news</option>
+          <option value="url_task" {% if filters.run_type == 'url_task' %}selected{% endif %}>url_task</option>
+        </select>
+      </label>
+      <label>task_id
+        <input name="task_id" value="{{ filters.task_id }}" placeholder="URL 任务 id（可选）" class="mono" />
+      </label>
+      <label>自动刷新(秒)
+        <select name="refresh">
+          {% for s in [0,2,5,10,30,60] %}
+            <option value="{{ s }}" {% if filters.refresh|int == s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>limit
+        <input name="limit" value="{{ filters.limit }}" class="mono" />
+      </label>
+      <label>offset
+        <input name="offset" value="{{ filters.offset }}" class="mono" />
+      </label>
+      <button class="btn primary" type="submit">刷新/查询</button>
+      <a class="btn" href="/admin/logs">重置</a>
+    </form>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>开始</th>
+          <th>结束</th>
+          <th>类型</th>
+          <th>任务</th>
+          <th>URL</th>
+          <th>结果</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in runs %}
+        <tr>
+          <td class="mono">{{ r.id }}</td>
+          <td class="mono">{{ r.started_at }}</td>
+          <td class="mono">{{ r.finished_at }}</td>
+          <td class="mono">{{ r.run_type }}</td>
+          <td class="mono">{{ r.task_name or r.task_id or "-" }}</td>
+          <td class="mono">{{ r.url or "-" }}</td>
+          <td>
+            {% if r.ok %}
+              <span class="badge ok">OK{% if r.status_code %} {{ r.status_code }}{% endif %}</span>
+            {% else %}
+              <span class="badge bad">FAIL{% if r.status_code %} {{ r.status_code }}{% endif %}</span>
+              {% if r.error %}<div class="muted">{{ r.error }}</div>{% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="muted">暂无日志。</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

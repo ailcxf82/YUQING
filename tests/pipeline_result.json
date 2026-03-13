@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "module": "orchestrator",
+    "version": "0.1.0",
+    "timestamp": "2026-03-12T03:14:31+00:00"
+  },
+  "task": {
+    "task_id": "4a907a5e65cd",
+    "symbol": "600519.SH",
+    "name": "贵州茅台",
+    "industry": "白酒",
+    "topics": [
+      "业绩增长",
+      "新品发布",
+      "北向资金"
+    ],
+    "time_range": {
+      "start": "2026-03-01",
+      "end": "2026-03-11"
+    },
+    "requirements": "分析贵州茅台近期舆情，评估投资价值",
+    "risk_preference": "稳健",
+    "investment_horizon": "中线",
+    "max_position_pct": 30.0,
+    "created_at": "2026-03-12T03:13:47+00:00"
+  },
+  "agent_outputs": [
+    {
+      "agent_name": "news_retrieval",
+      "status": "success",
+      "data": {
+        "symbol": "600519.SH",
+        "name": "贵州茅台",
+        "time_range": {
+          "start": "2026-03-01",
+          "end": "2026-03-11"
+        },
+        "news_items": [
+          {
+            "id": "N1",
+            "source_name": "上海证券交易所公告",
+            "source_level": "S",
+            "published_at": "2026-03-01T08:00:00+08:00",
+            "text": "贵州茅台发布年度业绩快报，营收与净利润双双增长。",
+            "url": ""
+          },
+          {
+            "id": "N2",
+            "source_name": "财新网",
+            "source_level": "A",
+            "published_at": "2026-03-01T10:00:00+08:00",
+            "text": "贵州茅台计划推出新产品线，拓宽业务矩阵。",
+            "url": ""
+          },
+          {
+            "id": "N3",
+            "source_name": "第一财经",
+            "source_level": "A",
+            "published_at": "2026-03-01T14:00:00+08:00",
+            "text": "北向资金连续净买入贵州茅台，机构上调目标价。",
+            "url": ""
+          }
+        ],
+        "total_count": 3,
+        "vector_index": "news_600519_sh"
+      },
+      "error": null,
+      "retries": 0,
+      "duration_ms": 1,
+      "timestamp": "2026-03-12T03:13:47+00:00"
+    },
+    {
+      "agent_name": "sentiment",
+      "status": "success",
+      "data": {
+        "symbol": "600519.SH",
+        "name": "贵州茅台",
+        "events": [
+          {
+            "event_id": "N1",
+            "event_category": "基本面事件",
+            "core_summary": "贵州茅台发布年度业绩快报，营收与净利润双双增长",
+            "sentiment": "利好",
+            "sentiment_score": 8.0,
+            "source_level": "A",
+            "impact_scope": "公司级",
+            "impact_horizon": "中期（1-3个月）"
+          },
+          {
+            "event_id": "N2",
+            "event_category": "基本面事件",
+            "core_summary": "贵州茅台计划推出新产品线，拓宽业务矩阵",
+            "sentiment": "利好",
+            "sentiment_score": 7.5,
+            "source_level": "B",
+            "impact_scope": "公司级",
+            "impact_horizon": "长期（3个月以上）"
+          },
+          {
+            "event_id": "N3",
+            "event_category": "市场事件",
+            "core_summary": "北向资金连续净买入贵州茅台，机构上调目标价",
+            "sentiment": "利好",
+            "sentiment_score": 8.5,
+            "source_level": "B",
+            "impact_scope": "公司级",
+            "impact_horizon": "短期（1-5个交易日）"
+          }
+        ],
+        "overall_sentiment": "利好",
+        "overall_score": 8.0,
+        "news_count": 3
+      },
+      "error": null,
+      "retries": 0,
+      "duration_ms": 12522,
+      "timestamp": "2026-03-12T03:14:00+00:00"
+    },
+    {
+      "agent_name": "deep_research",
+      "status": "success",
+      "data": {
+        "symbol": "600519.SH",
+        "name": "贵州茅台",
+        "financials": {},
+        "bullish_count": 3,
+        "bearish_count": 0,
+        "impact_chains": [
+          {
+            "event_id": "N1",
+            "category": "基本面事件",
+            "summary": "贵州茅台发布年度业绩快报，营收与净利润双双增长",
+            "sentiment": "利好",
+            "fundamental_impact": "正面——基本面有望改善",
+            "impact_horizon": "中期（1-3个月）"
+          },
+          {
+            "event_id": "N2",
+            "category": "基本面事件",
+            "summary": "贵州茅台计划推出新产品线，拓宽业务矩阵",
+            "sentiment": "利好",
+            "fundamental_impact": "正面——基本面有望改善",
+            "impact_horizon": "长期（3个月以上）"
+          },
+          {
+            "event_id": "N3",
+            "category": "市场事件",
+            "summary": "北向资金连续净买入贵州茅台，机构上调目标价",
+            "sentiment": "利好",
+            "fundamental_impact": "正面——基本面有望改善",
+            "impact_horizon": "短期（1-5个交易日）"
+          }
+        ],
+        "value_assessment": "利好事件占主导，基本面有改善预期"
+      },
+      "error": null,
+      "retries": 0,
+      "duration_ms": 31047,
+      "timestamp": "2026-03-12T03:14:31+00:00"
+    },
+    {
+      "agent_name": "strategy",
+      "status": "success",
+      "data": {
+        "symbol": "600519.SH",
+        "name": "贵州茅台",
+        "strategy": {
+          "direction": "做多",
+          "strategy_type": "基本面价值",
+          "core_logic": "综合情绪得分 8.0，利好事件占主导，基本面有改善预期。策略方向为做多，匹配中线投资周期。",
+          "position": {
+            "total_pct": 30.0,
+            "first_build_pct": 15.0
+          },
+          "stop_loss_pct": 5,
+          "take_profit_tiers": [
+            8,
+            15,
+            25
+          ],
+          "validity": "10-60个交易日",
+          "risk_warnings": [
+            "本策略基于历史数据与模型假设，不保证未来表现",
+            "所有策略须配合人工判断，最终决策责任由用户承担"
+          ]
+        }
+      },
+      "error": null,
+      "retries": 0,
+      "duration_ms": 0,
+      "timestamp": "2026-03-12T03:14:31+00:00"
+    }
+  ],
+  "errors": [],
+  "news_data": {
+    "symbol": "600519.SH",
+    "name": "贵州茅台",
+    "time_range": {
+      "start": "2026-03-01",
+      "end": "2026-03-11"
+    },
+    "news_items": [
+      {
+        "id": "N1",
+        "source_name": "上海证券交易所公告",
+        "source_level": "S",
+        "published_at": "2026-03-01T08:00:00+08:00",
+        "text": "贵州茅台发布年度业绩快报，营收与净利润双双增长。",
+        "url": ""
+      },
+      {
+        "id": "N2",
+        "source_name": "财新网",
+        "source_level": "A",
+        "published_at": "2026-03-01T10:00:00+08:00",
+        "text": "贵州茅台计划推出新产品线，拓宽业务矩阵。",
+        "url": ""
+      },
+      {
+        "id": "N3",
+        "source_name": "第一财经",
+        "source_level": "A",
+        "published_at": "2026-03-01T14:00:00+08:00",
+        "text": "北向资金连续净买入贵州茅台，机构上调目标价。",
+        "url": ""
+      }
+    ],
+    "total_count": 3,
+    "vector_index": "news_600519_sh"
+  },
+  "sentiment_result": {
+    "symbol": "600519.SH",
+    "name": "贵州茅台",
+    "events": [
+      {
+        "event_id": "N1",
+        "event_category": "基本面事件",
+        "core_summary": "贵州茅台发布年度业绩快报，营收与净利润双双增长",
+        "sentiment": "利好",
+        "sentiment_score": 8.0,
+        "source_level": "A",
+        "impact_scope": "公司级",
+        "impact_horizon": "中期（1-3个月）"
+      },
+      {
+        "event_id": "N2",
+        "event_category": "基本面事件",
+        "core_summary": "贵州茅台计划推出新产品线，拓宽业务矩阵",
+        "sentiment": "利好",
+        "sentiment_score": 7.5,
+        "source_level": "B",
+        "impact_scope": "公司级",
+        "impact_horizon": "长期（3个月以上）"
+      },
+      {
+        "event_id": "N3",
+        "event_category": "市场事件",
+        "core_summary": "北向资金连续净买入贵州茅台，机构上调目标价",
+        "sentiment": "利好",
+        "sentiment_score": 8.5,
+        "source_level": "B",
+        "impact_scope": "公司级",
+        "impact_horizon": "短期（1-5个交易日）"
+      }
+    ],
+    "overall_sentiment": "利好",
+    "overall_score": 8.0,
+    "news_count": 3
+  },
+  "research_result": {
+    "symbol": "600519.SH",
+    "name": "贵州茅台",
+    "financials": {},
+    "bullish_count": 3,
+    "bearish_count": 0,
+    "impact_chains": [
+      {
+        "event_id": "N1",
+        "category": "基本面事件",
+        "summary": "贵州茅台发布年度业绩快报，营收与净利润双双增长",
+        "sentiment": "利好",
+        "fundamental_impact": "正面——基本面有望改善",
+        "impact_horizon": "中期（1-3个月）"
+      },
+      {
+        "event_id": "N2",
+        "category": "基本面事件",
+        "summary": "贵州茅台计划推出新产品线，拓宽业务矩阵",
+        "sentiment": "利好",
+        "fundamental_impact": "正面——基本面有望改善",
+        "impact_horizon": "长期（3个月以上）"
+      },
+      {
+        "event_id": "N3",
+        "category": "市场事件",
+        "summary": "北向资金连续净买入贵州茅台，机构上调目标价",
+        "sentiment": "利好",
+        "fundamental_impact": "正面——基本面有望改善",
+        "impact_horizon": "短期（1-5个交易日）"
+      }
+    ],
+    "value_assessment": "利好事件占主导，基本面有改善预期"
+  },
+  "strategy_result": {
+    "symbol": "600519.SH",
+    "name": "贵州茅台",
+    "strategy": {
+      "direction": "做多",
+      "strategy_type": "基本面价值",
+      "core_logic": "综合情绪得分 8.0，利好事件占主导，基本面有改善预期。策略方向为做多，匹配中线投资周期。",
+      "position": {
+        "total_pct": 30.0,
+        "first_build_pct": 15.0
+      },
+      "stop_loss_pct": 5,
+      "take_profit_tiers": [
+        8,
+        15,
+        25
+      ],
+      "validity": "10-60个交易日",
+      "risk_warnings": [
+        "本策略基于历史数据与模型假设，不保证未来表现",
+        "所有策略须配合人工判断，最终决策责任由用户承担"
+      ]
+    }
+  }
+}

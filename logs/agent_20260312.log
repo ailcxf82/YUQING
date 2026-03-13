@@ -1,0 +1,63 @@
+[2026-03-12 11:13:44] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-12 11:13:44] INFO     agent_system | ============================================================
+[2026-03-12 11:13:44] INFO     agent_system |   多智能体系统 Phase 1 验证
+[2026-03-12 11:13:44] INFO     agent_system | ============================================================
+[2026-03-12 11:13:44] INFO     agent_system | ── 步骤 1：配置加载验证 ──
+[2026-03-12 11:13:44] INFO     agent_system.config | 系统配置加载完成 | provider=zhipu tushare=已配置
+[2026-03-12 11:13:44] INFO     agent_system |   LLM 提供商: zhipu
+[2026-03-12 11:13:44] INFO     agent_system |   Tushare: 已配置
+[2026-03-12 11:13:44] INFO     agent_system |   LanceDB 路径: ./data/lancedb
+[2026-03-12 11:13:44] INFO     agent_system |   日志级别: INFO
+[2026-03-12 11:13:44] INFO     agent_system.config | 系统配置已热更新 | provider=zhipu
+[2026-03-12 11:13:44] INFO     agent_system |   配置热更新: 成功 (provider=zhipu)
+[2026-03-12 11:13:44] INFO     agent_system | ── 步骤 2：智能体初始化验证 ──
+[2026-03-12 11:13:45] INFO     agent_system |   NewsRetrievalAgent (name=news_retrieval) 初始化成功
+[2026-03-12 11:13:45] INFO     agent_system |   SentimentAgent (name=sentiment) 初始化成功
+[2026-03-12 11:13:45] INFO     agent_system |   DeepResearchAgent (name=deep_research) 初始化成功
+[2026-03-12 11:13:45] INFO     agent_system |   StrategyAgent (name=strategy) 初始化成功
+[2026-03-12 11:13:45] INFO     agent_system | ── 步骤 3：LLM 连通性验证 ──
+[2026-03-12 11:13:47] INFO     agent_system |   LLM 响应: 连通性测试成功
+[2026-03-12 11:13:47] INFO     agent_system | ── 步骤 4：全流程调度验证 ──
+[2026-03-12 11:13:47] INFO     agent_system |   任务创建: task_id=4a907a5e65cd symbol=600519.SH
+[2026-03-12 11:13:47] INFO     agent_system.orchestrator | 调度器初始化完成 | agents=['news_retrieval', 'sentiment', 'deep_research', 'strategy']
+[2026-03-12 11:13:47] INFO     agent_system |   任务分解为 5 个子步骤：
+[2026-03-12 11:13:47] INFO     agent_system |     Step 1: [news_retrieval] 采集 贵州茅台(600519.SH) 的舆情数据 (依赖: 无)
+[2026-03-12 11:13:47] INFO     agent_system |     Step 2: [sentiment] 对舆情数据进行事件提取与情绪量化 (依赖: news_retrieval)
+[2026-03-12 11:13:47] INFO     agent_system |     Step 3: [deep_research] 舆情-基本面影响链路推演与价值判断 (依赖: sentiment)
+[2026-03-12 11:13:47] INFO     agent_system |     Step 4: [strategy] 生成事件驱动策略与风控规则 (依赖: sentiment, deep_research)
+[2026-03-12 11:13:47] INFO     agent_system |     Step 5: [report] 整合全部智能体输出，生成最终报告 (依赖: strategy)
+[2026-03-12 11:13:47] INFO     agent_system |   开始执行全流程调度…
+[2026-03-12 11:13:47] INFO     agent_system.orchestrator | ═══ 开始执行任务 4a907a5e65cd | 贵州茅台(600519.SH) ═══
+[2026-03-12 11:13:47] INFO     agent_system.orchestrator | ━━ 调度节点 [news_retrieval] 开始 ━━
+[2026-03-12 11:13:47] INFO     agent_system.news_retrieval | 开始执行 | attempt=1/2
+[2026-03-12 11:13:47] INFO     agent_system.news_retrieval | 舆情采集 | symbol=600519.SH name=贵州茅台 range=2026-03-01~2026-03-11
+[2026-03-12 11:13:47] INFO     agent_system.news_retrieval | 执行完成 | duration=1ms
+[2026-03-12 11:13:47] INFO     agent_system.orchestrator | ━━ 调度节点 [news_retrieval] 完成 ━━
+[2026-03-12 11:13:47] INFO     agent_system.orchestrator | ━━ 调度节点 [sentiment] 开始 ━━
+[2026-03-12 11:13:47] INFO     agent_system.sentiment | 开始执行 | attempt=1/2
+[2026-03-12 11:13:47] INFO     agent_system.sentiment | 舆情分析 | 共 3 条新闻
+[2026-03-12 11:14:00] INFO     agent_system.sentiment | 执行完成 | duration=12522ms
+[2026-03-12 11:14:00] INFO     agent_system.orchestrator | ━━ 调度节点 [sentiment] 完成 ━━
+[2026-03-12 11:14:00] INFO     agent_system.orchestrator | ━━ 调度节点 [deep_research] 开始 ━━
+[2026-03-12 11:14:00] INFO     agent_system.deep_research | 开始执行 | attempt=1/2
+[2026-03-12 11:14:00] INFO     agent_system.deep_research | 深度投研 | symbol=600519.SH events=3
+[2026-03-12 11:14:31] WARNING  agent_system.deep_research | 基本面数据获取失败: HTTPConnectionPool(host='127.0.0.1', port=3213): Read timed out. (read timeout=30)
+[2026-03-12 11:14:31] INFO     agent_system.deep_research | 执行完成 | duration=31047ms
+[2026-03-12 11:14:31] INFO     agent_system.orchestrator | ━━ 调度节点 [deep_research] 完成 ━━
+[2026-03-12 11:14:31] INFO     agent_system.orchestrator | ━━ 调度节点 [strategy] 开始 ━━
+[2026-03-12 11:14:31] INFO     agent_system.strategy | 开始执行 | attempt=1/2
+[2026-03-12 11:14:31] INFO     agent_system.strategy | 策略生成 | symbol=600519.SH
+[2026-03-12 11:14:31] INFO     agent_system.strategy | 执行完成 | duration=1ms
+[2026-03-12 11:14:31] INFO     agent_system.orchestrator | ━━ 调度节点 [strategy] 完成 ━━
+[2026-03-12 11:14:31] INFO     agent_system.orchestrator | ═══ 任务完成 4a907a5e65cd | 总耗时 43587ms | 步骤=completed ═══
+[2026-03-12 11:14:31] INFO     agent_system |   最终步骤: completed
+[2026-03-12 11:14:31] INFO     agent_system |   智能体输出数: 4
+[2026-03-12 11:14:31] INFO     agent_system |   错误数: 0
+[2026-03-12 11:14:31] INFO     agent_system |   报告长度: 878 字符
+[2026-03-12 11:14:31] INFO     agent_system | 完整 JSON 结果已保存至 tests\pipeline_result.json
+[2026-03-12 11:14:31] INFO     agent_system | ── 步骤 5：向量数据库验证 ──
+[2026-03-12 11:14:34] INFO     agent_system.vector_store | LanceDB 连接成功 | path=./data/lancedb
+[2026-03-12 11:14:34] INFO     agent_system.vector_store | 向量表创建 | name=test_verification rows=2 mode=overwrite
+[2026-03-12 11:14:34] INFO     agent_system |   LanceDB 表列表: ['test_verification']
+[2026-03-12 11:14:34] INFO     agent_system.vector_store | 向量表已删除 | name=test_verification
+[2026-03-12 11:14:34] INFO     agent_system |   LanceDB 读写测试通过

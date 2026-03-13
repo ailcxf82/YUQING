@@ -1,0 +1,64 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="card">
+    <h2>定时任务运行明细</h2>
+    <form class="form" method="get">
+      <label>类型
+        <select name="run_type">
+          <option value="" {% if not filters.run_type %}selected{% endif %}>全部</option>
+          <option value="fetch_news" {% if filters.run_type == 'fetch_news' %}selected{% endif %}>fetch_news</option>
+          <option value="url_task" {% if filters.run_type == 'url_task' %}selected{% endif %}>url_task</option>
+        </select>
+      </label>
+      <label>task_id
+        <input name="task_id" value="{{ filters.task_id }}" placeholder="URL 任务 id（可选）" class="mono" />
+      </label>
+      <label>limit
+        <input name="limit" value="{{ filters.limit }}" class="mono" />
+      </label>
+      <label>offset
+        <input name="offset" value="{{ filters.offset }}" class="mono" />
+      </label>
+      <button class="btn primary" type="submit">查询</button>
+    </form>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>开始</th>
+          <th>结束</th>
+          <th>类型</th>
+          <th>任务</th>
+          <th>URL</th>
+          <th>结果</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for r in runs %}
+        <tr>
+          <td class="mono">{{ r.id }}</td>
+          <td class="mono">{{ r.started_at }}</td>
+          <td class="mono">{{ r.finished_at }}</td>
+          <td class="mono">{{ r.run_type }}</td>
+          <td class="mono">{{ r.task_name or r.task_id or "-" }}</td>
+          <td class="mono">{{ r.url or "-" }}</td>
+          <td>
+            {% if r.ok %}
+              <span class="badge ok">OK{% if r.status_code %} {{ r.status_code }}{% endif %}</span>
+            {% else %}
+              <span class="badge bad">FAIL{% if r.status_code %} {{ r.status_code }}{% endif %}</span>
+              {% if r.error %}<div class="muted">{{ r.error }}</div>{% endif %}
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="muted">暂无数据。</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+

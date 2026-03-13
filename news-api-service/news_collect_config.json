@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "interval_minutes": 30,
+  "symbols": [
+    {
+      "symbol": "600000.SH",
+      "name": "浦发银行"
+    }
+  ],
+  "fetch_hours": 24
+}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title or "后台管理" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='/admin.css') }}" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">News API 管理后台</div>
+    <div class="nav">
+      <a href="/admin">总览</a>
+      <a href="/admin/runs">运行明细</a>
+      <a href="/admin/logs">日志</a>
+      <a href="/admin/news">数据库明细</a>
+      <a href="/docs" target="_blank">Swagger</a>
+    </div>
+  </div>
+
+  <div class="container">
+    {% block content %}{% endblock %}
+    <div class="footer">提示：定时配置接口在 `/internal/scheduler/*`，默认不对外暴露到文档。</div>
+  </div>
+</body>
+</html>
+

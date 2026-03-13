@@ -1,0 +1,126 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="grid">
+    <div class="card col-12">
+      <h2>定时服务状态</h2>
+      <div class="kpi">
+        <div class="item">
+          <div class="muted">总开关</div>
+          {% if status.enabled %}
+            <span class="badge ok">enabled</span>
+          {% else %}
+            <span class="badge bad">disabled</span>
+          {% endif %}
+        </div>
+        <div class="item">
+          <div class="muted">抓取间隔（分钟）</div>
+          <div class="mono">{{ status.fetch_interval_minutes }}</div>
+        </div>
+        <div class="item">
+          <div class="muted">抓取下次执行</div>
+          <div class="mono">{{ status.fetch_next_run_time or "-" }}</div>
+        </div>
+        <div class="item">
+          <div class="muted">URL 任务数量</div>
+          <div class="mono">{{ (status.registered_tasks or [])|length }}</div>
+        </div>
+      </div>
+      <div style="margin-top:10px" class="muted">
+        业务接口：<span class="mono">POST /api/news/schedule</span>（默认每 5 分钟抓取）。
+      </div>
+    </div>
+
+    <div class="card col-12">
+      <h2>已注册 URL 定时任务</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>方法</th>
+            <th>URL</th>
+            <th>间隔(分钟)</th>
+            <th>下次执行</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for t in status.registered_tasks or [] %}
+          <tr>
+            <td class="mono">{{ t.id }}</td>
+            <td>{{ t.name }}</td>
+            <td class="mono">{{ t.method }}</td>
+            <td class="mono">{{ t.url }}</td>
+            <td class="mono">{{ t.interval_minutes }}</td>
+            <td class="mono">{{ t.next_run_time or "-" }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="6" class="muted">暂无 URL 任务。可通过内部接口注册。</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card col-6">
+      <h2>最近 50 条运行记录</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>类型</th>
+            <th>任务</th>
+            <th>结果</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in runs %}
+          <tr>
+            <td class="mono">{{ r.started_at }}</td>
+            <td class="mono">{{ r.run_type }}</td>
+            <td class="mono">{{ r.task_name or r.task_id or "-" }}</td>
+            <td>
+              {% if r.ok %}
+                <span class="badge ok">OK{% if r.status_code %} {{ r.status_code }}{% endif %}</span>
+              {% else %}
+                <span class="badge bad">FAIL{% if r.status_code %} {{ r.status_code }}{% endif %}</span>
+                {% if r.error %}<div class="muted">{{ r.error }}</div>{% endif %}
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="4" class="muted">暂无运行记录（等待定时执行或手动触发后产生）。</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <div style="margin-top:10px" class="row-actions">
+        <a class="btn" href="/admin/runs">运行明细</a>
+        <a class="btn primary" href="/admin/logs?refresh=5">打开日志（自动刷新）</a>
+      </div>
+    </div>
+
+    <div class="card col-6">
+      <h2>最近 20 条新闻（数据库）</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>时间</th>
+            <th>来源</th>
+            <th>标题</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for n in news_latest %}
+          <tr>
+            <td class="mono">{{ n.datetime }}</td>
+            <td class="mono">{{ n.src }}</td>
+            <td>{{ n.title }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="3" class="muted">暂无新闻数据。</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <div style="margin-top:10px"><a href="/admin/news">查看数据库明细 →</a></div>
+    </div>
+  </div>
+{% endblock %}
+

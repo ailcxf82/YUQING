@@ -6,14 +6,15 @@
 架构重点：
   本 Agent 不再做实时网络数据采集。
   数据采集由后台定时任务（core/news_collector_job.py）完成，
-  本 Agent 仅从本地 LanceDB 读取已采集并预处理好的数据。
+  本 Agent 仅从本地数据库读取已采集并预处理好的数据。
   这将分析响应时间从 300s+ 降低到 <1s。
 
 核心职责：
-  1. 从本地 LanceDB 读取指定标的的预采集数据
+  1. 从本地数据库读取指定标的的预采集数据
   2. 按时间范围/关键词过滤
-  3. 数据质量校验
-  4. 输出标准化 NewsRetrievalOutput
+  3. 支持 keyword 语义搜索（LLM 分析 + 数据库搜索）
+  4. 数据质量校验
+  5. 输出标准化 NewsRetrievalOutput
 """
 
 from __future__ import annotations
@@ -26,13 +27,40 @@ from core.config import SystemConfig
 from core.llm import LLMClient
 from core.news_collector_job import read_local_news, get_status as get_collect_status
 from core.schemas import AgentStatus, NewsRetrievalOutput
+from app.config import get_settings
+from app import database
+
+
+KEYWORD_ANALYSIS_PROMPT = """你是金融舆情语义分析专家。请分析用户输入的关键词，提取核心语义信息。
+
+用户输入：{keyword}
+
+请返回严格 JSON 格式：
+{{
+  "intent_type": "事件/标的/行业/主题",
+  "core_keywords": ["核心词1", "核心词2", "核心词3"],
+  "search_keywords": ["搜索词1", "搜索词2"],
+  "related_entities": ["相关实体1", "相关实体2"],
+  "time_sensitivity": "高/中/低",
+  "semantic_description": "用中文描述该关键词的核心语义和搜索意图"
+}}
+
+分析要点：
+1. intent_type：判断用户意图是查询特定事件、标的、行业还是主题
+2. core_keywords：提取最核心的 2-5 个语义关键词
+3. search_keywords：适合在新闻数据库中搜索的关键词（考虑同义词、近义词）
+4. related_entities：可能相关的公司、行业、人物等
+5. time_sensitivity：时间敏感度，判断是否需要最新数据
+6. semantic_description：清晰描述用户意图
+
+仅输出 JSON，不要有其他内容。"""
 
 
 class NewsRetrievalAgent(BaseAgent):
-    """舆情数据读取智能体——从本地 LanceDB 读取预采集数据"""
+    """舆情数据读取智能体——从本地数据库读取预采集数据"""
 
     name = "news_retrieval"
-    description = "从本地向量数据库读取已采集的舆情数据，零网络延迟"
+    description = "从本地数据库读取已采集的舆情数据，支持标的/关键词检索"
 
     SYSTEM_PROMPT = (
         "你是舆情数据采集与预处理专家。\n"
@@ -47,35 +75,52 @@ class NewsRetrievalAgent(BaseAgent):
         config: Optional[SystemConfig] = None,
     ) -> None:
         super().__init__(llm_client=llm_client, config=config)
+        self._keyword_llm: Optional[LLMClient] = None
         self.logger.info("NewsRetrievalAgent 初始化 (本地读取模式)")
+
+    def _get_llm(self) -> LLMClient:
+        if self._keyword_llm is None:
+            self._keyword_llm = LLMClient(self.config)
+        return self._keyword_llm
 
     def run(self, state: Dict[str, Any]) -> Dict[str, Any]:
         start = time.time()
         task_id = state.get("task_id", "")
-        symbol, name, time_range, topics = self._extract_params(state)
+        symbol, name, time_range, topics, keyword = self._extract_params(state)
 
         self.logger.info(
-            "舆情数据读取 | symbol=%s name=%s range=%s~%s",
-            symbol, name, time_range.get("start"), time_range.get("end"),
+            "舆情数据读取 | symbol=%s name=%s keyword=%s range=%s~%s",
+            symbol, name, keyword[:20] if keyword else "", time_range.get("start"), time_range.get("end"),
         )
 
-        local_items = read_local_news(
-            symbol=symbol,
-            start_time=time_range.get("start", ""),
-            end_time=time_range.get("end", ""),
-            limit=200,
-        )
+        local_items = []
+        table_name = "news_general"
+        keyword_analysis = None
 
-        if topics and local_items:
-            local_items = self._filter_by_topics(local_items, topics)
-
-        table_name = (
-            f"news_{symbol.replace('.', '_').lower()}" if symbol else "news_general"
-        )
+        if symbol:
+            table_name = f"news_{symbol.replace('.', '_').lower()}"
+            local_items = read_local_news(
+                symbol=symbol,
+                start_time=time_range.get("start", ""),
+                end_time=time_range.get("end", ""),
+                limit=200,
+            )
+            if topics and local_items:
+                local_items = self._filter_by_topics(local_items, topics)
+        elif keyword:
+            table_name = "news_keyword_search"
+            keyword_analysis = self._analyze_keyword_with_llm(keyword)
+            if keyword_analysis:
+                local_items = self._search_by_analyzed_keywords(
+                    keyword_analysis=keyword_analysis,
+                    start_time=time_range.get("start", ""),
+                    end_time=time_range.get("end", ""),
+                    limit=200,
+                )
 
         if not local_items:
             return self._empty_result(
-                task_id, symbol, name, time_range, table_name, start
+                task_id, symbol, name, keyword, keyword_analysis, time_range, table_name, start
             )
 
         news_items = self._to_output_items(local_items)
@@ -88,16 +133,21 @@ class NewsRetrievalAgent(BaseAgent):
             vector_db_index_info={
                 "table_name": table_name,
                 "record_count": len(news_items),
-                "data_source": "local_lancedb",
+                "data_source": "local_database",
+                "keyword_analysis": keyword_analysis,
             },
             data_quality_report={
                 "raw_collected": len(local_items),
                 "after_clean": len(local_items),
                 "vectorized": len(local_items),
                 "source_breakdown": self._source_stats(local_items),
-                "note": "数据来自本地预采集，非实时抓取",
+                "note": "数据来自本地数据库，非实时抓取",
             },
-            execution_log={"duration_ms": duration, "mode": "local_read"},
+            execution_log={
+                "duration_ms": duration,
+                "mode": "keyword_search" if keyword else "local_read",
+                "keyword_analysis": keyword_analysis,
+            },
         )
 
         agent_out = self._make_output(
@@ -126,13 +176,118 @@ class NewsRetrievalAgent(BaseAgent):
                 "end": task_base.get("custom_time_end", ""),
             }
             topics = list(task_base.get("user_custom_rules", {}).get("topics", []))
+            keyword = task_base.get("keyword", "")
         else:
             task = state.get("task", {})
             symbol = task.get("symbol", "")
             name = task.get("name", "")
             tr = task.get("time_range", {})
             topics = task.get("topics", [])
-        return symbol, name, tr, topics
+            keyword = task.get("keyword", "")
+        return symbol, name, tr, topics, keyword
+
+    def _analyze_keyword_with_llm(self, keyword: str) -> Optional[Dict[str, Any]]:
+        """调用 LLM 分析关键词，提取核心语义词"""
+        try:
+            llm = self._get_llm()
+            prompt = KEYWORD_ANALYSIS_PROMPT.format(keyword=keyword)
+            result = llm.chat_json(
+                system_prompt="你是金融舆情语义分析专家，擅长提取关键词的核心语义。",
+                user_prompt=prompt,
+                temperature=0.1,
+            )
+            self.logger.info(
+                "关键词语义分析 | keyword=%s | intent=%s | core=%s | search=%s",
+                keyword[:30],
+                result.get("intent_type", ""),
+                result.get("core_keywords", []),
+                result.get("search_keywords", []),
+            )
+            return result
+        except Exception as e:
+            self.logger.warning("关键词语义分析失败: %s，使用原始关键词搜索", e)
+            return {
+                "intent_type": "主题",
+                "core_keywords": [keyword],
+                "search_keywords": [keyword],
+                "related_entities": [],
+                "time_sensitivity": "中",
+                "semantic_description": f"搜索包含「{keyword}」的相关新闻",
+            }
+
+    def _search_by_analyzed_keywords(
+        self,
+        keyword_analysis: Dict[str, Any],
+        start_time: str = "",
+        end_time: str = "",
+        limit: int = 200,
+    ) -> List[Dict[str, Any]]:
+        """基于 LLM 分析结果搜索新闻"""
+        search_keywords = keyword_analysis.get("search_keywords", [])
+        core_keywords = keyword_analysis.get("core_keywords", [])
+        all_keywords = list(set(search_keywords + core_keywords))
+
+        if not all_keywords:
+            return []
+
+        settings = get_settings()
+        database.init_db(settings.database_url)
+        conn = database.get_connection(settings.database_url)
+
+        try:
+            all_items = []
+            seen_ids = set()
+
+            for kw in all_keywords[:5]:
+                items = database.search_news_by_keyword(
+                    conn, keyword=kw, limit=limit, offset=0
+                )
+                for item in items:
+                    item_id = item.get("id")
+                    if item_id not in seen_ids:
+                        seen_ids.add(item_id)
+                        all_items.append(item)
+
+            if start_time:
+                all_items = [i for i in all_items if i.get("datetime", "") >= start_time]
+            if end_time:
+                all_items = [i for i in all_items if i.get("datetime", "") <= end_time]
+
+            all_items.sort(key=lambda x: x.get("datetime", ""), reverse=True)
+            all_items = all_items[:limit]
+
+            self.logger.info(
+                "关键词搜索完成 | keywords=%s | found=%d",
+                all_keywords[:3], len(all_items)
+            )
+            return self._convert_sqlite_items(all_items)
+        except Exception as e:
+            self.logger.warning("关键词搜索失败: %s", e)
+            return []
+        finally:
+            conn.close()
+
+    @staticmethod
+    def _convert_sqlite_items(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """将 SQLite 格式转换为统一格式"""
+        result = []
+        for item in items:
+            result.append({
+                "news_id": f"sqlite_{item.get('id', '')}",
+                "source": item.get("src", ""),
+                "source_level": "C",
+                "source_weight": 0.5,
+                "publish_time": item.get("datetime", ""),
+                "title": item.get("title", ""),
+                "content": item.get("content", ""),
+                "url": "",
+                "core_entity": "",
+                "related_stock": "",
+                "event_type": "",
+                "keywords": [],
+                "spread_count": 0,
+            })
+        return result
 
     @staticmethod
     def _filter_by_topics(
@@ -178,7 +333,17 @@ class NewsRetrievalAgent(BaseAgent):
             stats[src] = stats.get(src, 0) + 1
         return stats
 
-    def _empty_result(self, task_id, symbol, name, time_range, table_name, start):
+    def _empty_result(
+        self,
+        task_id: str,
+        symbol: str,
+        name: str,
+        keyword: str,
+        keyword_analysis: Optional[Dict[str, Any]],
+        time_range: Dict[str, str],
+        table_name: str,
+        start: float,
+    ) -> Dict[str, Any]:
         duration = int((time.time() - start) * 1000)
 
         collect_status = get_collect_status()
@@ -187,7 +352,17 @@ class NewsRetrievalAgent(BaseAgent):
         ]
 
         hint = ""
-        if symbol and symbol not in symbols_configured:
+        if keyword and not symbol:
+            search_kw = []
+            if keyword_analysis:
+                search_kw = keyword_analysis.get("search_keywords", [])
+            kw_desc = keyword_analysis.get("semantic_description", keyword) if keyword_analysis else keyword
+            hint = (
+                f"关键词语义分析：{kw_desc}。"
+                f"搜索词：{search_kw}。"
+                f"在本地新闻库中未找到匹配数据，请先通过 POST /api/news/fetch 抓取新闻数据。"
+            )
+        elif symbol and symbol not in symbols_configured:
             hint = (
                 f"标的 {symbol} 尚未配置定时采集。"
                 f"请先调用 POST /api/v2/news-collect/add-symbol 添加，"
@@ -202,14 +377,21 @@ class NewsRetrievalAgent(BaseAgent):
             task_id=task_id,
             news_total_count=0,
             news_structured_data=[],
-            vector_db_index_info={"table_name": f"{table_name}(empty)"},
+            vector_db_index_info={
+                "table_name": f"{table_name}(empty)",
+                "keyword_analysis": keyword_analysis,
+            },
             data_quality_report={
-                "raw_collected": 0, "after_clean": 0, "vectorized": 0,
+                "raw_collected": 0,
+                "after_clean": 0,
+                "vectorized": 0,
                 "hint": hint,
             },
             execution_log={
-                "duration_ms": duration, "reason": "本地无数据",
-                "mode": "local_read",
+                "duration_ms": duration,
+                "reason": "本地无数据",
+                "mode": "keyword_search" if keyword else "local_read",
+                "keyword_analysis": keyword_analysis,
             },
         )
         agent_out = self._make_output(

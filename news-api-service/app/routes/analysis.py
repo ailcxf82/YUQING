@@ -13,10 +13,14 @@ from __future__ import annotations
 
 import time
 import traceback
+import re
+import threading
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
+
+from app import task_store
 
 router = APIRouter(prefix="/api/v2/analysis", tags=["Phase4 全链路分析"])
 
@@ -49,6 +53,10 @@ class FullLinkRequest(BaseModel):
     target_name: List[str] = Field(
         default_factory=list,
         description="标的/行业/主题名称，如 ['浦发银行']",
+    )
+    keyword: str = Field(
+        default="",
+        description="自然语言关键词：公司名/行业/主题/事件描述等，用于语义解析目标标的",
     )
     time_range: str = Field(
         default="近7天",
@@ -107,17 +115,69 @@ class FeedbackRequest(BaseModel):
     ),
 )
 def full_link_analysis(body: FullLinkRequest):
-    if not body.target_code and not body.target_name:
+    # 若显式提供 target_code/target_name，则直接使用；
+    # 否则若提供 keyword，则走语义解析；三者至少提供其一。
+    if not body.target_code and not body.target_name and not (body.keyword or "").strip():
         raise HTTPException(
             status_code=400,
-            detail="target_code 和 target_name 至少需要填写一项。",
+            detail="target_code、target_name、keyword 至少需要填写一项。",
         )
 
     from core.schemas import UserRequest
+
+    # ── 语义解析：根据 keyword 推断标的代码/名称/类型 ──
+    target_type = body.target_type or "个股"
+    target_code = list(body.target_code or [])
+    target_name = list(body.target_name or [])
+    keyword = (body.keyword or "").strip()
+
+    if keyword and not target_code and not target_name:
+        def _normalize_ts_code(symbol: str) -> str:
+            s = (symbol or "").strip().upper()
+            # 精确匹配 Tushare 标准代码：600000.SH / 000001.SZ
+            if re.fullmatch(r"\d{6}\.(SH|SZ)", s):
+                return s
+            # 仅 6 位数字时，无法确定交易所，默认优先 SH
+            if re.fullmatch(r"\d{6}", s):
+                return f"{s}.SH"
+            return ""
+
+        # 1) 优先识别精确股票代码（若 keyword 本身就是代码，则以其为准）
+        ts_code = _normalize_ts_code(keyword)
+        if ts_code:
+            target_type = "个股"
+            target_code = [ts_code]
+        else:
+            # 2) 尝试使用实体链接模块，将公司名称映射为股票代码
+            try:
+                from core.llm import LLMClient
+                from core.config import get_config
+                from core.entity_linker import EntityLinker
+
+                cfg = get_config()
+                llm = LLMClient(provider=cfg.llm_provider, model=cfg.llm_model)
+                linker = EntityLinker(llm_client=llm)
+                code = linker.link_to_stock(keyword)
+                if code:
+                    target_type = "个股"
+                    target_code = [code]
+                    target_name = [keyword]
+            except Exception:
+                # 实体链接失败时，退化为主题/行业关键词分析
+                pass
+
+        # 3) 若仍未解析出代码，则将 keyword 作为行业/主题名称传递给下游智能体
+        if not target_code and keyword:
+            if target_type not in ("行业", "主题"):
+                target_type = "主题"
+            if not target_name:
+                target_name = [keyword]
+
     request = UserRequest(
-        target_type=body.target_type,
-        target_code=body.target_code,
-        target_name=body.target_name,
+        target_type=target_type,
+        target_code=target_code,
+        target_name=target_name,
+        keyword=keyword,
         time_range=body.time_range,
         custom_time_start=body.custom_time_start,
         custom_time_end=body.custom_time_end,
@@ -140,6 +200,215 @@ def full_link_analysis(body: FullLinkRequest):
         "success": True,
         "elapsed_ms": elapsed,
         "report": report,
+    }
+
+
+# ================================================================== #
+#  统一入口：异步任务 + 进度查询
+# ================================================================== #
+
+
+class EntryRequest(BaseModel):
+    """统一入口请求体：兼容 keyword / full-link / quick"""
+    keyword: str = Field(
+        default="",
+        description="自然语言关键词：公司名/行业/主题/事件描述等，可选",
+    )
+    target_type: str = Field(
+        default="个股",
+        description="分析目标类型：个股/行业/主题/全市场",
+    )
+    target_code: List[str] = Field(
+        default_factory=list,
+        description="标的代码列表，如 ['600000.SH']",
+    )
+    target_name: List[str] = Field(
+        default_factory=list,
+        description="标的/行业/主题名称，如 ['浦发银行']",
+    )
+    time_range: str = Field(
+        default="近7天",
+        description="舆情时间范围：近24小时/近7天/近30天/自定义",
+    )
+    custom_time_start: str = Field(default="", description="自定义开始时间")
+    custom_time_end: str = Field(default="", description="自定义结束时间")
+    analysis_depth: str = Field(default="标准版", description="分析深度")
+    user_custom_rules: Dict[str, Any] = Field(
+        default_factory=dict, description="用户自定义规则/阈值",
+    )
+
+
+def _build_user_request_from_entry(body: EntryRequest) -> UserRequest:
+    """与 full-link 入口保持一致的语义解析逻辑。"""
+    target_type = body.target_type or "个股"
+    target_code = list(body.target_code or [])
+    target_name = list(body.target_name or [])
+    keyword = (body.keyword or "").strip()
+
+    if not target_code and not target_name and not keyword:
+        raise HTTPException(
+            status_code=400,
+            detail="target_code、target_name、keyword 至少需要填写一项。",
+        )
+
+    if keyword and not target_code and not target_name:
+        def _normalize_ts_code(symbol: str) -> str:
+            s = (symbol or "").strip().upper()
+            if re.fullmatch(r"\d{6}\.(SH|SZ)", s):
+                return s
+            if re.fullmatch(r"\d{6}", s):
+                return f"{s}.SH"
+            return ""
+
+        ts_code = _normalize_ts_code(keyword)
+        if ts_code:
+            target_type = "个股"
+            target_code = [ts_code]
+        else:
+            try:
+                from core.llm import LLMClient
+                from core.config import get_config
+                from core.entity_linker import EntityLinker
+
+                cfg = get_config()
+                llm = LLMClient(provider=cfg.llm_provider, model=cfg.llm_model)
+                linker = EntityLinker(llm_client=llm)
+                code = linker.link_to_stock(keyword)
+                if code:
+                    target_type = "个股"
+                    target_code = [code]
+                    target_name = [keyword]
+            except Exception:
+                pass
+
+        if not target_code and keyword:
+            if target_type not in ("行业", "主题"):
+                target_type = "主题"
+            if not target_name:
+                target_name = [keyword]
+
+    return UserRequest(
+        target_type=target_type,
+        target_code=target_code,
+        target_name=target_name,
+        keyword=keyword,
+        time_range=body.time_range,
+        custom_time_start=body.custom_time_start,
+        custom_time_end=body.custom_time_end,
+        analysis_depth=body.analysis_depth,
+        user_custom_rules=body.user_custom_rules,
+    )
+
+
+def _run_full_link_task(request: UserRequest, task_id: str) -> None:
+    """后台线程执行全链路任务，并实时更新任务状态。"""
+    try:
+        orch = _get_orchestrator()
+        task_store.update_task(
+            task_id,
+            status="RUNNING",
+            current_step="initialized",
+            append_logs=[
+                {
+                    "step": "orchestrator_init",
+                    "status": "running",
+                    "message": "全链路任务已初始化，准备执行。",
+                    "timestamp": time.time(),
+                }
+            ],
+        )
+        result = orch.execute(request)
+        # 从最终报告中抽取 execution log
+        report = result.get("final_research_report") or result.get("report") or {}
+        steps = report.get("full_link_log", {})
+        task_store.update_task(
+            task_id,
+            status="DONE",
+            current_step="finished",
+            final_report=report,
+            append_logs=[
+                {
+                    "step": "full_link_finished",
+                    "status": "success",
+                    "message": "全链路分析已完成。",
+                    "timestamp": time.time(),
+                }
+            ],
+        )
+    except Exception as exc:
+        task_store.update_task(
+            task_id,
+            status="ERROR",
+            current_step="error",
+            error=str(exc),
+            append_logs=[
+                {
+                    "step": "full_link_error",
+                    "status": "error",
+                    "message": f"全链路执行异常: {exc}",
+                    "timestamp": time.time(),
+                }
+            ],
+        )
+
+
+@router.post(
+    "/entry",
+    summary="统一入口：异步全链路分析",
+    description=(
+        "推荐入口：支持 keyword / target_code / target_name 等多种形式，"
+        "立即返回 task_id，前端可轮询 /status 接口获取分步进度与最终结果。"
+    ),
+)
+def create_analysis_task(body: EntryRequest):
+    request = _build_user_request_from_entry(body)
+
+    # 先用 orchestrator 生成 task_id，但不阻塞执行
+    from agents.orchestrator import OrchestratorAgent
+
+    orch = OrchestratorAgent()
+    # 直接复用 execute 里的 task_id 生成规则
+    import uuid
+
+    task_id = uuid.uuid4().hex[:8]
+    task_store.init_task(task_id, base_info=request.model_dump())
+
+    t = threading.Thread(
+        target=_run_full_link_task,
+        args=(request, task_id),
+        name=f"full_link_task_{task_id}",
+        daemon=True,
+    )
+    t.start()
+
+    return {
+        "success": True,
+        "task_id": task_id,
+        "status": "PENDING",
+    }
+
+
+@router.get(
+    "/status/{task_id}",
+    summary="查询统一入口任务状态",
+    description="返回当前任务的整体状态、各步骤进度与耗时等信息。",
+)
+def get_analysis_status(task_id: str):
+    task = task_store.get_task(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="任务不存在")
+
+    progress = task_store.compute_progress(task)
+
+    return {
+        "success": True,
+        "task_id": task_id,
+        "overall_status": task.get("status"),
+        "current_step": task.get("current_step"),
+        "progress": progress,
+        "timeline": task.get("steps", []),
+        "final_report_ready": task.get("final_report") is not None,
+        "error": task.get("error"),
     }
 
 

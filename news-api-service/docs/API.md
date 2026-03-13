@@ -70,7 +70,7 @@ Phase 4 精细化多智能体全链路协同引擎。
 | 项目 | 值 |
 |------|-----|
 | 路径 | `POST /api/v2/analysis/full-link` |
-| 说明 | 输入标的/行业/主题，自动执行完整的全链路流程 |
+| 说明 | 输入标的/行业/主题或自然语言 keyword，自动执行完整的全链路流程（同步阻塞返回完整报告） |
 | 耗时 | 30-180 秒（取决于数据量与分析深度） |
 
 #### 请求 Body
@@ -80,6 +80,7 @@ Phase 4 精细化多智能体全链路协同引擎。
   "target_type": "个股",
   "target_code": ["600000.SH"],
   "target_name": ["浦发银行"],
+  "keyword": "",
   "time_range": "近7天",
   "custom_time_start": "",
   "custom_time_end": "",
@@ -91,8 +92,9 @@ Phase 4 精细化多智能体全链路协同引擎。
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
 | target_type | string | 否 | 个股/行业/主题/全市场，默认"个股" |
-| target_code | string[] | 条件 | 标的代码列表，个股时必填 |
-| target_name | string[] | 条件 | 标的/行业/主题名称 |
+| target_code | string[] | 条件 | 标的代码列表；与 `target_name` / `keyword` 至少填一项 |
+| target_name | string[] | 条件 | 标的/行业/主题名称；与 `target_code` / `keyword` 至少填一项 |
+| keyword | string | 条件 | 自然语言关键词：公司名/行业/主题/事件描述；与 `target_code` / `target_name` 至少填一项 |
 | time_range | string | 否 | 近24小时/近7天/近30天/自定义 |
 | custom_time_start | string | 否 | 自定义开始时间 |
 | custom_time_end | string | 否 | 自定义结束时间 |
@@ -182,12 +184,103 @@ Phase 4 精细化多智能体全链路协同引擎。
 
 ---
 
-### P6. CMD 调用示例
+### P6. 统一入口：异步全链路分析 + 进度查询
+
+#### P6.1 创建任务
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/analysis/entry` |
+| 说明 | 推荐入口：支持 keyword / target_code / target_name，多形式语义查询，立即返回 task_id，后续通过 status 接口查看分步进度与结果 |
+
+**请求 Body 示例：**
+
+```json
+{
+  "keyword": "浦发银行",
+  "target_type": "个股",
+  "target_code": [],
+  "target_name": [],
+  "time_range": "近7天",
+  "custom_time_start": "",
+  "custom_time_end": "",
+  "analysis_depth": "标准版",
+  "user_custom_rules": {}
+}
+```
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| keyword | string | 条件 | 自然语言关键词：公司名/行业/主题/事件描述；与 `target_code` / `target_name` 至少填一项 |
+| target_type | string | 否 | 个股/行业/主题/全市场，默认"个股" |
+| target_code | string[] | 条件 | 标的代码列表，如 `["600000.SH"]`；与 `target_name` / `keyword` 至少填一项 |
+| target_name | string[] | 条件 | 标的/行业/主题名称，如 `["浦发银行"]`；与 `target_code` / `keyword` 至少填一项 |
+| time_range | string | 否 | 近24小时/近7天/近30天/自定义 |
+| custom_time_start | string | 否 | 自定义开始时间 |
+| custom_time_end | string | 否 | 自定义结束时间 |
+| analysis_depth | string | 否 | 基础版/标准版/深度版 |
+| user_custom_rules | object | 否 | 自定义规则/阈值 |
+
+**响应：**
+
+```json
+{
+  "success": true,
+  "task_id": "ab12cd34",
+  "status": "PENDING"
+}
+```
+
+#### P6.2 查询任务状态
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `GET /api/v2/analysis/status/{task_id}` |
+| 说明 | 轮询该接口，查看任务当前进度、各节点耗时与最终结果是否就绪 |
+
+**响应示例：**
+
+```json
+{
+  "success": true,
+  "task_id": "ab12cd34",
+  "overall_status": "RUNNING",
+  "current_step": "sentiment_analysis",
+  "progress": {
+    "total_steps": 7,
+    "finished_steps": 3
+  },
+  "timeline": [
+    {
+      "step": "orchestrator_init",
+      "status": "running",
+      "message": "全链路任务已初始化，准备执行。",
+      "timestamp": 1731400000.123,
+      "duration_ms": null
+    },
+    {
+      "step": "full_link_finished",
+      "status": "success",
+      "message": "全链路分析已完成。",
+      "timestamp": 1731400123.456,
+      "duration_ms": null
+    }
+  ],
+  "final_report_ready": false,
+  "error": null
+}
+```
+
+> 说明：`overall_status` 取值包括 `PENDING` / `RUNNING` / `DONE` / `ERROR`，前端可据此控制轮询与展示；`timeline` 中的每个 `step` 包含人类可读的 `message` 与可选的 `duration_ms`/`timestamp`，用于向用户展示“当前在想什么、做什么”。
+
+---
+
+### P7. CMD 调用示例
 
 **全链路一键分析**：
 
 ```cmd
-curl -X POST "http://localhost:8000/api/v2/analysis/full-link" -H "Content-Type: application/json" -d "{\"target_type\":\"个股\",\"target_code\":[\"600000.SH\"],\"target_name\":[\"浦发银行\"],\"time_range\":\"近7天\",\"analysis_depth\":\"标准版\"}"
+curl -X POST "http://localhost:8000/api/v2/analysis/full-link" -H "Content-Type: application/json" -d "{\"target_type\":\"个股\",\"target_code\":[\"\"],\"target_name\":[\"\"],\"keyword\":\"今天a股怎么跳水了\",\"time_range\":\"近7天\",\"analysis_depth\":\"标准版\"}"
 ```
 
 **快捷分析**：
@@ -218,6 +311,18 @@ curl "http://localhost:8000/internal/debug/agents"
 
 ```cmd
 curl "http://localhost:8000/internal/debug/llm?ping=true"
+
+**统一入口（keyword 模式）+ 进度查询示例**：
+
+```cmd
+REM 1) 创建任务
+curl -X POST "http://localhost:8000/api/v2/analysis/entry" ^
+  -H "Content-Type: application/json" ^
+  -d "{\"keyword\":\"浦发银行\",\"time_range\":\"近7天\",\"analysis_depth\":\"标准版\"}"
+
+REM 2) 查询任务状态（将 {task_id} 替换为上一步返回的 task_id）
+curl "http://localhost:8000/api/v2/analysis/status/{task_id}"
+```
 ```
 
 **调试-配置检查**：

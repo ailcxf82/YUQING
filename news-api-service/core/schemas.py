@@ -160,6 +160,10 @@ class UserRequest(BaseModel):
     target_type: str = Field(default="个股", description="分析目标类型：个股/行业/主题/全市场")
     target_code: List[str] = Field(default_factory=list, description="标的代码列表")
     target_name: List[str] = Field(default_factory=list, description="标的/行业/主题名称")
+    keyword: str = Field(
+        default="",
+        description="自然语言关键词：公司名/行业/主题/事件描述等，用于语义解析目标标的",
+    )
     time_range: str = Field(default="近7天", description="舆情时间范围")
     custom_time_start: str = Field(default="", description="自定义开始时间")
     custom_time_end: str = Field(default="", description="自定义结束时间")

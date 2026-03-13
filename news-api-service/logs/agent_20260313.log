@@ -1,0 +1,375 @@
+[2026-03-13 11:24:58] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-13 11:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 11:54:58] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-13 11:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 11:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 11:55:01] INFO     agent_system.collector | 去重移除 77 条 (剩余 723)
+[2026-03-13 11:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=723 sources=1
+[2026-03-13 11:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=723
+[2026-03-13 11:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 723 条
+[2026-03-13 11:58:13] INFO     agent_system.preprocessor | 结构化提取完成 | 723 条
+[2026-03-13 11:58:13] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=723 输出=723
+[2026-03-13 11:58:13] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=723
+[2026-03-13 11:58:13] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=723
+[2026-03-13 11:58:13] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=723 processed=723 stored=723 file=news_600000_sh.json duration=194540ms
+[2026-03-13 11:58:13] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=194545ms
+[2026-03-13 12:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 12:25:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 12:25:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 12:25:01] INFO     agent_system.collector | 去重移除 80 条 (剩余 720)
+[2026-03-13 12:25:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=720 sources=1
+[2026-03-13 12:25:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=720
+[2026-03-13 12:25:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 720 条
+[2026-03-13 12:27:57] INFO     agent_system.preprocessor | 结构化提取完成 | 720 条
+[2026-03-13 12:27:57] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=720 输出=720
+[2026-03-13 12:27:57] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=720
+[2026-03-13 12:27:57] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=720
+[2026-03-13 12:27:57] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=720 processed=720 stored=720 file=news_600000_sh.json duration=178817ms
+[2026-03-13 12:27:57] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=178822ms
+[2026-03-13 12:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 12:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 12:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 12:55:01] INFO     agent_system.collector | 去重移除 80 条 (剩余 720)
+[2026-03-13 12:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=720 sources=1
+[2026-03-13 12:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=720
+[2026-03-13 12:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 720 条
+[2026-03-13 12:58:08] INFO     agent_system.preprocessor | 结构化提取完成 | 720 条
+[2026-03-13 12:58:08] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=720 输出=720
+[2026-03-13 12:58:08] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=720
+[2026-03-13 12:58:08] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=720
+[2026-03-13 12:58:08] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=720 processed=720 stored=720 file=news_600000_sh.json duration=189578ms
+[2026-03-13 12:58:08] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=189581ms
+[2026-03-13 13:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 13:25:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 13:25:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 13:25:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 13:25:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 13:25:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 13:25:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 13:28:09] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 13:28:09] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 13:28:09] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 13:28:09] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 13:28:09] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=190982ms
+[2026-03-13 13:28:09] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=190985ms
+[2026-03-13 13:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 13:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 13:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 13:55:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 13:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 13:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 13:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 13:58:17] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 13:58:17] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 13:58:17] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 13:58:17] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 13:58:17] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=198256ms
+[2026-03-13 13:58:17] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=198259ms
+[2026-03-13 14:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 14:25:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 14:25:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 14:25:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 14:25:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 14:25:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 14:25:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 14:28:20] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 14:28:21] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 14:28:21] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 14:28:21] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 14:28:21] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=202222ms
+[2026-03-13 14:28:21] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=202225ms
+[2026-03-13 14:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 14:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 14:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 14:55:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 14:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 14:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 14:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 14:58:16] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 14:58:16] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 14:58:16] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 14:58:16] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 14:58:16] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=197810ms
+[2026-03-13 14:58:16] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=197815ms
+[2026-03-13 15:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 15:25:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 15:25:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 15:25:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 15:25:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 15:25:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 15:25:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 15:28:22] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 15:28:22] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 15:28:22] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 15:28:22] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 15:28:22] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=203476ms
+[2026-03-13 15:28:22] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=203479ms
+[2026-03-13 15:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 15:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 15:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 15:55:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 15:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 15:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 15:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 15:58:19] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 15:58:19] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 15:58:19] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 15:58:19] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 15:58:19] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=200795ms
+[2026-03-13 15:58:19] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=200798ms
+[2026-03-13 16:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 16:25:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 16:25:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 16:25:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 16:25:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 16:25:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 16:25:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 16:28:20] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 16:28:20] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 16:28:20] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 16:28:20] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 16:28:20] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=201590ms
+[2026-03-13 16:28:20] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=201593ms
+[2026-03-13 16:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 16:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 16:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 16:55:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 16:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 16:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 16:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 16:58:30] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 16:58:30] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 16:58:30] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 16:58:30] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 16:58:30] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=211890ms
+[2026-03-13 16:58:30] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=211893ms
+[2026-03-13 17:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 17:25:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 17:25:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 17:25:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 17:25:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 17:25:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 17:25:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 17:28:35] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 17:28:36] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 17:28:36] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 17:28:36] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 17:28:36] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=217134ms
+[2026-03-13 17:28:36] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=217138ms
+[2026-03-13 17:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 17:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 17:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 17:55:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 17:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 17:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 17:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 17:58:29] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 17:58:29] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 17:58:29] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 17:58:29] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 17:58:29] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=210934ms
+[2026-03-13 17:58:29] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=210938ms
+[2026-03-13 18:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 18:25:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 18:25:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 18:25:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 18:25:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 18:25:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 18:25:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 18:28:30] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 18:28:30] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 18:28:30] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 18:28:30] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 18:28:30] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=211320ms
+[2026-03-13 18:28:30] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=211322ms
+[2026-03-13 18:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 18:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 18:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 18:55:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 18:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 18:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 18:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 18:58:17] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 18:58:17] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 18:58:17] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 18:58:17] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 18:58:17] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=198363ms
+[2026-03-13 18:58:17] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=198366ms
+[2026-03-13 19:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 19:25:06] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 19:25:06] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 19:25:06] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 19:25:06] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 19:25:06] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 19:25:06] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 19:28:14] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 19:28:15] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 19:28:15] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 19:28:15] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 19:28:15] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=196193ms
+[2026-03-13 19:28:15] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=196199ms
+[2026-03-13 19:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 19:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 19:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 19:55:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 19:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 19:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 19:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 19:58:10] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 19:58:10] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 19:58:10] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 19:58:10] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 19:58:10] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=191637ms
+[2026-03-13 19:58:10] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=191642ms
+[2026-03-13 20:24:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 20:25:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 20:25:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 20:25:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 20:25:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 20:25:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 20:25:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 20:28:19] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 20:28:19] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 20:28:19] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 20:28:19] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 20:28:19] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=200953ms
+[2026-03-13 20:28:19] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=200958ms
+[2026-03-13 20:54:58] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 20:55:01] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 20:55:01] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 20:55:01] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 20:55:01] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 20:55:01] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 20:55:01] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 20:58:23] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 20:58:24] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 20:58:24] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 20:58:24] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 20:58:24] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=205147ms
+[2026-03-13 20:58:24] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=205149ms
+[2026-03-13 20:59:31] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-13 21:00:57] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-13 21:00:57] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-13 21:01:27] WARNING  agent_system.entity_linker | 股票映射表加载失败: HTTPConnectionPool(host='127.0.0.1', port=3213): Read timed out. (read timeout=30)
+[2026-03-13 21:01:27] INFO     agent_system.orchestrator | 中枢调度引擎初始化完成 | 全链路 LangGraph 已编译
+[2026-03-13 21:01:27] INFO     agent_system.orchestrator | 全链路任务启动 | task_id=e0075d8c targets=['']
+[2026-03-13 21:01:27] INFO     agent_system.news_retrieval | 开始执行 | attempt=1/2
+[2026-03-13 21:01:27] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= range=~
+[2026-03-13 21:01:27] INFO     agent_system.news_collect_job | 本地无数据 | file=news_general.json (请先配置定时采集)
+[2026-03-13 21:01:27] INFO     agent_system.news_retrieval | 执行完成 | duration=18ms
+[2026-03-13 21:01:27] INFO     agent_system.compliance | 合规校验 | agent=news_retrieval result=通过 severity=无 violations=0
+[2026-03-13 21:01:27] INFO     agent_system.event_classification | 开始执行 | attempt=1/2
+[2026-03-13 21:01:27] INFO     agent_system.event_classification | 执行完成 | duration=0ms
+[2026-03-13 21:01:27] INFO     agent_system.compliance | 合规校验 | agent=event_classification result=通过 severity=无 violations=0
+[2026-03-13 21:01:27] INFO     agent_system.sentiment_analysis | 开始执行 | attempt=1/2
+[2026-03-13 21:01:27] INFO     agent_system.sentiment_analysis | 执行完成 | duration=0ms
+[2026-03-13 21:01:27] INFO     agent_system.compliance | 合规校验 | agent=sentiment_analysis result=通过 severity=无 violations=0
+[2026-03-13 21:01:27] INFO     agent_system.fundamental_impact | 开始执行 | attempt=1/2
+[2026-03-13 21:01:27] INFO     agent_system.industry_chain | 开始执行 | attempt=1/2
+[2026-03-13 21:01:27] INFO     agent_system.fundamental_impact | 执行完成 | duration=0ms
+[2026-03-13 21:01:27] INFO     agent_system.industry_chain | 执行完成 | duration=0ms
+[2026-03-13 21:01:27] INFO     agent_system.compliance | 合规校验 | agent=fundamental_impact result=通过 severity=无 violations=0
+[2026-03-13 21:01:27] INFO     agent_system.compliance | 合规校验 | agent=industry_chain result=通过 severity=无 violations=0
+[2026-03-13 21:01:27] INFO     agent_system.orchestrator | 并行深度分析完成 | total=2ms fund=0ms ind=0ms saved=0ms
+[2026-03-13 21:01:27] INFO     agent_system.strategy_generation | 开始执行 | attempt=1/2
+[2026-03-13 21:01:27] INFO     agent_system.strategy_generation | 执行完成 | duration=0ms
+[2026-03-13 21:01:27] INFO     agent_system.compliance | 合规校验 | agent=strategy_generation result=通过 severity=无 violations=0
+[2026-03-13 21:01:27] INFO     agent_system.risk_control | 开始执行 | attempt=1/2
+[2026-03-13 21:01:27] INFO     agent_system.risk_control | 执行完成 | duration=0ms
+[2026-03-13 21:01:27] INFO     agent_system.compliance | 合规校验 | agent=risk_control result=通过 severity=无 violations=0
+[2026-03-13 21:01:27] INFO     agent_system.orchestrator | 投研报告生成完成 | task=e0075d8c status=已完成
+[2026-03-13 21:29:31] INFO     agent_system.news_collect_job | 采集开始 | symbol=600000.SH name=浦发银行 hours=24
+[2026-03-13 21:29:33] INFO     agent_system.datasource.tushare | Tushare 采集完成 | total=800 symbol=600000.SH
+[2026-03-13 21:29:33] INFO     agent_system.collector | 数据源 [tushare] 返回 800 条
+[2026-03-13 21:29:33] INFO     agent_system.collector | 去重移除 79 条 (剩余 721)
+[2026-03-13 21:29:33] INFO     agent_system.collector | 采集完成 | symbol=600000.SH total=721 sources=1
+[2026-03-13 21:29:33] INFO     agent_system.news_collect_job | 原始采集 | symbol=600000.SH raw=721
+[2026-03-13 21:29:33] INFO     agent_system.preprocessor | 预处理流水线启动 | 输入 721 条
+[2026-03-13 21:33:00] INFO     agent_system.preprocessor | 结构化提取完成 | 721 条
+[2026-03-13 21:33:00] INFO     agent_system.preprocessor | 预处理流水线完成 | 输入=721 输出=721
+[2026-03-13 21:33:00] INFO     agent_system.news_collect_job | 预处理完成 | symbol=600000.SH processed=721
+[2026-03-13 21:33:00] INFO     agent_system.news_collect_job | JSON 存储完成 | file=news_600000_sh.json count=721
+[2026-03-13 21:33:00] INFO     agent_system.news_collect_job | 采集完成 | symbol=600000.SH raw=721 processed=721 stored=721 file=news_600000_sh.json duration=208980ms
+[2026-03-13 21:33:00] INFO     agent_system.news_collect_job | 全量采集完成 | symbols=1 duration=208985ms
+[2026-03-13 22:24:04] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-13 22:32:10] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-13 22:32:10] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-13 22:32:11] INFO     agent_system.entity_linker | 股票映射表加载完成 | count=6363
+[2026-03-13 22:32:11] INFO     agent_system.orchestrator | 中枢调度引擎初始化完成 | 全链路 LangGraph 已编译
+[2026-03-13 22:32:11] INFO     agent_system.orchestrator | 全链路任务启动 | task_id=ff9988fc targets=['']
+[2026-03-13 22:32:11] INFO     agent_system.news_retrieval | 开始执行 | attempt=1/2
+[2026-03-13 22:32:11] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= range=~
+[2026-03-13 22:32:11] INFO     agent_system.news_collect_job | 本地无数据 | file=news_general.json (请先配置定时采集)
+[2026-03-13 22:32:11] INFO     agent_system.news_retrieval | 执行完成 | duration=28ms
+[2026-03-13 22:32:11] INFO     agent_system.compliance | 合规校验 | agent=news_retrieval result=通过 severity=无 violations=0
+[2026-03-13 22:32:11] INFO     agent_system.event_classification | 开始执行 | attempt=1/2
+[2026-03-13 22:32:11] INFO     agent_system.event_classification | 执行完成 | duration=0ms
+[2026-03-13 22:32:11] INFO     agent_system.compliance | 合规校验 | agent=event_classification result=通过 severity=无 violations=0
+[2026-03-13 22:32:11] INFO     agent_system.sentiment_analysis | 开始执行 | attempt=1/2
+[2026-03-13 22:32:11] INFO     agent_system.sentiment_analysis | 执行完成 | duration=0ms
+[2026-03-13 22:32:11] INFO     agent_system.compliance | 合规校验 | agent=sentiment_analysis result=通过 severity=无 violations=0
+[2026-03-13 22:32:11] INFO     agent_system.fundamental_impact | 开始执行 | attempt=1/2
+[2026-03-13 22:32:11] INFO     agent_system.industry_chain | 开始执行 | attempt=1/2
+[2026-03-13 22:32:11] INFO     agent_system.fundamental_impact | 执行完成 | duration=0ms
+[2026-03-13 22:32:11] INFO     agent_system.industry_chain | 执行完成 | duration=0ms
+[2026-03-13 22:32:11] INFO     agent_system.compliance | 合规校验 | agent=fundamental_impact result=通过 severity=无 violations=0
+[2026-03-13 22:32:11] INFO     agent_system.compliance | 合规校验 | agent=industry_chain result=通过 severity=无 violations=0
+[2026-03-13 22:32:11] INFO     agent_system.orchestrator | 并行深度分析完成 | total=3ms fund=0ms ind=0ms saved=0ms
+[2026-03-13 22:32:11] INFO     agent_system.strategy_generation | 开始执行 | attempt=1/2
+[2026-03-13 22:32:11] INFO     agent_system.strategy_generation | 执行完成 | duration=1ms
+[2026-03-13 22:32:11] INFO     agent_system.compliance | 合规校验 | agent=strategy_generation result=通过 severity=无 violations=0
+[2026-03-13 22:32:11] INFO     agent_system.risk_control | 开始执行 | attempt=1/2
+[2026-03-13 22:32:11] INFO     agent_system.risk_control | 执行完成 | duration=0ms
+[2026-03-13 22:32:11] INFO     agent_system.compliance | 合规校验 | agent=risk_control result=通过 severity=无 violations=0
+[2026-03-13 22:32:11] INFO     agent_system.orchestrator | 投研报告生成完成 | task=ff9988fc status=已完成
+[2026-03-13 22:55:56] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-13 22:56:23] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-13 22:56:23] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-13 22:56:23] INFO     agent_system.entity_linker | 股票映射表加载完成 | count=6363
+[2026-03-13 22:56:23] INFO     agent_system.orchestrator | 中枢调度引擎初始化完成 | 全链路 LangGraph 已编译
+[2026-03-13 22:56:23] INFO     agent_system.orchestrator | 全链路任务启动 | task_id=42f1fa7b targets=['']
+[2026-03-13 22:56:23] INFO     agent_system.news_retrieval | 开始执行 | attempt=1/2
+[2026-03-13 22:56:23] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=今天a股怎么跳水了 range=~
+[2026-03-13 22:56:31] INFO     agent_system.news_retrieval | 关键词语义分析 | keyword=今天a股怎么跳水了 | intent=事件 | core=['A股', '跳水', '下跌原因'] | search=['A股大跌', '股市跳水', 'A股下跌原因', '今日股市行情']
+[2026-03-13 22:56:31] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['股市跳水', 'A股', 'A股大跌'] | found=140
+[2026-03-13 22:56:31] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=140 table=news_keyword_search duration=8170ms
+[2026-03-13 22:56:31] INFO     agent_system.news_retrieval | 执行完成 | duration=8171ms
+[2026-03-13 22:56:31] INFO     agent_system.compliance | 合规校验 | agent=news_retrieval result=通过 severity=无 violations=0
+[2026-03-13 22:56:31] INFO     agent_system.event_classification | 开始执行 | attempt=1/2
+[2026-03-13 22:56:31] INFO     agent_system.event_classification | 事件分类启动 | task=42f1fa7b news=140
+[2026-03-13 22:57:22] INFO     agent_system.event_classification | LLM精分析完成 | top=20
+[2026-03-13 22:57:55] INFO     agent_system.event_classification | 事件分类完成 | total=140 core=30 llm_calls=2 duration=83413ms
+[2026-03-13 22:57:55] INFO     agent_system.event_classification | 执行完成 | duration=83413ms
+[2026-03-13 22:57:55] INFO     agent_system.compliance | 合规校验 | agent=event_classification result=通过 severity=无 violations=0
+[2026-03-13 22:57:55] INFO     agent_system.sentiment_analysis | 开始执行 | attempt=1/2
+[2026-03-13 22:57:55] INFO     agent_system.sentiment_analysis | 情绪分析启动(批量模式) | task=42f1fa7b core_news=30
+[2026-03-13 22:59:23] INFO     agent_system.sentiment_analysis | 批量情感LLM完成 | items=30 llm_calls=1
+[2026-03-13 22:59:23] INFO     agent_system.sentiment_analysis | 批量情感分析完成 | llm_calls=1
+[2026-03-13 22:59:23] INFO     agent_system.sentiment_analysis | 情绪分析完成 | index=56.8 trend=平稳 llm_calls=1 duration=88103ms
+[2026-03-13 22:59:23] INFO     agent_system.sentiment_analysis | 执行完成 | duration=88103ms
+[2026-03-13 22:59:23] INFO     agent_system.compliance | 合规校验 | agent=sentiment_analysis result=通过 severity=无 violations=0
+[2026-03-13 22:59:23] INFO     agent_system.fundamental_impact | 开始执行 | attempt=1/2
+[2026-03-13 22:59:23] INFO     agent_system.fundamental_impact | 基本面推演启动(批量模式) | task=42f1fa7b ts_code= events=30
+[2026-03-13 22:59:23] INFO     agent_system.industry_chain | 开始执行 | attempt=1/2
+[2026-03-13 22:59:23] INFO     agent_system.industry_chain | 产业链分析启动 | task=42f1fa7b company= events=30(top5)
+[2026-03-13 23:00:11] INFO     agent_system.industry_chain | 产业链分析完成 | events_used=5 beneficiaries=4 losers=4
+[2026-03-13 23:00:11] INFO     agent_system.industry_chain | 执行完成 | duration=48424ms
+[2026-03-13 23:00:49] INFO     agent_system.fundamental_impact | 综合影响分析完成(1次LLM调用)
+[2026-03-13 23:01:27] INFO     agent_system.fundamental_impact | 历史回测完成(1次LLM调用)
+[2026-03-13 23:01:27] INFO     agent_system.fundamental_impact | 基本面推演完成 | events=10 llm_calls=2 certainty=不确定性 duration=123782ms
+[2026-03-13 23:01:27] INFO     agent_system.fundamental_impact | 执行完成 | duration=123783ms
+[2026-03-13 23:01:27] INFO     agent_system.compliance | 合规校验 | agent=fundamental_impact result=通过 severity=无 violations=0
+[2026-03-13 23:01:27] INFO     agent_system.compliance | 合规校验 | agent=industry_chain result=通过 severity=无 violations=0
+[2026-03-13 23:01:27] INFO     agent_system.orchestrator | 并行深度分析完成 | total=123785ms fund=123782ms ind=48421ms saved=48418ms
+[2026-03-13 23:01:27] INFO     agent_system.strategy_generation | 开始执行 | attempt=1/2
+[2026-03-13 23:01:27] INFO     agent_system.strategy_generation | 策略生成启动 | task=42f1fa7b
+[2026-03-13 23:01:54] INFO     agent_system.strategy_generation | 策略生成完成 | direction=观望后伺机做多
+[2026-03-13 23:01:54] INFO     agent_system.strategy_generation | 执行完成 | duration=26859ms
+[2026-03-13 23:01:54] INFO     agent_system.compliance | 合规校验 | agent=strategy_generation result=通过 severity=无 violations=0
+[2026-03-13 23:01:54] INFO     agent_system.risk_control | 开始执行 | attempt=1/2
+[2026-03-13 23:01:54] INFO     agent_system.risk_control | 风控校验启动 | task=42f1fa7b
+[2026-03-13 23:02:22] INFO     agent_system.risk_control | 风控校验完成 | risk_level=中高风险
+[2026-03-13 23:02:22] INFO     agent_system.risk_control | 执行完成 | duration=28412ms
+[2026-03-13 23:02:22] INFO     agent_system.compliance | 合规校验 | agent=risk_control result=驳回 severity=严重 violations=1
+[2026-03-13 23:02:22] ERROR    agent_system.orchestrator | 合规熔断 | agent=risk_control
+[2026-03-13 23:02:22] INFO     agent_system.orchestrator | 投研报告生成完成 | task=42f1fa7b status=熔断

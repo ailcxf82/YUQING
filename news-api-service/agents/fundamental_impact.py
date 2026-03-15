@@ -19,6 +19,7 @@ from typing import Any, Dict, Optional
 from agents.base import BaseAgent
 from core.impact_analyzer import ImpactAnalyzer
 from core.schemas import FundamentalImpactOutput, FullLinkState, AgentStatus
+from core.prompts import get_prompt
 
 
 class FundamentalImpactAgent(BaseAgent):
@@ -27,12 +28,7 @@ class FundamentalImpactAgent(BaseAgent):
     name = "fundamental_impact"
     description = "多事件综合基本面影响推演、历史回测"
 
-    SYSTEM_PROMPT = (
-        "你是机构级投研分析师。\n"
-        "你的唯一职责是分析舆情事件对标的基本面的影响。\n"
-        "你绝对不做产业链传导分析、关联标的识别。\n"
-        "你绝对不生成交易策略、买卖点位、仓位建议。\n"
-    )
+    SYSTEM_PROMPT = get_prompt("fundamental_impact", "agent_system")
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)

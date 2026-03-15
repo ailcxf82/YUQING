@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分步调用 API 测试页面</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+        }
+        .sidebar {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 20px;
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+        }
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .step-list {
+            list-style: none;
+        }
+        .step-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-item:hover {
+            background: #e8f4fd;
+        }
+        .step-item.active {
+            background: #3498db;
+            color: #fff;
+        }
+        .step-item.completed {
+            background: #27ae60;
+            color: #fff;
+        }
+        .step-item.pending {
+            background: #ecf0f1;
+            color: #7f8c8d;
+        }
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .step-item.completed .step-number,
+        .step-item.active .step-number {
+            background: rgba(255,255,255,0.3);
+        }
+        .content {
+            background: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .step-panel {
+            display: none;
+        }
+        .step-panel.active {
+            display: block;
+        }
+        .step-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        .step-desc {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+        }
+        .step-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .info-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+        .info-badge.external {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .info-badge.local {
+            background: #d4edda;
+            color: #155724;
+        }
+        .info-badge.time {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        .form-control:disabled {
+            background: #f5f7fa;
+            cursor: not-allowed;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #3498db;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        .btn-primary:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            background: #95a5a6;
+            color: #fff;
+            margin-left: 10px;
+        }
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        .btn-success {
+            background: #27ae60;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #219a52;
+        }
+        .result-section {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 25px;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .result-title {
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        .result-time {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .result-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .result-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .result-box.error {
+            background: #fdf2f2;
+            border-color: #f5c6cb;
+        }
+        .result-box.success {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            color: #3498db;
+        }
+        .loading.active {
+            display: flex;
+        }
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e0e0e0;
+            border-top-color: #3498db;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .progress-bar {
+            margin: 20px 0;
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        .task-info {
+            background: #e8f4fd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .task-info p {
+            margin: 5px 0;
+        }
+        .task-id {
+            font-family: monospace;
+            background: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .auto-fill-note {
+            font-size: 12px;
+            color: #27ae60;
+            margin-top: 5px;
+        }
+        .collapsible {
+            cursor: pointer;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        .collapsible:hover {
+            background: #dee2e6;
+        }
+        .collapsible-content {
+            display: none;
+            padding: 10px;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .collapsible-content.show {
+            display: block;
+        }
+        .json-key {
+            color: #d63384;
+        }
+        .json-string {
+            color: #198754;
+        }
+        .json-number {
+            color: #0d6efd;
+        }
+        .json-boolean {
+            color: #dc3545;
+        }
+        .json-null {
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 分步调用 API 测试页面</h1>
+        
+        <div class="main-layout">
+            <div class="sidebar">
+                <h3>📋 步骤导航</h3>
+                <ul class="step-list" id="stepList">
+                    <li class="step-item active" data-step="1" onclick="showStep(1)">
+                        <span class="step-number">1</span>
+                        <span>创建任务</span>
+                    </li>
+                    <li class="step-item pending" data-step="2" onclick="showStep(2)">
+                        <span class="step-number">2</span>
+                        <span>关键词分析</span>
+                    </li>
+                    <li class="step-item pending" data-step="3" onclick="showStep(3)">
+                        <span class="step-number">3</span>
+                        <span>新闻检索</span>
+                    </li>
+                    <li class="step-item pending" data-step="4" onclick="showStep(4)">
+                        <span class="step-number">4</span>
+                        <span>事件分类</span>
+                    </li>
+                    <li class="step-item pending" data-step="5" onclick="showStep(5)">
+                        <span class="step-number">5</span>
+                        <span>情绪分析</span>
+                    </li>
+                    <li class="step-item pending" data-step="6" onclick="showStep(6)">
+                        <span class="step-number">6</span>
+                        <span>基本面影响</span>
+                    </li>
+                    <li class="step-item pending" data-step="7" onclick="showStep(7)">
+                        <span class="step-number">7</span>
+                        <span>产业链分析</span>
+                    </li>
+                    <li class="step-item pending" data-step="8" onclick="showStep(8)">
+                        <span class="step-number">8</span>
+                        <span>策略生成</span>
+                    </li>
+                    <li class="step-item pending" data-step="9" onclick="showStep(9)">
+                        <span class="step-number">9</span>
+                        <span>风控校验</span>
+                    </li>
+                    <li class="step-item pending" data-step="10" onclick="showStep(10)">
+                        <span class="step-number">10</span>
+                        <span>生成报告</span>
+                    </li>
+                </ul>
+                
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <h4 style="margin-bottom: 10px;">📊 当前进度</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <p id="progressText" style="text-align: center; color: #7f8c8d; font-size: 14px;">0/10 步骤完成</p>
+                </div>
+            </div>
+            
+            <div class="content">
+                <!-- Step 1: 创建任务 -->
+                <div class="step-panel active" id="step1">
+                    <h2 class="step-title">Step 1: 创建任务</h2>
+                    <p class="step-desc">创建新的分析任务，返回 task_id 用于后续步骤关联</p>
+                    <div class="step-info">
+                        <span class="info-badge local">本地处理</span>
+                        <span class="info-badge time">预计耗时 &lt;10ms</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="keyword">关键词 (keyword)</label>
+                        <input type="text" class="form-control" id="keyword" placeholder="例如：今天a股怎么跳水了" value="今天a股怎么跳水了">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="targetType">目标类型</label>
+                            <select class="form-control" id="targetType">
+                                <option value="个股">个股</option>
+                                <option value="行业">行业</option>
+                                <option value="主题">主题</option>
+                                <option value="全市场">全市场</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="timeRange">时间范围</label>
+                            <select class="form-control" id="timeRange">
+                                <option value="近24小时">近24小时</option>
+                                <option value="近7天" selected>近7天</option>
+                                <option value="近30天">近30天</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="targetCode">标的代码 (可选)</label>
+                            <input type="text" class="form-control" id="targetCode" placeholder="例如：600000.SH">
+                        </div>
+                        <div class="form-group">
+                            <label for="targetName">标的名称 (可选)</label>
+                            <input type="text" class="form-control" id="targetName" placeholder="例如：浦发银行">
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="createTask()" id="btn1">
+                        <span id="btn1Text">创建任务</span>
+                    </button>
+                    <div class="loading" id="loading1">
+                        <div class="spinner"></div>
+                        <span>请求中...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result1" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time1"></span>
+                        </div>
+                        <div class="result-box success" id="resultBox1">
+                            <pre id="resultPre1"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 2: 关键词分析 -->
+                <div class="step-panel" id="step2">
+                    <h2 class="step-title">Step 2: 关键词语义分析</h2>
+                    <p class="step-desc">调用 LLM 分析关键词语义，提取核心搜索词</p>
+                    <div class="step-info">
+                        <span class="info-badge external">外部请求: LLM</span>
+                        <span class="info-badge time">预计耗时 ~2s</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo2" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId2"></span></p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="keyword2">关键词</label>
+                        <input type="text" class="form-control" id="keyword2" placeholder="输入关键词">
+                        <p class="auto-fill-note" id="autoFillNote2"></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="analyzeKeyword()" id="btn2">
+                        <span id="btn2Text">执行关键词分析</span>
+                    </button>
+                    <div class="loading" id="loading2">
+                        <div class="spinner"></div>
+                        <span>LLM 分析中，请耐心等待...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result2" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time2"></span>
+                        </div>
+                        <div class="result-box" id="resultBox2">
+                            <pre id="resultPre2"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 3: 新闻检索 -->
+                <div class="step-panel" id="step3">
+                    <h2 class="step-title">Step 3: 新闻数据检索</h2>
+                    <p class="step-desc">从本地数据库检索新闻数据，无外部请求</p>
+                    <div class="step-info">
+                        <span class="info-badge local">本地处理</span>
+                        <span class="info-badge time">预计耗时 &lt;100ms</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo3" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId3"></span></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="retrieveNews()" id="btn3">
+                        <span id="btn3Text">执行新闻检索</span>
+                    </button>
+                    <div class="loading" id="loading3">
+                        <div class="spinner"></div>
+                        <span>检索中...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result3" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time3"></span>
+                        </div>
+                        <div class="result-box" id="resultBox3">
+                            <pre id="resultPre3"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 4: 事件分类 -->
+                <div class="step-panel" id="step4">
+                    <h2 class="step-title">Step 4: 事件分类识别</h2>
+                    <p class="step-desc">调用 LLM 对新闻进行事件分类</p>
+                    <div class="step-info">
+                        <span class="info-badge external">外部请求: LLM</span>
+                        <span class="info-badge time">预计耗时 ~96s</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo4" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId4"></span></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="classifyEvent()" id="btn4">
+                        <span id="btn4Text">执行事件分类</span>
+                    </button>
+                    <div class="loading" id="loading4">
+                        <div class="spinner"></div>
+                        <span>LLM 分析中，预计需要 1-2 分钟，请耐心等待...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result4" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time4"></span>
+                        </div>
+                        <div class="result-box" id="resultBox4">
+                            <pre id="resultPre4"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 5: 情绪分析 -->
+                <div class="step-panel" id="step5">
+                    <h2 class="step-title">Step 5: 情绪量化分析</h2>
+                    <p class="step-desc">调用 LLM 进行情绪量化分析</p>
+                    <div class="step-info">
+                        <span class="info-badge external">外部请求: LLM</span>
+                        <span class="info-badge time">预计耗时 ~91s</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo5" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId5"></span></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="analyzeSentiment()" id="btn5">
+                        <span id="btn5Text">执行情绪分析</span>
+                    </button>
+                    <div class="loading" id="loading5">
+                        <div class="spinner"></div>
+                        <span>LLM 分析中，预计需要 1-2 分钟，请耐心等待...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result5" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time5"></span>
+                        </div>
+                        <div class="result-box" id="resultBox5">
+                            <pre id="resultPre5"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 6: 基本面影响 -->
+                <div class="step-panel" id="step6">
+                    <h2 class="step-title">Step 6: 基本面影响推演</h2>
+                    <p class="step-desc">调用 LLM 推演基本面影响</p>
+                    <div class="step-info">
+                        <span class="info-badge external">外部请求: LLM</span>
+                        <span class="info-badge time">预计耗时 ~127s</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo6" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId6"></span></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="analyzeFundamental()" id="btn6">
+                        <span id="btn6Text">执行基本面分析</span>
+                    </button>
+                    <div class="loading" id="loading6">
+                        <div class="spinner"></div>
+                        <span>LLM 分析中，预计需要 2 分钟，请耐心等待...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result6" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time6"></span>
+                        </div>
+                        <div class="result-box" id="resultBox6">
+                            <pre id="resultPre6"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 7: 产业链分析 -->
+                <div class="step-panel" id="step7">
+                    <h2 class="step-title">Step 7: 产业链传导分析</h2>
+                    <p class="step-desc">调用 LLM 分析产业链传导（可与步骤6并行执行）</p>
+                    <div class="step-info">
+                        <span class="info-badge external">外部请求: LLM</span>
+                        <span class="info-badge time">预计耗时 ~53s</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo7" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId7"></span></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="analyzeIndustryChain()" id="btn7">
+                        <span id="btn7Text">执行产业链分析</span>
+                    </button>
+                    <div class="loading" id="loading7">
+                        <div class="spinner"></div>
+                        <span>LLM 分析中，预计需要 1 分钟，请耐心等待...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result7" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time7"></span>
+                        </div>
+                        <div class="result-box" id="resultBox7">
+                            <pre id="resultPre7"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 8: 策略生成 -->
+                <div class="step-panel" id="step8">
+                    <h2 class="step-title">Step 8: 策略生成</h2>
+                    <p class="step-desc">调用 LLM 生成投资策略</p>
+                    <div class="step-info">
+                        <span class="info-badge external">外部请求: LLM</span>
+                        <span class="info-badge time">预计耗时 ~12s</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo8" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId8"></span></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="generateStrategy()" id="btn8">
+                        <span id="btn8Text">执行策略生成</span>
+                    </button>
+                    <div class="loading" id="loading8">
+                        <div class="spinner"></div>
+                        <span>LLM 分析中，请耐心等待...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result8" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time8"></span>
+                        </div>
+                        <div class="result-box" id="resultBox8">
+                            <pre id="resultPre8"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 9: 风控校验 -->
+                <div class="step-panel" id="step9">
+                    <h2 class="step-title">Step 9: 风控校验</h2>
+                    <p class="step-desc">调用 LLM 进行风控校验</p>
+                    <div class="step-info">
+                        <span class="info-badge external">外部请求: LLM</span>
+                        <span class="info-badge time">预计耗时 ~15s</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo9" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId9"></span></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="riskControl()" id="btn9">
+                        <span id="btn9Text">执行风控校验</span>
+                    </button>
+                    <div class="loading" id="loading9">
+                        <div class="spinner"></div>
+                        <span>LLM 分析中，请耐心等待...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result9" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">返回结果</span>
+                            <span class="result-time" id="time9"></span>
+                        </div>
+                        <div class="result-box" id="resultBox9">
+                            <pre id="resultPre9"></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Step 10: 生成报告 -->
+                <div class="step-panel" id="step10">
+                    <h2 class="step-title">Step 10: 生成研究报告</h2>
+                    <p class="step-desc">聚合所有步骤结果，生成最终研究报告</p>
+                    <div class="step-info">
+                        <span class="info-badge local">本地处理</span>
+                        <span class="info-badge time">预计耗时 &lt;100ms</span>
+                    </div>
+                    
+                    <div class="task-info" id="taskInfo10" style="display: none;">
+                        <p><strong>当前任务 ID:</strong> <span class="task-id" id="taskId10"></span></p>
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="generateReport()" id="btn10">
+                        <span id="btn10Text">生成最终报告</span>
+                    </button>
+                    <div class="loading" id="loading10">
+                        <div class="spinner"></div>
+                        <span>生成中...</span>
+                    </div>
+                    
+                    <div class="result-section" id="result10" style="display: none;">
+                        <div class="result-header">
+                            <span class="result-title">最终研究报告</span>
+                            <span class="result-time" id="time10"></span>
+                        </div>
+                        <div class="result-box success" id="resultBox10">
+                            <pre id="resultPre10"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:8000/api/v2/pipeline';
+        
+        let currentTaskId = null;
+        let currentKeyword = null;
+        let completedSteps = [];
+        
+        function showStep(stepNum) {
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('step' + stepNum).classList.add('active');
+            
+            document.querySelectorAll('.step-item').forEach(item => {
+                item.classList.remove('active');
+                if (parseInt(item.dataset.step) === stepNum) {
+                    item.classList.add('active');
+                }
+            });
+            
+            updateTaskInfo(stepNum);
+        }
+        
+        function updateTaskInfo(stepNum) {
+            if (currentTaskId) {
+                const taskInfo = document.getElementById('taskInfo' + stepNum);
+                const taskIdSpan = document.getElementById('taskId' + stepNum);
+                if (taskInfo && taskIdSpan) {
+                    taskInfo.style.display = 'block';
+                    taskIdSpan.textContent = currentTaskId;
+                }
+            }
+            
+            if (currentKeyword && stepNum === 2) {
+                document.getElementById('keyword2').value = currentKeyword;
+                document.getElementById('autoFillNote2').textContent = '✓ 已自动填充创建任务时的关键词';
+            }
+        }
+        
+        function updateProgress() {
+            const total = 10;
+            const completed = completedSteps.length;
+            const percent = (completed / total) * 100;
+            
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = completed + '/' + total + ' 步骤完成';
+            
+            completedSteps.forEach(step => {
+                const item = document.querySelector('.step-item[data-step="' + step + '"]');
+                if (item) {
+                    item.classList.remove('pending', 'active');
+                    item.classList.add('completed');
+                }
+            });
+        }
+        
+        function formatJson(obj, indent = 0) {
+            if (obj === null) return '<span class="json-null">null</span>';
+            if (typeof obj === 'boolean') return '<span class="json-boolean">' + obj + '</span>';
+            if (typeof obj === 'number') return '<span class="json-number">' + obj + '</span>';
+            if (typeof obj === 'string') return '<span class="json-string">"' + obj.replace(/"/g, '\\"') + '"</span>';
+            
+            if (Array.isArray(obj)) {
+                if (obj.length === 0) return '[]';
+                let result = '[\n';
+                obj.forEach((item, i) => {
+                    result += '  '.repeat(indent + 1) + formatJson(item, indent + 1);
+                    if (i < obj.length - 1) result += ',';
+                    result += '\n';
+                });
+                result += '  '.repeat(indent) + ']';
+                return result;
+            }
+            
+            if (typeof obj === 'object') {
+                const keys = Object.keys(obj);
+                if (keys.length === 0) return '{}';
+                let result = '{\n';
+                keys.forEach((key, i) => {
+                    result += '  '.repeat(indent + 1) + '<span class="json-key">"' + key + '"</span>: ' + formatJson(obj[key], indent + 1);
+                    if (i < keys.length - 1) result += ',';
+                    result += '\n';
+                });
+                result += '  '.repeat(indent) + '}';
+                return result;
+            }
+            
+            return String(obj);
+        }
+        
+        function showResult(stepNum, data, isError = false) {
+            const resultSection = document.getElementById('result' + stepNum);
+            const resultBox = document.getElementById('resultBox' + stepNum);
+            const resultPre = document.getElementById('resultPre' + stepNum);
+            const timeSpan = document.getElementById('time' + stepNum);
+            
+            resultSection.style.display = 'block';
+            resultBox.className = 'result-box ' + (isError ? 'error' : 'success');
+            resultPre.innerHTML = formatJson(data);
+            
+            if (data.duration_ms) {
+                timeSpan.textContent = '耗时: ' + data.duration_ms + 'ms';
+            }
+        }
+        
+        function setLoading(stepNum, isLoading) {
+            const loading = document.getElementById('loading' + stepNum);
+            const btn = document.getElementById('btn' + stepNum);
+            
+            if (isLoading) {
+                loading.classList.add('active');
+                btn.disabled = true;
+            } else {
+                loading.classList.remove('active');
+                btn.disabled = false;
+            }
+        }
+        
+        async function createTask() {
+            const keyword = document.getElementById('keyword').value;
+            const targetType = document.getElementById('targetType').value;
+            const timeRange = document.getElementById('timeRange').value;
+            const targetCode = document.getElementById('targetCode').value;
+            const targetName = document.getElementById('targetName').value;
+            
+            const body = {
+                target_type: targetType,
+                target_code: targetCode ? [targetCode] : [],
+                target_name: targetName ? [targetName] : [],
+                keyword: keyword,
+                time_range: timeRange,
+                analysis_depth: "标准版",
+                user_custom_rules: {}
+            };
+            
+            setLoading(1, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/task/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                
+                const data = await response.json();
+                showResult(1, data);
+                
+                if (data.success && data.task_id) {
+                    currentTaskId = data.task_id;
+                    currentKeyword = keyword;
+                    completedSteps.push(1);
+                    updateProgress();
+                    
+                    document.getElementById('btn1Text').textContent = '✓ 任务已创建';
+                    document.getElementById('btn1').classList.remove('btn-primary');
+                    document.getElementById('btn1').classList.add('btn-success');
+                }
+            } catch (error) {
+                showResult(1, { error: error.message }, true);
+            }
+            
+            setLoading(1, false);
+        }
+        
+        async function analyzeKeyword() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            const keyword = document.getElementById('keyword2').value;
+            setLoading(2, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/keyword-analysis', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        keyword: keyword
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(2, data);
+                
+                if (data.success) {
+                    completedSteps.push(2);
+                    updateProgress();
+                }
+            } catch (error) {
+                showResult(2, { error: error.message }, true);
+            }
+            
+            setLoading(2, false);
+        }
+        
+        async function retrieveNews() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            setLoading(3, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/news-retrieval', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        step_name: 'news_retrieval',
+                        input_data: {}
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(3, data);
+                
+                if (data.success) {
+                    completedSteps.push(3);
+                    updateProgress();
+                }
+            } catch (error) {
+                showResult(3, { error: error.message }, true);
+            }
+            
+            setLoading(3, false);
+        }
+        
+        async function classifyEvent() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            setLoading(4, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/event-classification', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        step_name: 'event_classification',
+                        input_data: {}
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(4, data);
+                
+                if (data.success) {
+                    completedSteps.push(4);
+                    updateProgress();
+                }
+            } catch (error) {
+                showResult(4, { error: error.message }, true);
+            }
+            
+            setLoading(4, false);
+        }
+        
+        async function analyzeSentiment() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            setLoading(5, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/sentiment-analysis', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        step_name: 'sentiment_analysis',
+                        input_data: {}
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(5, data);
+                
+                if (data.success) {
+                    completedSteps.push(5);
+                    updateProgress();
+                }
+            } catch (error) {
+                showResult(5, { error: error.message }, true);
+            }
+            
+            setLoading(5, false);
+        }
+        
+        async function analyzeFundamental() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            setLoading(6, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/fundamental-impact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        step_name: 'fundamental_impact',
+                        input_data: {}
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(6, data);
+                
+                if (data.success) {
+                    completedSteps.push(6);
+                    updateProgress();
+                }
+            } catch (error) {
+                showResult(6, { error: error.message }, true);
+            }
+            
+            setLoading(6, false);
+        }
+        
+        async function analyzeIndustryChain() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            setLoading(7, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/industry-chain', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        step_name: 'industry_chain',
+                        input_data: {}
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(7, data);
+                
+                if (data.success) {
+                    completedSteps.push(7);
+                    updateProgress();
+                }
+            } catch (error) {
+                showResult(7, { error: error.message }, true);
+            }
+            
+            setLoading(7, false);
+        }
+        
+        async function generateStrategy() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            setLoading(8, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/strategy-generation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        step_name: 'strategy_generation',
+                        input_data: {}
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(8, data);
+                
+                if (data.success) {
+                    completedSteps.push(8);
+                    updateProgress();
+                }
+            } catch (error) {
+                showResult(8, { error: error.message }, true);
+            }
+            
+            setLoading(8, false);
+        }
+        
+        async function riskControl() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            setLoading(9, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/risk-control', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        step_name: 'risk_control',
+                        input_data: {}
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(9, data);
+                
+                if (data.success) {
+                    completedSteps.push(9);
+                    updateProgress();
+                }
+            } catch (error) {
+                showResult(9, { error: error.message }, true);
+            }
+            
+            setLoading(9, false);
+        }
+        
+        async function generateReport() {
+            if (!currentTaskId) {
+                alert('请先创建任务！');
+                return;
+            }
+            
+            setLoading(10, true);
+            
+            try {
+                const response = await fetch(API_BASE + '/step/generate-report', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        task_id: currentTaskId,
+                        step_name: 'generate_report',
+                        input_data: {}
+                    })
+                });
+                
+                const data = await response.json();
+                showResult(10, data);
+                
+                if (data.success) {
+                    completedSteps.push(10);
+                    updateProgress();
+                    
+                    document.getElementById('btn10Text').textContent = '✓ 报告已生成';
+                }
+            } catch (error) {
+                showResult(10, { error: error.message }, true);
+            }
+            
+            setLoading(10, false);
+        }
+    </script>
+</body>
+</html>

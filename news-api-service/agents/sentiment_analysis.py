@@ -17,6 +17,7 @@ from typing import Any, Dict, List
 from agents.base import BaseAgent
 from core.schemas import SentimentAnalysisOutput, FullLinkState, AgentStatus
 from core.sentiment_engine import SentimentEngine
+from core.prompts import get_prompt
 
 
 class SentimentAnalysisAgent(BaseAgent):
@@ -25,11 +26,7 @@ class SentimentAnalysisAgent(BaseAgent):
     name = "sentiment_analysis"
     description = "批量情绪判断、情绪指数构建、舆情评级"
 
-    SYSTEM_PROMPT = (
-        "你是机构级金融情感分析专家。\n"
-        "你的唯一职责是对舆情文本进行精细化情感极性判断与情绪强度打分。\n"
-        "你绝对不做基本面分析、产业链分析、投资建议、交易策略生成。\n"
-    )
+    SYSTEM_PROMPT = get_prompt("sentiment", "agent_system")
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)

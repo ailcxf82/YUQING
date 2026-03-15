@@ -19,6 +19,7 @@ from typing import Any, Dict, List
 
 from agents.base import BaseAgent
 from core.schemas import FeedbackOptimizationOutput, FullLinkState, AgentStatus
+from core.prompts import get_prompt
 
 
 class FeedbackOptimizationAgent(BaseAgent):
@@ -27,32 +28,8 @@ class FeedbackOptimizationAgent(BaseAgent):
     name = "feedback_optimization"
     description = "事件复盘、分析准确率评估、偏差定位、参数/Prompt优化"
 
-    SYSTEM_PROMPT = (
-        "你是投研模型优化专家。\n"
-        "你的唯一职责是对比历史分析结论与事件实际结果，评估偏差并提出优化建议。\n"
-        "你绝对不修改实时运行中的智能体参数。\n"
-        "你绝对不篡改历史分析数据与事件实际结果。\n"
-    )
-
-    REVIEW_PROMPT = (
-        "请对比以下历史分析结论与事件实际结果，进行复盘评估。\n\n"
-        "## 输出格式（严格JSON）\n"
-        "{\n"
-        '  "accuracy": {\n'
-        '    "sentiment_accuracy": 0.0-1.0,\n'
-        '    "impact_accuracy": 0.0-1.0,\n'
-        '    "strategy_effectiveness": 0.0-1.0,\n'
-        '    "overall_score": 0.0-1.0\n'
-        "  },\n"
-        '  "deviations": ["偏差原因1", "偏差原因2"],\n'
-        '  "optimizations": [\n'
-        '    {"target": "优化目标(智能体/参数/Prompt)", "current": "当前值", '
-        '     "suggested": "建议值", "reason": "原因"}\n'
-        "  ],\n"
-        '  "backtest_validation": {"improved": true/false, "detail": "验证详情"}\n'
-        "}\n"
-        "仅输出JSON。"
-    )
+    SYSTEM_PROMPT = get_prompt("feedback_optimization", "agent_system")
+    REVIEW_PROMPT = get_prompt("feedback_optimization", "review")
 
     def run(self, state: FullLinkState) -> Dict[str, Any]:
         """常规链路中不执行，由 run_optimization 独立触发"""

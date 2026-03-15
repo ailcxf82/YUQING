@@ -19,6 +19,7 @@ from typing import Any, Dict, List
 
 from agents.base import BaseAgent
 from core.schemas import RiskControlOutput, FullLinkState, AgentStatus
+from core.prompts import get_prompt
 
 
 class RiskControlAgent(BaseAgent):
@@ -27,34 +28,8 @@ class RiskControlAgent(BaseAgent):
     name = "risk_control"
     description = "策略风险校验、止损止盈规则、仓位管控、风险等级划分"
 
-    SYSTEM_PROMPT = (
-        "你是策略风控与合规校验专家。\n"
-        "你的唯一职责是对生成的策略做风险校验与风控规则补充。\n"
-        "你绝对不修改策略的核心交易逻辑、交易方向、入场条件。\n"
-        "你绝对不生成任何违规的投资承诺、保本保收益表述。\n"
-    )
-
-    RISK_PROMPT = (
-        "请对以下策略进行风险校验与风控规则补充。\n\n"
-        "## 输出格式（严格JSON）\n"
-        "{\n"
-        '  "risk_level": "低风险/中低风险/中风险/中高风险/高风险",\n'
-        '  "rationality_check": {\n'
-        '    "position_check": "仓位是否合理",\n'
-        '    "stop_loss_check": "止损是否合理",\n'
-        '    "period_match": "持有周期是否与影响周期匹配",\n'
-        '    "corrections": ["修正建议1"]\n'
-        "  },\n"
-        '  "enhanced_rules": {\n'
-        '    "dynamic_stop_loss": "动态止损规则",\n'
-        '    "extreme_scenario": "极端行情应对",\n'
-        '    "position_adjustment": "仓位动态调整规则"\n'
-        "  },\n"
-        '  "risk_points": ["风险点1", "风险点2"],\n'
-        '  "monitoring": {"frequency": "监控频率", "key_metrics": ["指标1"]}\n'
-        "}\n"
-        "仅输出JSON。"
-    )
+    SYSTEM_PROMPT = get_prompt("risk_control", "agent_system")
+    RISK_PROMPT = get_prompt("risk_control", "risk_check")
 
     def run(self, state: FullLinkState) -> Dict[str, Any]:
         start = time.time()

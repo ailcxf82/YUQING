@@ -15,10 +15,10 @@ import statistics
 from typing import Any, Dict, List, Optional
 
 from core.logger import get_logger
+from core.prompts import get_prompt
 
 logger = get_logger("sentiment_engine")
 
-# ── 情感极性映射 ──
 POLARITY_MAP = {
     "强正向": {"min_score": 80, "max_score": 100},
     "弱正向": {"min_score": 60, "max_score": 79},
@@ -46,42 +46,8 @@ def score_to_polarity(score: float) -> str:
 class SentimentEngine:
     """金融细粒度情感分析引擎"""
 
-    SYSTEM_PROMPT = (
-        "你是机构级金融情感分析专家。请对给定新闻文本进行精细化情感分析。\n\n"
-        "## 分析要求\n"
-        "1. 情感极性：六选一【强正向/弱正向/中性/弱负向/强负向/不确定性】\n"
-        "2. 情感强度：0-100分（0=极致利空, 50=中性, 100=极致利好）\n"
-        "3. 核心驱动因素：明确情绪的核心来源\n\n"
-        "## 特别注意\n"
-        "- 处理反讽/隐喻：如\"看好\"用在讽刺语境中应判负向\n"
-        "- 双重否定：如\"不会不影响\" = 会影响\n"
-        "- 复合语义：如\"业绩不及预期，但亏损大幅收窄\"→弱正向（关键是亏损收窄的改善趋势）\n"
-        "- \"预计/或将/可能\"类表述→不确定性\n"
-        "- 区分事实报道与观点表达\n\n"
-        "## Few-Shot\n"
-        "输入: 公司业绩不及预期，但亏损大幅收窄，经营性现金流首次转正\n"
-        '输出: {"polarity":"弱正向","score":65,"driver":"亏损收窄+现金流改善",'
-        '"reasoning":"虽业绩不及预期为负面，但亏损收窄和现金流转正显示经营拐点"}\n\n'
-        "输入: 监管层对该行业出台严厉整改措施，多家企业被责令停业\n"
-        '输出: {"polarity":"强负向","score":12,"driver":"监管严厉打压",'
-        '"reasoning":"监管层整改措施直接影响行业经营，属重大负面事件"}\n\n'
-        "输入: 公司发布常规季度运营数据，各项指标与上年同期基本持平\n"
-        '输出: {"polarity":"中性","score":50,"driver":"常规信息披露",'
-        '"reasoning":"无超预期或低于预期的信息，属例行披露"}\n\n'
-        "输入: 据市场传闻，该公司或将获得国家级重大项目支持\n"
-        '输出: {"polarity":"不确定性","score":58,"driver":"政策传闻",'
-        '"reasoning":"传闻阶段未经证实，但若属实为重大利好，偏正向不确定"}\n\n'
-        "## 输出格式（严格JSON）\n"
-        "{\n"
-        '  "polarity": "六选一",\n'
-        '  "score": 0-100,\n'
-        '  "driver": "核心驱动因素",\n'
-        '  "reasoning": "一句话判断依据",\n'
-        '  "complexity": "simple/moderate/complex",\n'
-        '  "key_phrases": ["关键短语1", "关键短语2"]\n'
-        "}\n"
-        "仅输出JSON。"
-    )
+    SYSTEM_PROMPT = get_prompt("sentiment", "single_analyze")
+    BATCH_SYSTEM_PROMPT = get_prompt("sentiment", "batch_analyze")
 
     def __init__(self, llm_client: Any) -> None:
         self.llm = llm_client
@@ -120,25 +86,6 @@ class SentimentEngine:
                 "complexity": "simple",
                 "key_phrases": [],
             }
-
-    BATCH_SYSTEM_PROMPT = (
-        "你是机构级金融情感分析专家。请对以下多条新闻逐一进行情感分析。\n\n"
-        "## 分析要求\n"
-        "1. 情感极性：六选一【强正向/弱正向/中性/弱负向/强负向/不确定性】\n"
-        "2. 情感强度：0-100分（0=极致利空, 50=中性, 100=极致利好）\n"
-        "3. 核心驱动因素\n\n"
-        "## 特别注意\n"
-        "- 处理反讽/隐喻/双重否定等复杂语义\n"
-        "- \"预计/或将/可能\"类→不确定性\n\n"
-        "## 输出格式（严格JSON数组）\n"
-        "[\n"
-        '  {"news_id": "N1", "polarity": "弱正向", "score": 65, '
-        '"driver": "核心驱动因素", "reasoning": "一句话依据"},\n'
-        '  {"news_id": "N2", "polarity": "中性", "score": 50, '
-        '"driver": "常规信息", "reasoning": "一句话依据"}\n'
-        "]\n"
-        "仅输出JSON数组。必须为每条新闻都输出一条结果。"
-    )
 
     def analyze_aggregate(
         self, items: List[Dict[str, Any]], batch_size: int = 30
@@ -195,8 +142,6 @@ class SentimentEngine:
     ) -> List[Dict[str, Any]]:
         """批量情感分析（保留向后兼容）"""
         return self.analyze_aggregate(items, batch_size=max_llm)
-
-    # ── 动态情绪指数 ──
 
     @staticmethod
     def build_emotion_index(
@@ -272,8 +217,6 @@ class SentimentEngine:
             "direction": "超预期乐观" if deviation > 1.5 else "超预期悲观" if deviation < -1.5 else "正常范围",
         }
 
-    # ── 一致性校验 ──
-
     @staticmethod
     def check_consistency(
         sentiments: List[Dict[str, Any]],
@@ -340,8 +283,6 @@ class SentimentEngine:
                 s["is_noise"] = False
             filtered.append(s)
         return filtered
-
-    # ── 规则兜底 ──
 
     @staticmethod
     def _rule_sentiment(text: str) -> Dict[str, Any]:

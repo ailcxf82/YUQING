@@ -6,7 +6,8 @@ import tushare as ts
 from app.config import get_settings
 from app import database
 
-# 支持的新闻来源（与 Tushare 一致）
+TUSHARE_TIMEOUT = 120
+
 NEWS_SOURCES = [
     "sina", "wallstreetcn", "10jqka", "eastmoney",
     "yuncaijing", "fenghuang", "jinrongjie", "cls", "yicai",
@@ -65,7 +66,7 @@ def fetch_news_for_source(
             else:
                 start_date = start_date or default_start
 
-        pro = ts.pro_api(token)
+        pro = ts.pro_api(token, timeout=TUSHARE_TIMEOUT)
         df = pro.news(src=src, start_date=start_date, end_date=end_date)
         if df is None or df.empty:
             database.set_last_fetch_end(conn, src, end_date)

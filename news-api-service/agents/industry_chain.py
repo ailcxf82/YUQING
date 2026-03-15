@@ -20,6 +20,7 @@ from typing import Any, Dict, List
 from agents.base import BaseAgent
 from core.impact_analyzer import ImpactAnalyzer
 from core.schemas import IndustryChainOutput, FullLinkState, AgentStatus
+from core.prompts import get_prompt
 
 
 class IndustryChainAgent(BaseAgent):
@@ -28,27 +29,8 @@ class IndustryChainAgent(BaseAgent):
     name = "industry_chain"
     description = "产业链上下游传导分析、受益/受损标的识别、跨行业传导预判"
 
-    SYSTEM_PROMPT = (
-        "你是产业链传导分析专家。\n"
-        "你的唯一职责是分析舆情事件对产业链上下游的传导影响。\n"
-        "你绝对不做单标的基本面影响测算、业绩预测。\n"
-        "你绝对不生成交易策略、买卖点位、仓位建议。\n"
-    )
-
-    CHAIN_PROMPT = (
-        "你是产业链分析专家。请综合分析以下多条舆情事件对产业链上下游的全维度影响。\n"
-        "注意：需综合考虑所有事件的叠加效应，不要仅看单条事件。\n\n"
-        "## 输出格式（严格JSON）\n"
-        "{\n"
-        '  "chain_mapping": {"upstream": ["上游环节"], "midstream": ["中游环节"], "downstream": ["下游环节"]},\n'
-        '  "conduction_logic": [{"from": "起点", "to": "终点", "logic": "传导逻辑", "direction": "正向/负向"}],\n'
-        '  "beneficiaries": [{"target": "受益标的/行业", "reason": "原因"}],\n'
-        '  "losers": [{"target": "受损标的/行业", "reason": "原因"}],\n'
-        '  "cross_sector": [{"sector": "跨行业", "risk": "传导风险"}],\n'
-        '  "boom_change": {"direction": "上行/下行/持平", "duration": "持续周期", "confidence": 0.0-1.0}\n'
-        "}\n"
-        "仅输出JSON。"
-    )
+    SYSTEM_PROMPT = get_prompt("industry_chain", "agent_system")
+    CHAIN_PROMPT = get_prompt("industry_chain", "chain_analyze")
 
     TOP_N_EVENTS = 5
 

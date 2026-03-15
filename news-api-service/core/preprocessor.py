@@ -14,6 +14,7 @@ import unicodedata
 from typing import Any, Dict, List, Optional
 
 from core.logger import get_logger
+from core.prompts import get_prompt
 
 logger = get_logger("preprocessor")
 
@@ -153,17 +154,7 @@ class TextChunker:
 class StructuredExtractor:
     """基于 LLM 的结构化信息提取"""
 
-    SYSTEM_PROMPT = (
-        "你是金融舆情结构化提取专家。从给定新闻文本中提取以下字段，严格以 JSON 格式返回：\n"
-        "{\n"
-        '  "core_entity": "核心实体（公司/机构/人物名称）",\n'
-        '  "related_stock": "关联标的(代码+名称，多个用逗号分隔，无则空字符串)",\n'
-        '  "event_type": "事件类型(业绩发布/并购重组/政策变动/人事变动/产品发布/'
-        '行业趋势/资金流向/风险预警/其他)",\n'
-        '  "keywords": ["关键词1", "关键词2", "关键词3"]\n'
-        "}\n"
-        "仅输出 JSON，不要任何解释或附加文字。"
-    )
+    SYSTEM_PROMPT = get_prompt("preprocessor", "structured_extract")
 
     def __init__(self, llm_client: Any) -> None:
         self.llm = llm_client

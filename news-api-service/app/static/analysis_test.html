@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全链路一键分析 - API 测试</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #fff;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .btn {
+            padding: 14px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .btn-primary:disabled {
+            background: #bdc3c7;
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            background: #95a5a6;
+            color: #fff;
+            margin-left: 10px;
+        }
+        .loading {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 40px;
+            color: #667eea;
+        }
+        .loading.active {
+            display: flex;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e0e0e0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .result-section {
+            margin-top: 30px;
+            border-top: 2px solid #eee;
+            padding-top: 30px;
+        }
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .result-title {
+            font-size: 20px;
+            color: #2c3e50;
+        }
+        .result-time {
+            background: #e8f4fd;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: #1976d2;
+            font-size: 14px;
+        }
+        .result-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .result-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .result-box.success {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+        .result-box.error {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            color: #6c757d;
+            transition: all 0.2s;
+        }
+        .tab:hover {
+            color: #667eea;
+        }
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .api-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .api-info code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e9ecef;
+            z-index: 0;
+        }
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .progress-step .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #6c757d;
+            transition: all 0.3s;
+        }
+        .progress-step.active .step-circle {
+            background: #667eea;
+            color: #fff;
+        }
+        .progress-step.completed .step-circle {
+            background: #27ae60;
+            color: #fff;
+        }
+        .progress-step .step-label {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+        }
+        .progress-step.active .step-label,
+        .progress-step.completed .step-label {
+            color: #2c3e50;
+        }
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .history-item:hover {
+            background: #f8f9fa;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-keyword {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .history-time {
+            font-size: 12px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 全链路一键分析</h1>
+        
+        <div class="card">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('full')">全链路分析</div>
+                <div class="tab" onclick="switchTab('quick')">快捷分析</div>
+                <div class="tab" onclick="switchTab('fetch')">仅采集</div>
+                <div class="tab" onclick="switchTab('history')">历史记录</div>
+            </div>
+            
+            <!-- 全链路分析 -->
+            <div class="tab-content active" id="tab-full">
+                <div class="api-info">
+                    <strong>API:</strong> <code>POST /api/v2/analysis/full-link</code><br>
+                    <strong>说明:</strong> 完整全链路分析，包含所有步骤，预计耗时 5-8 分钟
+                </div>
+                
+                <div class="form-group">
+                    <label for="keyword">关键词 *</label>
+                    <input type="text" class="form-control" id="keyword" placeholder="例如：今天a股怎么跳水了" value="今天a股怎么跳水了">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="targetType">目标类型</label>
+                        <select class="form-control" id="targetType">
+                            <option value="个股">个股</option>
+                            <option value="行业">行业</option>
+                            <option value="主题" selected>主题</option>
+                            <option value="全市场">全市场</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeRange">时间范围</label>
+                        <select class="form-control" id="timeRange">
+                            <option value="近24小时">近24小时</option>
+                            <option value="近7天" selected>近7天</option>
+                            <option value="近30天">近30天</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="targetCode">标的代码 (可选)</label>
+                        <input type="text" class="form-control" id="targetCode" placeholder="例如：600000.SH">
+                    </div>
+                    <div class="form-group">
+                        <label for="analysisDepth">分析深度</label>
+                        <select class="form-control" id="analysisDepth">
+                            <option value="快速版">快速版 (~3分钟)</option>
+                            <option value="标准版" selected>标准版 (~5分钟)</option>
+                            <option value="深度版">深度版 (~8分钟)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="runFullAnalysis()" id="btnFull">
+                    开始全链路分析
+                </button>
+                
+                <div class="loading" id="loadingFull">
+                    <div class="spinner"></div>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 5px;">分析进行中...</div>
+                        <div style="font-size: 14px; color: #6c757d;">预计需要 5-8 分钟，请耐心等待</div>
+                    </div>
+                </div>
+                
+                <div class="progress-steps" id="progressSteps" style="display: none;">
+                    <div class="progress-step" data-step="1">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">关键词分析</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">新闻检索</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">事件分类</div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="step-circle">4</div>
+                        <div class="step-label">情绪分析</div>
+                    </div>
+                    <div class="progress-step" data-step="5">
+                        <div class="step-circle">5</div>
+                        <div class="step-label">基本面</div>
+                    </div>
+                    <div class="progress-step" data-step="6">
+                        <div class="step-circle">6</div>
+                        <div class="step-label">产业链</div>
+                    </div>
+                    <div class="progress-step" data-step="7">
+                        <div class="step-circle">7</div>
+                        <div class="step-label">策略生成</div>
+                    </div>
+                    <div class="progress-step" data-step="8">
+                        <div class="step-circle">8</div>
+                        <div class="step-label">风控校验</div>
+                    </div>
+                    <div class="progress-step" data-step="9">
+                        <div class="step-circle">9</div>
+                        <div class="step-label">生成报告</div>
+                    </div>
+                </div>
+                
+                <div class="result-section" id="resultFull" style="display: none;">
+                    <div class="result-header">
+                        <span class="result-title">分析结果</span>
+                        <span class="result-time" id="timeFull"></span>
+                    </div>
+                    <div class="result-box" id="resultBoxFull">
+                        <pre id="resultPreFull"></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 快捷分析 -->
+            <div class="tab-content" id="tab-quick">
+                <div class="api-info">
+                    <strong>API:</strong> <code>POST /api/v2/analysis/quick</code><br>
+                    <strong>说明:</strong> 快捷分析，仅执行关键词分析 + 新闻检索，预计耗时 ~5秒
+                </div>
+                
+                <div class="form-group">
+                    <label for="keywordQuick">关键词 *</label>
+                    <input type="text" class="form-control" id="keywordQuick" placeholder="输入关键词">
+                </div>
+                
+                <button class="btn btn-primary" onclick="runQuickAnalysis()">
+                    快捷分析
+                </button>
+                
+                <div class="loading" id="loadingQuick">
+                    <div class="spinner"></div>
+                    <span>分析中...</span>
+                </div>
+                
+                <div class="result-section" id="resultQuick" style="display: none;">
+                    <div class="result-header">
+                        <span class="result-title">分析结果</span>
+                        <span class="result-time" id="timeQuick"></span>
+                    </div>
+                    <div class="result-box" id="resultBoxQuick">
+                        <pre id="resultPreQuick"></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 仅采集 -->
+            <div class="tab-content" id="tab-fetch">
+                <div class="api-info">
+                    <strong>API:</strong> <code>POST /api/news/fetch</code><br>
+                    <strong>说明:</strong> 仅执行新闻采集，不进行分析
+                </div>
+                
+                <div class="form-group">
+                    <label for="keywordFetch">关键词 *</label>
+                    <input type="text" class="form-control" id="keywordFetch" placeholder="输入关键词">
+                </div>
+                
+                <button class="btn btn-primary" onclick="runFetch()">
+                    开始采集
+                </button>
+                
+                <div class="loading" id="loadingFetch">
+                    <div class="spinner"></div>
+                    <span>采集中...</span>
+                </div>
+                
+                <div class="result-section" id="resultFetch" style="display: none;">
+                    <div class="result-header">
+                        <span class="result-title">采集结果</span>
+                        <span class="result-time" id="timeFetch"></span>
+                    </div>
+                    <div class="result-box" id="resultBoxFetch">
+                        <pre id="resultPreFetch"></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 历史记录 -->
+            <div class="tab-content" id="tab-history">
+                <div class="api-info">
+                    <strong>说明:</strong> 显示最近的分析历史记录
+                </div>
+                
+                <div class="history-list" id="historyList">
+                    <p style="color: #6c757d; text-align: center; padding: 20px;">暂无历史记录</p>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-secondary" onclick="window.open('/static/pipeline_test.html', '_blank')">
+                分步测试
+            </button>
+            <button class="btn btn-secondary" onclick="window.open('/static/task_manager.html', '_blank')">
+                任务管理
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:8000/api';
+        let history = JSON.parse(localStorage.getItem('analysisHistory') || '[]');
+        
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            document.querySelector('.tab[onclick="switchTab(\'' + tabName + '\')"]').classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            if (tabName === 'history') {
+                renderHistory();
+            }
+        }
+        
+        function formatJson(obj) {
+            return JSON.stringify(obj, null, 2);
+        }
+        
+        function setLoading(loadingId, isLoading) {
+            const loading = document.getElementById(loadingId);
+            if (isLoading) {
+                loading.classList.add('active');
+            } else {
+                loading.classList.remove('active');
+            }
+        }
+        
+        function showResult(resultId, data, isError = false, timeMs = null) {
+            const section = document.getElementById('result' + resultId);
+            const box = document.getElementById('resultBox' + resultId);
+            const pre = document.getElementById('resultPre' + resultId);
+            const timeSpan = document.getElementById('time' + resultId);
+            
+            section.style.display = 'block';
+            box.className = 'result-box ' + (isError ? 'error' : 'success');
+            pre.textContent = formatJson(data);
+            
+            if (timeMs) {
+                timeSpan.textContent = '耗时: ' + (timeMs / 1000).toFixed(2) + 's';
+            }
+        }
+        
+        function addToHistory(keyword, type, result) {
+            history.unshift({
+                keyword: keyword,
+                type: type,
+                time: new Date().toLocaleString(),
+                result: result
+            });
+            
+            if (history.length > 20) {
+                history = history.slice(0, 20);
+            }
+            
+            localStorage.setItem('analysisHistory', JSON.stringify(history));
+        }
+        
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                list.innerHTML = '<p style="color: #6c757d; text-align: center; padding: 20px;">暂无历史记录</p>';
+                return;
+            }
+            
+            list.innerHTML = history.map((item, index) => `
+                <div class="history-item" onclick="showHistoryItem(${index})">
+                    <div class="history-keyword">${item.keyword}</div>
+                    <div class="history-time">${item.type} · ${item.time}</div>
+                </div>
+            `).join('');
+        }
+        
+        function showHistoryItem(index) {
+            const item = history[index];
+            alert('关键词: ' + item.keyword + '\n类型: ' + item.type + '\n时间: ' + item.time + '\n\n结果已记录在控制台');
+            console.log('历史记录详情:', item.result);
+        }
+        
+        let progressInterval = null;
+        let currentStep = 0;
+        
+        function startProgress() {
+            currentStep = 0;
+            document.getElementById('progressSteps').style.display = 'flex';
+            
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+            
+            progressInterval = setInterval(() => {
+                if (currentStep > 0) {
+                    document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.remove('active');
+                    document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.add('completed');
+                }
+                
+                currentStep++;
+                if (currentStep <= 9) {
+                    document.querySelector('.progress-step[data-step="' + currentStep + '"]').classList.add('active');
+                }
+            }, 30000);
+        }
+        
+        function stopProgress() {
+            if (progressInterval) {
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+            
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.remove('active');
+                step.classList.add('completed');
+            });
+        }
+        
+        async function runFullAnalysis() {
+            const keyword = document.getElementById('keyword').value.trim();
+            if (!keyword) {
+                alert('请输入关键词');
+                return;
+            }
+            
+            const btn = document.getElementById('btnFull');
+            btn.disabled = true;
+            setLoading('loadingFull', true);
+            startProgress();
+            
+            const body = {
+                target_type: document.getElementById('targetType').value,
+                target_code: document.getElementById('targetCode').value ? [document.getElementById('targetCode').value] : [],
+                keyword: keyword,
+                time_range: document.getElementById('timeRange').value,
+                analysis_depth: document.getElementById('analysisDepth').value,
+                user_custom_rules: {}
+            };
+            
+            const startTime = Date.now();
+            
+            try {
+                const response = await fetch(API_BASE + '/v2/analysis/full-link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                
+                const data = await response.json();
+                const duration = Date.now() - startTime;
+                
+                stopProgress();
+                showResult('Full', data, !data.success, duration);
+                
+                addToHistory(keyword, '全链路分析', data);
+                
+            } catch (error) {
+                stopProgress();
+                showResult('Full', { error: error.message }, true);
+            }
+            
+            btn.disabled = false;
+            setLoading('loadingFull', false);
+        }
+        
+        async function runQuickAnalysis() {
+            const keyword = document.getElementById('keywordQuick').value.trim();
+            if (!keyword) {
+                alert('请输入关键词');
+                return;
+            }
+            
+            setLoading('loadingQuick', true);
+            const startTime = Date.now();
+            
+            try {
+                const response = await fetch(API_BASE + '/v2/analysis/quick', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ keyword: keyword })
+                });
+                
+                const data = await response.json();
+                const duration = Date.now() - startTime;
+                
+                showResult('Quick', data, !data.success, duration);
+                addToHistory(keyword, '快捷分析', data);
+                
+            } catch (error) {
+                showResult('Quick', { error: error.message }, true);
+            }
+            
+            setLoading('loadingQuick', false);
+        }
+        
+        async function runFetch() {
+            const keyword = document.getElementById('keywordFetch').value.trim();
+            if (!keyword) {
+                alert('请输入关键词');
+                return;
+            }
+            
+            setLoading('loadingFetch', true);
+            const startTime = Date.now();
+            
+            try {
+                const response = await fetch(API_BASE + '/news/fetch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ keyword: keyword })
+                });
+                
+                const data = await response.json();
+                const duration = Date.now() - startTime;
+                
+                showResult('Fetch', data, !data.success, duration);
+                addToHistory(keyword, '新闻采集', data);
+                
+            } catch (error) {
+                showResult('Fetch', { error: error.message }, true);
+            }
+            
+            setLoading('loadingFetch', false);
+        }
+    </script>
+</body>
+</html>

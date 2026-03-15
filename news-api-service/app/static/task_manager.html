@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>任务状态管理 - API 测试</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #3498db;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        .btn-danger {
+            background: #e74c3c;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        .btn-warning {
+            background: #f39c12;
+            color: #fff;
+        }
+        .btn-warning:hover {
+            background: #d68910;
+        }
+        .btn-success {
+            background: #27ae60;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #219a52;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .result-box {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .result-box pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+        }
+        .progress-bar {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .status-created { background: #e8f4fd; color: #1976d2; }
+        .status-in_progress { background: #fff3cd; color: #856404; }
+        .status-completed { background: #d4edda; color: #155724; }
+        .status-error { background: #f8d7da; color: #721c24; }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .step-card {
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 13px;
+        }
+        .step-completed {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .step-pending {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #e9ecef;
+        }
+        .step-current {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            color: #3498db;
+        }
+        .loading.active {
+            display: inline-flex;
+        }
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e0e0e0;
+            border-top-color: #3498db;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            color: #6c757d;
+        }
+        .info-value {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 任务状态管理 - API 测试</h1>
+        
+        <div class="grid-2">
+            <div class="card">
+                <h3 class="card-title">🔍 查询任务状态</h3>
+                <div class="form-group">
+                    <label for="taskIdInput">任务 ID</label>
+                    <input type="text" class="form-control" id="taskIdInput" placeholder="输入任务 ID，如：a1b2c3d4">
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="getTaskStatus()">
+                        查询状态
+                    </button>
+                    <button class="btn btn-success" onclick="getTaskReport()">
+                        获取报告
+                    </button>
+                    <div class="loading" id="loadingStatus">
+                        <div class="spinner"></div>
+                        <span>查询中...</span>
+                    </div>
+                </div>
+                
+                <div id="statusResult" style="display: none; margin-top: 20px;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span class="info-label">任务状态</span>
+                        <span id="taskStatus" class="info-value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">当前步骤</span>
+                        <span id="currentStep" class="info-value"></span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">是否可恢复</span>
+                        <span id="canResume" class="info-value"></span>
+                    </div>
+                    
+                    <h4 style="margin: 15px 0 10px;">步骤进度</h4>
+                    <div class="steps-grid" id="stepsGrid"></div>
+                    
+                    <div class="result-box">
+                        <pre id="statusPre"></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">⚙️ 任务管理</h3>
+                <div class="form-group">
+                    <label for="taskIdManage">任务 ID</label>
+                    <input type="text" class="form-control" id="taskIdManage" placeholder="输入任务 ID">
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-warning" onclick="resetTask()">
+                        重置任务
+                    </button>
+                    <button class="btn btn-danger" onclick="deleteTask()">
+                        删除任务
+                    </button>
+                </div>
+                
+                <div id="manageResult" style="display: none; margin-top: 15px;">
+                    <div class="result-box">
+                        <pre id="managePre"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 class="card-title">📋 步骤信息</h3>
+            <button class="btn btn-primary" onclick="getStepsInfo()">获取步骤信息</button>
+            <div class="loading" id="loadingSteps" style="margin-left: 10px;">
+                <div class="spinner"></div>
+                <span>查询中...</span>
+            </div>
+            
+            <div id="stepsInfo" style="display: none; margin-top: 15px;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #f8f9fa;">
+                            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #dee2e6;">步骤名称</th>
+                            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #dee2e6;">描述</th>
+                            <th style="padding: 10px; center; border-bottom: 2px solid #dee2e6;">外部请求</th>
+                            <th style="padding: 10px; text-align: right; border-bottom: 2px solid #dee2e6;">预计耗时</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stepsTable"></tbody>
+                </table>
+                
+                <div style="margin-top: 15px; padding: 15px; background: #e8f4fd; border-radius: 6px;">
+                    <strong>总预计耗时：</strong><span id="totalTime"></span>
+                    <br><br>
+                    <strong>并行优化：</strong><span id="parallelInfo"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h3 class="card-title">🔗 快捷操作</h3>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="window.open('/static/pipeline_test.html', '_blank')">
+                    打开分步测试页面
+                </button>
+                <button class="btn btn-secondary" onclick="window.open('/docs', '_blank')" style="background: #95a5a6; color: #fff;">
+                    查看 API 文档
+                </button>
+                <button class="btn btn-secondary" onclick="window.open('/admin', '_blank')" style="background: #95a5a6; color: #fff;">
+                    管理后台
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = 'http://localhost:8000/api/v2/pipeline';
+        
+        const STEP_NAMES = {
+            'keyword_analysis': '关键词分析',
+            'news_retrieval': '新闻检索',
+            'event_classification': '事件分类',
+            'sentiment_analysis': '情绪分析',
+            'fundamental_impact': '基本面影响',
+            'industry_chain': '产业链分析',
+            'strategy_generation': '策略生成',
+            'risk_control': '风控校验',
+            'generate_report': '生成报告'
+        };
+        
+        function formatJson(obj) {
+            return JSON.stringify(obj, null, 2);
+        }
+        
+        function setLoading(loadingId, isLoading) {
+            const loading = document.getElementById(loadingId);
+            if (isLoading) {
+                loading.classList.add('active');
+            } else {
+                loading.classList.remove('active');
+            }
+        }
+        
+        async function getTaskStatus() {
+            const taskId = document.getElementById('taskIdInput').value.trim();
+            if (!taskId) {
+                alert('请输入任务 ID');
+                return;
+            }
+            
+            setLoading('loadingStatus', true);
+            
+            try {
+                const response = await fetch(API_BASE + '/task/' + taskId);
+                const data = await response.json();
+                
+                document.getElementById('statusResult').style.display = 'block';
+                document.getElementById('statusPre').textContent = formatJson(data);
+                
+                if (data.success) {
+                    const progress = data.progress || {};
+                    const percent = progress.progress_percent || 0;
+                    
+                    document.getElementById('progressFill').style.width = percent + '%';
+                    document.getElementById('progressFill').textContent = percent + '%';
+                    
+                    const statusClass = {
+                        'CREATED': 'status-created',
+                        'IN_PROGRESS': 'status-in_progress',
+                        'COMPLETED': 'status-completed',
+                        'ERROR': 'status-error'
+                    }[data.status] || 'status-created';
+                    
+                    document.getElementById('taskStatus').innerHTML = 
+                        `<span class="status-badge ${statusClass}">${data.status}</span>`;
+                    document.getElementById('currentStep').textContent = 
+                        STEP_NAMES[data.current_step] || data.current_step || '-';
+                    document.getElementById('canResume').textContent = 
+                        data.can_resume ? '✅ 是' : '❌ 否';
+                    
+                    const stepsGrid = document.getElementById('stepsGrid');
+                    stepsGrid.innerHTML = '';
+                    
+                    const allSteps = [
+                        'keyword_analysis', 'news_retrieval', 'event_classification',
+                        'sentiment_analysis', 'fundamental_impact', 'industry_chain',
+                        'strategy_generation', 'risk_control', 'generate_report'
+                    ];
+                    
+                    allSteps.forEach(step => {
+                        const isCompleted = data.steps_completed?.includes(step);
+                        const isCurrent = data.current_step === step;
+                        
+                        let className = 'step-pending';
+                        if (isCompleted) className = 'step-completed';
+                        else if (isCurrent) className = 'step-current';
+                        
+                        stepsGrid.innerHTML += `
+                            <div class="step-card ${className}">
+                                ${isCompleted ? '✅' : (isCurrent ? '🔄' : '⏳')}<br>
+                                ${STEP_NAMES[step]}
+                            </div>
+                        `;
+                    });
+                }
+            } catch (error) {
+                document.getElementById('statusResult').style.display = 'block';
+                document.getElementById('statusPre').textContent = '错误: ' + error.message;
+            }
+            
+            setLoading('loadingStatus', false);
+        }
+        
+        async function getTaskReport() {
+            const taskId = document.getElementById('taskIdInput').value.trim();
+            if (!taskId) {
+                alert('请输入任务 ID');
+                return;
+            }
+            
+            setLoading('loadingStatus', true);
+            
+            try {
+                const response = await fetch(API_BASE + '/task/' + taskId + '/report');
+                const data = await response.json();
+                
+                document.getElementById('statusResult').style.display = 'block';
+                document.getElementById('statusPre').textContent = formatJson(data);
+            } catch (error) {
+                document.getElementById('statusResult').style.display = 'block';
+                document.getElementById('statusPre').textContent = '错误: ' + error.message;
+            }
+            
+            setLoading('loadingStatus', false);
+        }
+        
+        async function resetTask() {
+            const taskId = document.getElementById('taskIdManage').value.trim();
+            if (!taskId) {
+                alert('请输入任务 ID');
+                return;
+            }
+            
+            if (!confirm('确定要重置任务 ' + taskId + ' 吗？')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(API_BASE + '/task/' + taskId + '/reset', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                document.getElementById('manageResult').style.display = 'block';
+                document.getElementById('managePre').textContent = formatJson(data);
+            } catch (error) {
+                document.getElementById('manageResult').style.display = 'block';
+                document.getElementById('managePre').textContent = '错误: ' + error.message;
+            }
+        }
+        
+        async function deleteTask() {
+            const taskId = document.getElementById('taskIdManage').value.trim();
+            if (!taskId) {
+                alert('请输入任务 ID');
+                return;
+            }
+            
+            if (!confirm('确定要删除任务 ' + taskId + ' 吗？此操作不可恢复！')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(API_BASE + '/task/' + taskId, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                
+                document.getElementById('manageResult').style.display = 'block';
+                document.getElementById('managePre').textContent = formatJson(data);
+            } catch (error) {
+                document.getElementById('manageResult').style.display = 'block';
+                document.getElementById('managePre').textContent = '错误: ' + error.message;
+            }
+        }
+        
+        async function getStepsInfo() {
+            setLoading('loadingSteps', true);
+            
+            try {
+                const response = await fetch(API_BASE + '/steps/info');
+                const data = await response.json();
+                
+                document.getElementById('stepsInfo').style.display = 'block';
+                
+                const tbody = document.getElementById('stepsTable');
+                tbody.innerHTML = '';
+                
+                data.steps.forEach(step => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">${step.name}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">${step.description}</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6; text-align: center;">
+                                ${step.has_external_request ? '✅ LLM' : '❌ 本地'}
+                            </td>
+                            <td style="padding: 10px; border-bottom: 1px solid #dee2e6; text-align: right;">
+                                ~${step.estimated_time_seconds}s
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                document.getElementById('totalTime').textContent = 
+                    `约 ${data.total_estimated_time_seconds} 秒 (${Math.round(data.total_estimated_time_seconds / 60)} 分钟)`;
+                document.getElementById('parallelInfo').textContent = 
+                    data.parallel_steps?.note || '-';
+                
+            } catch (error) {
+                alert('获取步骤信息失败: ' + error.message);
+            }
+            
+            setLoading('loadingSteps', false);
+        }
+    </script>
+</body>
+</html>

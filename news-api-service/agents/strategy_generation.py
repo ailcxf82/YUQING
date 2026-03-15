@@ -19,6 +19,7 @@ from typing import Any, Dict, List
 
 from agents.base import BaseAgent
 from core.schemas import StrategyGenerationOutput, FullLinkState, AgentStatus
+from core.prompts import get_prompt
 
 
 class StrategyGenerationAgent(BaseAgent):
@@ -27,29 +28,8 @@ class StrategyGenerationAgent(BaseAgent):
     name = "strategy_generation"
     description = "基于舆情结论生成事件驱动策略、入场/出场条件、仓位建议"
 
-    SYSTEM_PROMPT = (
-        "你是事件驱动策略生成专家。\n"
-        "你的唯一职责是基于全链路舆情分析结论，生成结构化的事件驱动投资策略。\n"
-        "你绝对不输出\"保本\"\"无风险\"\"必赚\"等违规承诺。\n"
-        "你仅输出条件化的策略逻辑，不输出具体买卖价格或绝对化交易指令。\n"
-    )
-
-    STRATEGY_PROMPT = (
-        "基于以下舆情分析结论，生成事件驱动投资策略。\n\n"
-        "## 输出格式（严格JSON）\n"
-        "{\n"
-        '  "adaptability": {"suitable": true/false, "type": "策略类型", "reason": "判断依据"},\n'
-        '  "core_logic": "一句话核心策略逻辑",\n'
-        '  "direction": "做多/做空/观望",\n'
-        '  "entry_conditions": [{"condition": "入场条件", "threshold": "参考阈值"}],\n'
-        '  "take_profit": [{"level": "止盈档位", "condition": "触发条件"}],\n'
-        '  "stop_loss": [{"type": "止损类型", "condition": "触发条件"}],\n'
-        '  "position_range": "参考仓位区间(如10%-20%)",\n'
-        '  "holding_period": "建议持有周期",\n'
-        '  "focus_indicators": ["核心跟踪指标1", "指标2"]\n'
-        "}\n"
-        "仅输出JSON。所有建议必须带\"仅供参考\"标注。"
-    )
+    SYSTEM_PROMPT = get_prompt("strategy_generation", "agent_system")
+    STRATEGY_PROMPT = get_prompt("strategy_generation", "strategy")
 
     def run(self, state: FullLinkState) -> Dict[str, Any]:
         start = time.time()

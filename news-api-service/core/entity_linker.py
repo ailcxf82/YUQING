@@ -13,44 +13,18 @@ import time
 from typing import Any, Dict, List, Optional
 
 from core.logger import get_logger
+from core.prompts import get_prompt
 
 logger = get_logger("entity_linker")
 
-# 缓存的股票名称→代码映射
 _STOCK_MAP_CACHE: Dict[str, Dict[str, str]] = {}
 
 
 class EntityLinker:
     """金融实体链接器"""
 
-    NER_SYSTEM_PROMPT = (
-        "你是金融命名实体识别专家。从给定新闻文本中提取所有金融相关实体。\n"
-        "返回严格 JSON：\n"
-        "{\n"
-        '  "entities": [\n'
-        '    {"name": "实体名称", "type": "company/person/regulator/product/industry/location", '
-        '"role": "该实体在文本中的角色(主体/关联方/监管方)"}\n'
-        "  ],\n"
-        '  "primary_company": "核心涉及的上市公司名称(如有)",\n'
-        '  "related_companies": ["关联公司1", "关联公司2"],\n'
-        '  "industry_chain": {"upstream": ["上游公司/行业"], "downstream": ["下游公司/行业"]}\n'
-        "}\n"
-        "仅输出JSON。"
-    )
-
-    CHAIN_SYSTEM_PROMPT = (
-        "你是产业链分析专家。给定一个上市公司名称及其所属行业，"
-        "分析其产业链上下游核心企业与行业。\n"
-        "返回严格 JSON：\n"
-        "{\n"
-        '  "company": "公司名称",\n'
-        '  "industry": "所属行业",\n'
-        '  "upstream": [{"name": "上游企业/行业", "relation": "关系描述"}],\n'
-        '  "downstream": [{"name": "下游企业/行业", "relation": "关系描述"}],\n'
-        '  "competitors": ["竞争对手1", "竞争对手2"]\n'
-        "}\n"
-        "仅输出JSON。"
-    )
+    NER_SYSTEM_PROMPT = get_prompt("entity_linker", "ner_system")
+    CHAIN_SYSTEM_PROMPT = get_prompt("entity_linker", "chain_system")
 
     def __init__(self, llm_client: Any, tushare_pro: Optional[Any] = None) -> None:
         self.llm = llm_client

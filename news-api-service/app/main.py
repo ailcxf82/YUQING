@@ -17,6 +17,7 @@ from app.routes import signal
 from app.routes import strategy
 from app.routes import analysis
 from app.routes import news_collect
+from app.routes import pipeline
 
 app = FastAPI(
     title="机构级金融舆情分析系统",
@@ -49,6 +50,7 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # Phase 4 新接口
 app.include_router(analysis.router)
 app.include_router(news_collect.router)
+app.include_router(pipeline.router)
 
 # 基础数据接口（保留）
 app.include_router(news.router)

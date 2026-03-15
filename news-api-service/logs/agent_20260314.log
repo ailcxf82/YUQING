@@ -1,0 +1,206 @@
+[2026-03-14 11:20:50] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 12:36:39] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 12:37:05] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 13:44:44] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 13:52:55] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 13:53:51] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 13:53:51] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword= range=None~None
+[2026-03-14 14:02:10] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 14:02:10] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword= range=None~None
+[2026-03-14 14:03:52] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 14:03:52] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword= range=None~None
+[2026-03-14 14:04:48] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 14:05:28] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 14:05:36] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 14:05:36] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=今天a股怎么跳水了 range=~
+[2026-03-14 14:05:37] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['A股下跌', '今日A股行情', 'A股'] | found=103
+[2026-03-14 14:05:37] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=103 table=news_keyword_search duration=45ms
+[2026-03-14 16:22:59] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 16:24:20] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 16:24:49] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 16:24:49] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=今天a股怎么跳水了 range=~
+[2026-03-14 16:24:49] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['跳水', 'A股', 'A股下跌'] | found=93
+[2026-03-14 16:24:49] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=93 table=news_keyword_search duration=48ms
+[2026-03-14 16:26:27] INFO     agent_system.entity_linker | 股票映射表加载完成 | count=6363
+[2026-03-14 16:26:27] INFO     agent_system.event_classification | 事件分类启动 | task=1d54b4dd news=93
+[2026-03-14 16:27:19] INFO     agent_system.event_classification | LLM精分析完成 | top=20
+[2026-03-14 16:27:50] INFO     agent_system.event_classification | 事件分类完成 | total=93 core=20 llm_calls=2 duration=82823ms
+[2026-03-14 16:32:08] INFO     agent_system.sentiment_analysis | 情绪分析启动(批量模式) | task=1d54b4dd core_news=20
+[2026-03-14 16:32:28] INFO     agent_system.fundamental_impact | 基本面推演启动(批量模式) | task=1d54b4dd ts_code= events=20
+[2026-03-14 16:32:50] INFO     agent_system.industry_chain | 产业链分析启动 | task=1d54b4dd company= events=20(top5)
+[2026-03-14 16:33:07] INFO     agent_system.sentiment_analysis | 批量情感LLM完成 | items=20 llm_calls=1
+[2026-03-14 16:33:07] INFO     agent_system.sentiment_analysis | 批量情感分析完成 | llm_calls=1
+[2026-03-14 16:33:07] INFO     agent_system.sentiment_analysis | 情绪分析完成 | index=64.5 trend=平稳 llm_calls=1 duration=58174ms
+[2026-03-14 16:33:41] INFO     agent_system.fundamental_impact | 综合影响分析完成(1次LLM调用)
+[2026-03-14 16:33:46] INFO     agent_system.industry_chain | 产业链分析完成 | events_used=5 beneficiaries=3 losers=4
+[2026-03-14 16:34:14] INFO     agent_system.fundamental_impact | 历史回测完成(1次LLM调用)
+[2026-03-14 16:34:14] INFO     agent_system.fundamental_impact | 基本面推演完成 | events=10 llm_calls=2 certainty=低确定性 duration=106256ms
+[2026-03-14 16:39:25] INFO     agent_system.strategy_generation | 策略生成启动 | task=1d54b4dd
+[2026-03-14 16:39:46] INFO     agent_system.strategy_generation | 策略生成完成 | direction=观望或谨慎做多
+[2026-03-14 16:40:57] INFO     agent_system.risk_control | 风控校验启动 | task=1d54b4dd
+[2026-03-14 16:41:24] INFO     agent_system.risk_control | 风控校验完成 | risk_level=中风险
+[2026-03-14 16:57:53] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 16:57:53] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=今天a股怎么跳水了 range=~
+[2026-03-14 16:57:53] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['跳水', 'A股', 'A股下跌'] | found=93
+[2026-03-14 16:57:53] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=93 table=news_keyword_search duration=71ms
+[2026-03-14 16:58:01] INFO     agent_system.event_classification | 事件分类启动 | task=3029c7d1 news=93
+[2026-03-14 16:58:53] INFO     agent_system.event_classification | LLM精分析完成 | top=20
+[2026-03-14 16:59:25] INFO     agent_system.event_classification | 事件分类完成 | total=93 core=20 llm_calls=2 duration=84646ms
+[2026-03-14 16:59:41] INFO     agent_system.sentiment_analysis | 情绪分析启动(批量模式) | task=3029c7d1 core_news=20
+[2026-03-14 16:59:51] INFO     agent_system.fundamental_impact | 基本面推演启动(批量模式) | task=3029c7d1 ts_code= events=20
+[2026-03-14 16:59:54] INFO     agent_system.industry_chain | 产业链分析启动 | task=3029c7d1 company= events=20(top5)
+[2026-03-14 17:00:34] INFO     agent_system.sentiment_analysis | 批量情感LLM完成 | items=20 llm_calls=1
+[2026-03-14 17:00:34] INFO     agent_system.sentiment_analysis | 批量情感分析完成 | llm_calls=1
+[2026-03-14 17:00:34] INFO     agent_system.sentiment_analysis | 情绪分析完成 | index=63.5 trend=平稳 llm_calls=1 duration=53283ms
+[2026-03-14 17:01:02] INFO     agent_system.industry_chain | 产业链分析完成 | events_used=5 beneficiaries=3 losers=4
+[2026-03-14 17:01:15] INFO     agent_system.fundamental_impact | 综合影响分析完成(1次LLM调用)
+[2026-03-14 17:01:47] INFO     agent_system.fundamental_impact | 历史回测完成(1次LLM调用)
+[2026-03-14 17:01:47] INFO     agent_system.fundamental_impact | 基本面推演完成 | events=10 llm_calls=2 certainty=低确定性 duration=115986ms
+[2026-03-14 17:04:14] INFO     agent_system.strategy_generation | 策略生成启动 | task=3029c7d1
+[2026-03-14 17:04:41] INFO     agent_system.strategy_generation | 策略生成完成 | direction=做空
+[2026-03-14 17:12:53] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 17:12:53] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600000.SH name= keyword= range=~
+[2026-03-14 17:12:53] INFO     agent_system.news_collect_job | 本地读取 | file=news_600000_sh.json records=200
+[2026-03-14 17:12:53] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=200 table=news_600000_sh duration=48ms
+[2026-03-14 17:14:14] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 17:14:14] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600007.SH name= keyword= range=~
+[2026-03-14 17:14:14] INFO     agent_system.news_collect_job | 本地无数据 | file=news_600007_sh.json (请先配置定时采集)
+[2026-03-14 17:14:26] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 17:14:26] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600007.SH name= keyword= range=~
+[2026-03-14 17:14:26] INFO     agent_system.news_collect_job | 本地无数据 | file=news_600007_sh.json (请先配置定时采集)
+[2026-03-14 17:16:20] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 17:16:20] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=600000.SH range=~
+[2026-03-14 17:16:20] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['浦发银行', '浦发银行最新消息', '600000.SH'] | found=2
+[2026-03-14 17:16:20] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=2 table=news_keyword_search duration=69ms
+[2026-03-14 17:16:45] INFO     agent_system.event_classification | 事件分类启动 | task=43a30621 news=2
+[2026-03-14 17:16:52] INFO     agent_system.event_classification | LLM精分析完成 | top=2
+[2026-03-14 17:16:58] INFO     agent_system.event_classification | 事件分类完成 | total=2 core=2 llm_calls=2 duration=13543ms
+[2026-03-14 17:17:17] INFO     agent_system.sentiment_analysis | 情绪分析启动(批量模式) | task=43a30621 core_news=2
+[2026-03-14 17:17:20] INFO     agent_system.fundamental_impact | 基本面推演启动(批量模式) | task=43a30621 ts_code= events=2
+[2026-03-14 17:17:23] INFO     agent_system.sentiment_analysis | 批量情感LLM完成 | items=2 llm_calls=1
+[2026-03-14 17:17:23] INFO     agent_system.sentiment_analysis | 批量情感分析完成 | llm_calls=1
+[2026-03-14 17:17:23] INFO     agent_system.sentiment_analysis | 情绪分析完成 | index=60.0 trend=平稳 llm_calls=1 duration=6259ms
+[2026-03-14 17:17:24] INFO     agent_system.industry_chain | 产业链分析启动 | task=43a30621 company= events=2(top2)
+[2026-03-14 17:17:56] INFO     agent_system.industry_chain | 产业链分析完成 | events_used=2 beneficiaries=3 losers=2
+[2026-03-14 17:18:03] INFO     agent_system.fundamental_impact | 综合影响分析完成(1次LLM调用)
+[2026-03-14 17:18:03] INFO     agent_system.fundamental_impact | 基本面推演完成 | events=2 llm_calls=1 certainty=低确定性 duration=42629ms
+[2026-03-14 17:18:55] INFO     agent_system.strategy_generation | 策略生成启动 | task=43a30621
+[2026-03-14 17:19:14] INFO     agent_system.strategy_generation | 策略生成完成 | direction=做多
+[2026-03-14 17:19:50] INFO     agent_system.risk_control | 风控校验启动 | task=43a30621
+[2026-03-14 17:20:31] INFO     agent_system.risk_control | 风控校验完成 | risk_level=中风险
+[2026-03-14 20:11:36] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:11:36] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600686.SZ name=东北证券 keyword= range=~
+[2026-03-14 20:11:36] INFO     agent_system.news_collect_job | 本地无数据 | file=news_600686_sz.json (请先配置定时采集)
+[2026-03-14 20:12:32] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:12:32] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600686.SZ name=东北证券 keyword= range=~
+[2026-03-14 20:12:32] INFO     agent_system.news_collect_job | 本地无数据 | file=news_600686_sz.json (请先配置定时采集)
+[2026-03-14 20:34:20] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 20:34:57] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 20:34:57] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:34:57] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600686.SZ name=东北证券 keyword= range=~
+[2026-03-14 20:34:57] INFO     agent_system.news_collect_job | 本地无数据 | file=news_600686_sz.json (请先配置定时采集)
+[2026-03-14 20:35:25] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:35:25] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600686.SZ name=东北证券 keyword= range=~
+[2026-03-14 20:35:25] INFO     agent_system.news_collect_job | 本地无数据 | file=news_600686_sz.json (请先配置定时采集)
+[2026-03-14 20:36:01] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:36:01] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600686.SZ name=东北证券 keyword= range=~
+[2026-03-14 20:36:01] INFO     agent_system.news_collect_job | 本地无数据 | file=news_600686_sz.json (请先配置定时采集)
+[2026-03-14 20:38:25] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:38:25] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol=600686.SZ name=东北证券 keyword=600686.SZ range=~
+[2026-03-14 20:38:25] INFO     agent_system.news_collect_job | 本地无数据 | file=news_600686_sz.json (请先配置定时采集)
+[2026-03-14 20:39:06] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:39:06] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=今天a股怎么跳水了 range=~
+[2026-03-14 20:39:06] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['A股', '股市跳水原因', '创业板指'] | found=110
+[2026-03-14 20:39:06] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=110 table=news_keyword_search duration=108ms
+[2026-03-14 20:41:29] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:41:29] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=600068 range=~
+[2026-03-14 20:41:29] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['股票代码', '水利水电', '中国能建'] | found=9
+[2026-03-14 20:41:29] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=9 table=news_keyword_search duration=122ms
+[2026-03-14 20:43:33] INFO     agent_system.entity_linker | 股票映射表加载完成 | count=6363
+[2026-03-14 20:43:33] INFO     agent_system.event_classification | 事件分类启动 | task=0042612e news=9
+[2026-03-14 20:43:55] INFO     agent_system.event_classification | LLM精分析完成 | top=9
+[2026-03-14 20:44:09] INFO     agent_system.event_classification | 事件分类完成 | total=9 core=9 llm_calls=2 duration=35664ms
+[2026-03-14 20:48:22] INFO     agent_system.sentiment_analysis | 情绪分析启动(批量模式) | task=0042612e core_news=9
+[2026-03-14 20:48:27] INFO     agent_system.fundamental_impact | 基本面推演启动(批量模式) | task=0042612e ts_code= events=9
+[2026-03-14 20:48:33] INFO     agent_system.industry_chain | 产业链分析启动 | task=0042612e company= events=9(top5)
+[2026-03-14 20:48:42] INFO     agent_system.sentiment_analysis | 批量情感LLM完成 | items=9 llm_calls=1
+[2026-03-14 20:48:42] INFO     agent_system.sentiment_analysis | 批量情感分析完成 | llm_calls=1
+[2026-03-14 20:48:42] INFO     agent_system.sentiment_analysis | 情绪分析完成 | index=52.2 trend=平稳 llm_calls=1 duration=20717ms
+[2026-03-14 20:49:15] INFO     agent_system.industry_chain | 产业链分析完成 | events_used=5 beneficiaries=4 losers=3
+[2026-03-14 20:49:40] INFO     agent_system.fundamental_impact | 综合影响分析完成(1次LLM调用)
+[2026-03-14 20:50:05] INFO     agent_system.fundamental_impact | 历史回测完成(1次LLM调用)
+[2026-03-14 20:50:05] INFO     agent_system.fundamental_impact | 基本面推演完成 | events=9 llm_calls=2 certainty=低确定性 duration=98194ms
+[2026-03-14 20:51:07] INFO     agent_system.strategy_generation | 策略生成启动 | task=0042612e
+[2026-03-14 20:51:28] INFO     agent_system.strategy_generation | 策略生成完成 | direction=做多
+[2026-03-14 20:51:35] INFO     agent_system.risk_control | 风控校验启动 | task=0042612e
+[2026-03-14 20:52:01] INFO     agent_system.risk_control | 风控校验完成 | risk_level=中风险
+[2026-03-14 20:55:19] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 20:55:19] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=600686.SZ range=~
+[2026-03-14 20:55:20] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['金龙汽车', '股票代码', 'A股'] | found=84
+[2026-03-14 20:55:20] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=84 table=news_keyword_search duration=128ms
+[2026-03-14 21:02:51] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 21:03:24] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 21:04:31] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 21:04:44] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 21:06:14] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 21:06:31] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 21:59:46] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 22:14:01] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 22:14:18] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 22:15:37] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 22:15:37] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=600686.SZ range=~
+[2026-03-14 22:15:37] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['厦门金龙汽车集团股份有限公司', '金龙汽车', '厦门金龙联合汽车工业有限公司'] | found=8
+[2026-03-14 22:15:37] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=8 table=news_keyword_search duration=57ms
+[2026-03-14 22:24:59] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 22:25:38] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 22:26:18] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 22:26:18] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=600686.SZ range=~
+[2026-03-14 22:26:18] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['金龙汽车', '比亚迪', '宇通客车'] | found=16
+[2026-03-14 22:26:18] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=16 table=news_keyword_search duration=64ms
+[2026-03-14 22:31:14] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 22:31:55] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 22:33:44] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 22:34:09] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 22:34:32] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 22:34:32] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=002558 range=~
+[2026-03-14 22:34:32] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['Playtika', '002558', '世纪游轮'] | found=0
+[2026-03-14 22:36:03] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 22:36:03] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=002609 range=~
+[2026-03-14 22:36:03] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['支付宝', '大华股份', '智慧社区'] | found=1
+[2026-03-14 22:36:03] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=1 table=news_keyword_search duration=63ms
+[2026-03-14 22:59:35] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 22:59:35] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=002555 range=~
+[2026-03-14 22:59:35] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['游族网络', '完美世界', '三七游戏'] | found=1
+[2026-03-14 22:59:35] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=1 table=news_keyword_search duration=118ms
+[2026-03-14 23:04:16] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 23:04:31] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 23:04:58] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 23:04:58] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=002555 range=~
+[2026-03-14 23:04:58] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['游戏版号', '网易游戏', '吉比特'] | found=4
+[2026-03-14 23:04:58] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=4 table=news_keyword_search duration=76ms
+[2026-03-14 23:08:20] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 23:08:41] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 23:12:02] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 23:12:17] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 23:12:38] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 23:12:38] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=002555 range=~
+[2026-03-14 23:12:38] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['世纪华通', '文化传媒', 'AI游戏'] | found=4
+[2026-03-14 23:12:38] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=4 table=news_keyword_search duration=76ms
+[2026-03-14 23:15:24] INFO     agent_system | 日志系统初始化完成 | level=INFO dir=./logs
+[2026-03-14 23:15:38] INFO     agent_system.config | 系统配置加载完成 | provider=deepseek tushare=已配置
+[2026-03-14 23:15:57] INFO     agent_system.news_retrieval | NewsRetrievalAgent 初始化 (本地读取模式)
+[2026-03-14 23:15:57] INFO     agent_system.news_retrieval | 舆情数据读取 | symbol= name= keyword=002555 range=~
+[2026-03-14 23:15:57] INFO     agent_system.news_retrieval | 关键词搜索完成 | keywords=['文化传媒', '完美世界', '游族网络'] | found=4
+[2026-03-14 23:15:57] INFO     agent_system.news_retrieval | 舆情数据读取完成 | total=4 table=news_keyword_search duration=158ms
+[2026-03-15 00:08:09] INFO     agent_system.entity_linker | 股票映射表加载完成 | count=6363
+[2026-03-15 00:08:09] INFO     agent_system.event_classification | 事件分类启动 | task=5e6eca57 news=4
+[2026-03-15 00:08:21] INFO     agent_system.event_classification | LLM精分析完成 | top=4
+[2026-03-15 00:08:28] INFO     agent_system.event_classification | 事件分类完成 | total=4 core=4 llm_calls=2 duration=19847ms
+[2026-03-15 00:41:34] INFO     agent_system.sentiment_analysis | 情绪分析启动(批量模式) | task=5e6eca57 core_news=4
+[2026-03-15 00:41:47] INFO     agent_system.sentiment_analysis | 批量情感LLM完成 | items=4 llm_calls=1
+[2026-03-15 00:41:47] INFO     agent_system.sentiment_analysis | 批量情感分析完成 | llm_calls=1
+[2026-03-15 00:41:47] INFO     agent_system.sentiment_analysis | 情绪分析完成 | index=81.2 trend=升温 llm_calls=1 duration=12791ms
+[2026-03-15 00:42:36] INFO     agent_system.fundamental_impact | 基本面推演启动(批量模式) | task=5e6eca57 ts_code= events=4
+[2026-03-15 00:43:21] INFO     agent_system.fundamental_impact | 综合影响分析完成(1次LLM调用)
+[2026-03-15 00:43:47] INFO     agent_system.fundamental_impact | 历史回测完成(1次LLM调用)
+[2026-03-15 00:43:47] INFO     agent_system.fundamental_impact | 基本面推演完成 | events=4 llm_calls=2 certainty=高确定性 duration=70728ms

@@ -27,33 +27,9 @@ from core.config import SystemConfig
 from core.llm import LLMClient
 from core.news_collector_job import read_local_news, get_status as get_collect_status
 from core.schemas import AgentStatus, NewsRetrievalOutput
+from core.prompts import get_prompt
 from app.config import get_settings
 from app import database
-
-
-KEYWORD_ANALYSIS_PROMPT = """你是金融舆情语义分析专家。请分析用户输入的关键词，提取核心语义信息。
-
-用户输入：{keyword}
-
-请返回严格 JSON 格式：
-{{
-  "intent_type": "事件/标的/行业/主题",
-  "core_keywords": ["核心词1", "核心词2", "核心词3"],
-  "search_keywords": ["搜索词1", "搜索词2"],
-  "related_entities": ["相关实体1", "相关实体2"],
-  "time_sensitivity": "高/中/低",
-  "semantic_description": "用中文描述该关键词的核心语义和搜索意图"
-}}
-
-分析要点：
-1. intent_type：判断用户意图是查询特定事件、标的、行业还是主题
-2. core_keywords：提取最核心的 2-5 个语义关键词
-3. search_keywords：适合在新闻数据库中搜索的关键词（考虑同义词、近义词）
-4. related_entities：可能相关的公司、行业、人物等
-5. time_sensitivity：时间敏感度，判断是否需要最新数据
-6. semantic_description：清晰描述用户意图
-
-仅输出 JSON，不要有其他内容。"""
 
 
 class NewsRetrievalAgent(BaseAgent):
@@ -62,12 +38,7 @@ class NewsRetrievalAgent(BaseAgent):
     name = "news_retrieval"
     description = "从本地数据库读取已采集的舆情数据，支持标的/关键词检索"
 
-    SYSTEM_PROMPT = (
-        "你是舆情数据采集与预处理专家。\n"
-        "你的唯一职责是从本地数据库读取已采集的舆情数据并结构化输出。\n"
-        "你绝对不做事件分类、情绪判断、基本面分析。\n"
-        "你绝对不修改舆情原文语义，仅做结构化封装。\n"
-    )
+    SYSTEM_PROMPT = get_prompt("news_retrieval", "agent_system")
 
     def __init__(
         self,
@@ -95,7 +66,7 @@ class NewsRetrievalAgent(BaseAgent):
 
         local_items = []
         table_name = "news_general"
-        keyword_analysis = None
+        keyword_analysis = state.get("keyword_analysis")
 
         if symbol:
             table_name = f"news_{symbol.replace('.', '_').lower()}"
@@ -109,7 +80,8 @@ class NewsRetrievalAgent(BaseAgent):
                 local_items = self._filter_by_topics(local_items, topics)
         elif keyword:
             table_name = "news_keyword_search"
-            keyword_analysis = self._analyze_keyword_with_llm(keyword)
+            if not keyword_analysis:
+                keyword_analysis = self._analyze_keyword_with_llm(keyword)
             if keyword_analysis:
                 local_items = self._search_by_analyzed_keywords(
                     keyword_analysis=keyword_analysis,
@@ -190,18 +162,20 @@ class NewsRetrievalAgent(BaseAgent):
         """调用 LLM 分析关键词，提取核心语义词"""
         try:
             llm = self._get_llm()
-            prompt = KEYWORD_ANALYSIS_PROMPT.format(keyword=keyword)
+            prompt_template = get_prompt("keyword", "keyword_analysis")
+            prompt = prompt_template.format(keyword=keyword)
             result = llm.chat_json(
                 system_prompt="你是金融舆情语义分析专家，擅长提取关键词的核心语义。",
                 user_prompt=prompt,
                 temperature=0.1,
             )
             self.logger.info(
-                "关键词语义分析 | keyword=%s | intent=%s | core=%s | search=%s",
+                "关键词语义分析 | keyword=%s | intent=%s | core=%s | search=%s | entities=%s",
                 keyword[:30],
                 result.get("intent_type", ""),
                 result.get("core_keywords", []),
                 result.get("search_keywords", []),
+                result.get("related_entities", []),
             )
             return result
         except Exception as e:
@@ -223,9 +197,10 @@ class NewsRetrievalAgent(BaseAgent):
         limit: int = 200,
     ) -> List[Dict[str, Any]]:
         """基于 LLM 分析结果搜索新闻"""
-        search_keywords = keyword_analysis.get("search_keywords", [])
+        #search_keywords = keyword_analysis.get("search_keywords", [])
         core_keywords = keyword_analysis.get("core_keywords", [])
-        all_keywords = list(set(search_keywords + core_keywords))
+        related_entities = keyword_analysis.get("related_entities", [])
+        all_keywords = list(set(core_keywords + related_entities))
 
         if not all_keywords:
             return []
@@ -238,7 +213,7 @@ class NewsRetrievalAgent(BaseAgent):
             all_items = []
             seen_ids = set()
 
-            for kw in all_keywords[:5]:
+            for kw in all_keywords[:15]:
                 items = database.search_news_by_keyword(
                     conn, keyword=kw, limit=limit, offset=0
                 )

@@ -19,6 +19,7 @@ from core.influence_scorer import InfluenceScorer
 from core.schemas import (
     EventClassificationOutput, FullLinkState, AgentStatus,
 )
+from core.prompts import get_prompt
 
 LLM_TOP_N = 20
 
@@ -29,11 +30,7 @@ class EventClassificationAgent(BaseAgent):
     name = "event_classification"
     description = "规则粗筛+LLM精分析Top20，极速事件分类"
 
-    SYSTEM_PROMPT = (
-        "你是金融舆情要素识别与事件分类专家。\n"
-        "你的唯一职责是：对输入的舆情文本进行实体提取、事件分类、影响力评估。\n"
-        "你绝对不做情绪判断、基本面分析、投资建议。\n"
-    )
+    SYSTEM_PROMPT = get_prompt("event_classification", "agent_system")
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)

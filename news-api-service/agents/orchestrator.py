@@ -47,8 +47,8 @@ from core.schemas import (
     FullLinkState,
     UserRequest,
 )
+from core.prompts import get_prompt
 
-# ── 异常处理常量 ──
 MAX_COMPLIANCE_REJECTIONS = 2
 MAX_NODE_RETRIES = 3
 
@@ -59,12 +59,7 @@ class OrchestratorAgent(BaseAgent):
     name = "orchestrator"
     description = "全链路中枢调度、任务拆解、节点编排、结果聚合、异常管控"
 
-    SYSTEM_PROMPT = (
-        "你是全链路中枢调度系统。\n"
-        "你的唯一职责是调度各业务智能体、管控执行流程、聚合结果。\n"
-        "你绝对不做舆情采集、情绪分析、基本面推演、策略生成等业务操作。\n"
-        "你绝对不篡改任何业务智能体的输出结果，仅做整合。\n"
-    )
+    SYSTEM_PROMPT = get_prompt("orchestrator", "agent_system")
 
     def __init__(
         self,

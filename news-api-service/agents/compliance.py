@@ -21,9 +21,9 @@ from typing import Any, Dict, List
 
 from agents.base import BaseAgent
 from core.schemas import ComplianceCheckOutput, FullLinkState, AgentStatus
+from core.prompts import get_prompt
 
 
-# ── 违规关键词库 ──
 FORBIDDEN_PHRASES = [
     "保本", "无风险", "必赚", "稳赚", "保证收益", "零风险",
     "必涨", "必跌", "绝对安全", "包赚", "躺赚",
@@ -49,21 +49,7 @@ class ComplianceAgent(BaseAgent):
     name = "compliance"
     description = "全链路合规校验、违规拦截、免责声明植入、合规熔断"
 
-    SYSTEM_PROMPT = (
-        "你是金融合规校验专家。你的唯一职责是审查金融分析内容的合规性。\n"
-        "你不做任何分析、判断、策略生成，仅做合规审查。\n\n"
-        "## 审查规则\n"
-        "1. 拦截任何包含保本承诺、保证收益、无风险等违规表述\n"
-        "2. 拦截绝对化投资建议（如\"必须买入\"\"立即清仓\"）\n"
-        "3. 确保所有分析结论带有不确定性说明\n"
-        "4. 确保不存在虚假数据、伪造信息\n"
-        "5. 对轻微违规做合规话术修正\n\n"
-        "## 输出格式\n"
-        '{"compliant": true/false, "violations": ["违规1"], '
-        '"corrections": {"原文片段": "修正后片段"}, '
-        '"severity": "无/轻微/中度/严重"}\n'
-        "仅输出JSON。"
-    )
+    SYSTEM_PROMPT = get_prompt("compliance", "check")
 
     def run(self, state: FullLinkState) -> Dict[str, Any]:
         """合规校验不通过常规 run 调用，而是通过 check 方法。

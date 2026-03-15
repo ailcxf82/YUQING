@@ -14,7 +14,27 @@ Phase 4 精细化多智能体全链路协同引擎。
   - [P3. 仅舆情采集](#p3-仅舆情采集)
   - [P4. 反馈优化](#p4-反馈优化)
   - [P5. 系统架构信息](#p5-系统架构信息)
-  - [P6. CMD 调用示例](#p6-cmd-调用示例)
+  - [P6. 统一入口：异步全链路分析 + 进度查询](#p6-统一入口异步全链路分析--进度查询)
+  - [P7. CMD 调用示例](#p7-cmd-调用示例)
+- [分步调用 API（Pipeline）](#分步调用-apipipeline)
+  - [步骤概览](#步骤概览)
+  - [PL1. 创建任务](#pl1-创建任务)
+  - [PL2. 关键词语义分析](#pl2-关键词语义分析)
+  - [PL3. 新闻数据检索](#pl3-新闻数据检索)
+  - [PL4. 事件分类识别](#pl4-事件分类识别)
+  - [PL5. 情绪量化分析](#pl5-情绪量化分析)
+  - [PL6. 基本面影响推演](#pl6-基本面影响推演)
+  - [PL7. 产业链传导分析](#pl7-产业链传导分析)
+  - [PL8. 策略生成](#pl8-策略生成)
+  - [PL9. 风控校验](#pl9-风控校验)
+  - [PL10. 生成研究报告](#pl10-生成研究报告)
+  - [PL11. 查询任务状态](#pl11-查询任务状态)
+  - [PL12. 获取最终报告](#pl12-获取最终报告)
+  - [PL13. 删除任务](#pl13-删除任务)
+  - [PL14. 重置任务](#pl14-重置任务)
+  - [PL15. 获取步骤信息](#pl15-获取步骤信息)
+  - [PL16. 前端调用示例](#pl16-前端调用示例)
+  - [PL17. CMD 调用示例](#pl17-cmd-调用示例)
 - [基础数据接口（保留）](#基础数据接口保留)
   - [3. 抓取新闻（排重）](#3-抓取新闻排重)
   - [3.5 开启新闻自动抓取（业务接口）](#35-开启新闻自动抓取业务接口)
@@ -329,6 +349,541 @@ curl "http://localhost:8000/api/v2/analysis/status/{task_id}"
 
 ```cmd
 curl "http://localhost:8000/internal/debug/config"
+```
+
+---
+
+## 分步调用 API（Pipeline）
+
+> **设计目标**：将全链路拆分为独立步骤，支持前端逐步执行、进度可视化、中断恢复。
+>
+> **适用场景**：
+> - 需要实时展示分析进度和中间结果
+> - 长耗时操作需要用户等待反馈
+> - 需要在特定步骤暂停或重试
+> - 需要并行执行某些步骤
+
+### 步骤概览
+
+| 步骤 | API 路径 | 外部请求 | 预计耗时 | 说明 |
+|------|----------|---------|---------|------|
+| 1 | `/api/v2/pipeline/task/create` | ❌ | <10ms | 创建任务，返回 task_id |
+| 2 | `/api/v2/pipeline/step/keyword-analysis` | ✅ LLM | ~2s | 关键词语义分析 |
+| 3 | `/api/v2/pipeline/step/news-retrieval` | ❌ | <100ms | 新闻数据检索 |
+| 4 | `/api/v2/pipeline/step/event-classification` | ✅ LLM | ~96s | 事件分类识别 |
+| 5 | `/api/v2/pipeline/step/sentiment-analysis` | ✅ LLM | ~91s | 情绪量化分析 |
+| 6 | `/api/v2/pipeline/step/fundamental-impact` | ✅ LLM | ~127s | 基本面影响推演 |
+| 7 | `/api/v2/pipeline/step/industry-chain` | ✅ LLM | ~53s | 产业链传导分析 |
+| 8 | `/api/v2/pipeline/step/strategy-generation` | ✅ LLM | ~12s | 策略生成 |
+| 9 | `/api/v2/pipeline/step/risk-control` | ✅ LLM | ~15s | 风控校验 |
+| 10 | `/api/v2/pipeline/step/generate-report` | ❌ | <100ms | 生成研究报告 |
+
+**总预计耗时**：约 400 秒（~7 分钟）
+
+**并行优化**：步骤 6（基本面影响）和步骤 7（产业链分析）可以并行执行，可节省约 53 秒。
+
+---
+
+### PL1. 创建任务
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/task/create` |
+| 说明 | 创建新的分析任务，返回 task_id，后续步骤通过 task_id 关联 |
+
+#### 请求 Body
+
+```json
+{
+  "target_type": "个股",
+  "target_code": ["600000.SH"],
+  "target_name": ["浦发银行"],
+  "keyword": "",
+  "time_range": "近7天",
+  "custom_time_start": "",
+  "custom_time_end": "",
+  "analysis_depth": "标准版",
+  "user_custom_rules": {}
+}
+```
+
+#### 响应
+
+```json
+{
+  "success": true,
+  "task_id": "a1b2c3d4",
+  "status": "CREATED",
+  "message": "任务创建成功，请按顺序执行各步骤",
+  "steps": [
+    "keyword_analysis",
+    "news_retrieval",
+    "event_classification",
+    "sentiment_analysis",
+    "fundamental_impact",
+    "industry_chain",
+    "strategy_generation",
+    "risk_control",
+    "generate_report"
+  ],
+  "step_descriptions": {
+    "keyword_analysis": "关键词语义分析",
+    "news_retrieval": "新闻数据检索",
+    "event_classification": "事件分类识别",
+    "sentiment_analysis": "情绪量化分析",
+    "fundamental_impact": "基本面影响推演",
+    "industry_chain": "产业链传导分析",
+    "strategy_generation": "策略生成",
+    "risk_control": "风控校验",
+    "generate_report": "生成研究报告"
+  },
+  "external_request_steps": [
+    "keyword_analysis",
+    "event_classification",
+    "sentiment_analysis",
+    "fundamental_impact",
+    "industry_chain",
+    "strategy_generation",
+    "risk_control"
+  ],
+  "estimated_total_time_seconds": 400
+}
+```
+
+---
+
+### PL2. 关键词语义分析
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/keyword-analysis` |
+| 说明 | 调用 LLM 分析关键词语义，提取核心搜索词 |
+| 外部请求 | ✅ LLM |
+| 预计耗时 | ~2 秒 |
+
+#### 请求 Body
+
+```json
+{
+  "task_id": "a1b2c3d4",
+  "keyword": "今天a股怎么跳水了"
+}
+```
+
+#### 响应
+
+```json
+{
+  "success": true,
+  "task_id": "a1b2c3d4",
+  "step": "keyword_analysis",
+  "step_description": "关键词语义分析",
+  "duration_ms": 2100,
+  "output": {
+    "intent_type": "事件",
+    "core_keywords": ["A股", "跳水", "下跌"],
+    "search_keywords": ["A股", "跳水", "下跌", "股市", "暴跌"],
+    "related_entities": ["上证指数", "深证成指", "创业板"],
+    "time_sensitivity": "高",
+    "semantic_description": "用户想了解今天A股市场大幅下跌的原因和相关新闻"
+  },
+  "next_step": "news_retrieval"
+}
+```
+
+---
+
+### PL3. 新闻数据检索
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/news-retrieval` |
+| 说明 | 从本地数据库检索新闻数据，无外部请求 |
+| 外部请求 | ❌ |
+| 预计耗时 | <100ms |
+
+#### 请求 Body
+
+```json
+{
+  "task_id": "a1b2c3d4",
+  "step_name": "news_retrieval",
+  "input_data": {}
+}
+```
+
+#### 响应
+
+```json
+{
+  "success": true,
+  "task_id": "a1b2c3d4",
+  "step": "news_retrieval",
+  "step_description": "新闻数据检索",
+  "duration_ms": 85,
+  "output": {
+    "task_id": "a1b2c3d4",
+    "news_total_count": 25,
+    "news_structured_data": [...],
+    "vector_db_index_info": {...},
+    "data_quality_report": {...}
+  },
+  "news_count": 25,
+  "next_step": "event_classification"
+}
+```
+
+---
+
+### PL4. 事件分类识别
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/event-classification` |
+| 说明 | 调用 LLM 对新闻进行事件分类 |
+| 外部请求 | ✅ LLM |
+| 预计耗时 | ~96 秒 |
+
+#### 请求 Body
+
+```json
+{
+  "task_id": "a1b2c3d4",
+  "step_name": "event_classification",
+  "input_data": {}
+}
+```
+
+#### 响应
+
+```json
+{
+  "success": true,
+  "task_id": "a1b2c3d4",
+  "step": "event_classification",
+  "step_description": "事件分类识别",
+  "duration_ms": 96000,
+  "output": {
+    "task_id": "a1b2c3d4",
+    "entity_linking_result": [...],
+    "event_classification_result": [...],
+    "core_news_list": [...]
+  },
+  "next_step": "sentiment_analysis"
+}
+```
+
+---
+
+### PL5. 情绪量化分析
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/sentiment-analysis` |
+| 说明 | 调用 LLM 进行情绪量化分析 |
+| 外部请求 | ✅ LLM |
+| 预计耗时 | ~91 秒 |
+
+请求 Body 同 PL4 格式。
+
+---
+
+### PL6. 基本面影响推演
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/fundamental-impact` |
+| 说明 | 调用 LLM 推演基本面影响 |
+| 外部请求 | ✅ LLM |
+| 预计耗时 | ~127 秒 |
+
+请求 Body 同 PL4 格式。
+
+---
+
+### PL7. 产业链传导分析
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/industry-chain` |
+| 说明 | 调用 LLM 分析产业链传导 |
+| 外部请求 | ✅ LLM |
+| 预计耗时 | ~53 秒 |
+
+**注意**：此步骤可与 PL6 并行执行，节省总耗时。
+
+请求 Body 同 PL4 格式。
+
+---
+
+### PL8. 策略生成
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/strategy-generation` |
+| 说明 | 调用 LLM 生成投资策略 |
+| 外部请求 | ✅ LLM |
+| 预计耗时 | ~12 秒 |
+
+请求 Body 同 PL4 格式。
+
+---
+
+### PL9. 风控校验
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/risk-control` |
+| 说明 | 调用 LLM 进行风控校验 |
+| 外部请求 | ✅ LLM |
+| 预计耗时 | ~15 秒 |
+
+请求 Body 同 PL4 格式。
+
+---
+
+### PL10. 生成研究报告
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/step/generate-report` |
+| 说明 | 聚合所有步骤结果，生成最终研究报告 |
+| 外部请求 | ❌ |
+| 预计耗时 | <100ms |
+
+#### 请求 Body
+
+```json
+{
+  "task_id": "a1b2c3d4",
+  "step_name": "generate_report",
+  "input_data": {}
+}
+```
+
+#### 响应
+
+```json
+{
+  "success": true,
+  "task_id": "a1b2c3d4",
+  "step": "generate_report",
+  "step_description": "生成研究报告",
+  "duration_ms": 50,
+  "report": {
+    "task_base_info": {...},
+    "news_summary": {...},
+    "event_classification_result": {...},
+    "sentiment_analysis_result": {...},
+    "fundamental_impact_report": {...},
+    "industry_chain_analysis_result": {...},
+    "strategy_suggestion": {...},
+    "risk_control_rules": {...},
+    "compliance_disclaimer": "【免责声明】...",
+    "full_link_log": {...}
+  },
+  "status": "COMPLETED",
+  "message": "全链路分析已完成"
+}
+```
+
+---
+
+### PL11. 查询任务状态
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `GET /api/v2/pipeline/task/{task_id}` |
+| 说明 | 查询任务当前状态、已完成的步骤、待执行的步骤 |
+
+#### 响应
+
+```json
+{
+  "success": true,
+  "task_id": "a1b2c3d4",
+  "status": "IN_PROGRESS",
+  "current_step": "sentiment_analysis",
+  "progress": {
+    "total_steps": 9,
+    "completed_steps": 4,
+    "progress_percent": 44
+  },
+  "steps_completed": [
+    "keyword_analysis",
+    "news_retrieval",
+    "event_classification",
+    "sentiment_analysis"
+  ],
+  "steps_pending": [
+    "fundamental_impact",
+    "industry_chain",
+    "strategy_generation",
+    "risk_control",
+    "generate_report"
+  ],
+  "step_outputs": {
+    "keyword_analysis": {...},
+    "news_retrieval": {...},
+    "event_classification": {...},
+    "sentiment_analysis": {...}
+  },
+  "can_resume": true,
+  "error": null,
+  "created_at": 1731400000.123,
+  "updated_at": 1731400123.456
+}
+```
+
+---
+
+### PL12. 获取最终报告
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `GET /api/v2/pipeline/task/{task_id}/report` |
+| 说明 | 获取任务完成后的最终研究报告 |
+
+**注意**：仅当任务状态为 `COMPLETED` 时可获取。
+
+---
+
+### PL13. 删除任务
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `DELETE /api/v2/pipeline/task/{task_id}` |
+| 说明 | 删除任务及其所有中间数据 |
+
+---
+
+### PL14. 重置任务
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `POST /api/v2/pipeline/task/{task_id}/reset` |
+| 说明 | 重置任务状态，清除已完成的步骤，可重新执行 |
+
+---
+
+### PL15. 获取步骤信息
+
+| 项目 | 值 |
+|------|-----|
+| 路径 | `GET /api/v2/pipeline/steps/info` |
+| 说明 | 获取所有步骤的描述、预计耗时、是否需要外部请求 |
+
+#### 响应
+
+```json
+{
+  "success": true,
+  "steps": [
+    {
+      "name": "keyword_analysis",
+      "description": "关键词语义分析",
+      "has_external_request": true,
+      "estimated_time_seconds": 2
+    },
+    {
+      "name": "news_retrieval",
+      "description": "新闻数据检索",
+      "has_external_request": false,
+      "estimated_time_seconds": 1
+    }
+    // ... 其他步骤
+  ],
+  "total_estimated_time_seconds": 400,
+  "parallel_steps": {
+    "fundamental_impact": ["industry_chain"],
+    "note": "基本面分析和产业链分析可以并行执行"
+  }
+}
+```
+
+---
+
+### PL16. 前端调用示例
+
+```javascript
+// 1. 创建任务
+const createRes = await fetch('/api/v2/pipeline/task/create', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    keyword: '今天a股怎么跳水了',
+    time_range: '近7天',
+  })
+});
+const { task_id } = await createRes.json();
+
+// 2. 执行关键词分析（显示进度 11%）
+const kwRes = await fetch('/api/v2/pipeline/step/keyword-analysis', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ task_id, keyword: '今天a股怎么跳水了' })
+});
+
+// 3. 执行新闻检索（显示进度 22%）
+const newsRes = await fetch('/api/v2/pipeline/step/news-retrieval', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ task_id, step_name: 'news_retrieval' })
+});
+
+// 4. 查询进度
+const status = await fetch(`/api/v2/pipeline/task/${task_id}`);
+const statusData = await status.json();
+console.log(`进度: ${statusData.progress.progress_percent}%`);
+
+// 5. 并行执行基本面分析和产业链分析
+const [fundamentalRes, industryRes] = await Promise.all([
+  fetch('/api/v2/pipeline/step/fundamental-impact', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ task_id, step_name: 'fundamental_impact' })
+  }),
+  fetch('/api/v2/pipeline/step/industry-chain', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ task_id, step_name: 'industry_chain' })
+  })
+]);
+
+// 6. 继续执行后续步骤...
+
+// 7. 获取最终报告
+const report = await fetch(`/api/v2/pipeline/task/${task_id}/report`);
+```
+
+---
+
+### PL17. CMD 调用示例
+
+```cmd
+REM 1) 创建任务
+curl -X POST "http://localhost:8000/api/v2/pipeline/task/create" ^
+  -H "Content-Type: application/json" ^
+  -d "{\"keyword\":\"今天a股怎么跳水了\",\"time_range\":\"近7天\"}"
+
+REM 2) 查询任务状态（将 {task_id} 替换为上一步返回的 task_id）
+curl "http://localhost:8000/api/v2/pipeline/task/{task_id}"
+
+REM 3) 执行关键词分析
+curl -X POST "http://localhost:8000/api/v2/pipeline/step/keyword-analysis" ^
+  -H "Content-Type: application/json" ^
+  -d "{\"task_id\":\"{task_id}\",\"keyword\":\"今天a股怎么跳水了\"}"
+
+REM 4) 执行新闻检索
+curl -X POST "http://localhost:8000/api/v2/pipeline/step/news-retrieval" ^
+  -H "Content-Type: application/json" ^
+  -d "{\"task_id\":\"{task_id}\",\"step_name\":\"news_retrieval\"}"
+
+REM 5) 获取步骤信息
+curl "http://localhost:8000/api/v2/pipeline/steps/info"
+
+REM 6) 获取最终报告
+curl "http://localhost:8000/api/v2/pipeline/task/{task_id}/report"
 ```
 
 ---
